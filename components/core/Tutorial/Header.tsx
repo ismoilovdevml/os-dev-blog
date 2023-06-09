@@ -32,14 +32,14 @@ export default function Header() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tutorial, setTutorial] = useState<Tutorial | null>(null);
 
-  const ogImage = `https://cs-uz.vercel.app/api/og?title=${tutorial?.title}&category=${tutorial?.category}`;
+  const ogImage = `https://os-dev-blog.vercel.app/api/og?title=${tutorial?.title}&category=${tutorial?.category}`;
 
   const structuredData: JsonLd = {
     '@context': 'https://schema.org/',
     '@type': 'BlogPosting',
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': `https://cs-uz.vercel.app/${router.asPath}`,
+      '@id': `https://os-dev-blog.vercel.app/${router.asPath}`,
     },
     headline: `${tutorial?.longTitle}`,
     description: `${tutorial?.description}`,
@@ -56,7 +56,7 @@ export default function Header() {
     },
     publisher: {
       '@type': 'Organization',
-      name: 'CS-UZ',
+      name: 'OS-Dev-Blog',
     },
   };
 
@@ -100,7 +100,7 @@ export default function Header() {
             {tutorial?.createdAt}
           </div>
           <div className="text-sm nx-text-gray-400 ml-4">
-            {tutorial?.minutesRead} daqiqa o'qildi
+            {tutorial?.minutesRead} daqiqa o'qiladi
           </div>
         </div>
         <div className="relative lg:w-[114%] lg:-ml-14 aspect-[16/9] mb-16 mt-12">

@@ -74,7 +74,7 @@ const config: DocsThemeConfig = {
   },
   useNextSeoProps() {
     return {
-      titleTemplate: `%s - CS-UZ`,
+      titleTemplate: `%s - OS-Dev-Blog`,
     };
   },
   head() {
@@ -88,11 +88,11 @@ const config: DocsThemeConfig = {
       frontMatter?.description ||
       "Open Source Developer Blog";
     const image = frontMatter?.type
-      ? `https://cs-uz.vercel.ap/api/og?title=${frontMatter?.ogImageText}&category=Developing`
+      ? `https://os-dev-blog.vercel.app//api/og?title=${frontMatter?.ogImageText}&category=Developing`
       : frontMatter?.image || '/og.jpg';
     const folder = theme === 'light' ? '/light' : '/dark';
 
-    const composedTitle = `${title} – CS-UZ`;
+    const composedTitle = `${title} – OS-Dev-Blog`;
 
     return (
       <>
