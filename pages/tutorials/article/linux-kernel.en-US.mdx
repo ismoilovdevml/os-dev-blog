@@ -1,0 +1,57 @@
+import { Callout } from "nextra-theme-docs";
+
+# Asosiy operatsion tizim atamalari va tushunchalari
+
+
+<Callout type="info" emoji="">
+Dokumentatsiyada
+* Asosiy operatsion tizim atamalari va tushunchalari
+* Linux kernelining umumiy ko'rinishi
+</Callout>
+
+Kernel(yadro) va foydalanuvchi(user) operatsion tizimlarda tez-tez ishlatiladigan ikkita atamadir. Ularning ta'rifi juda aniq: kernel(yadro) operatsion tizimning yuqori imtiyozlar bilan ishlaydigan qismidir, foydalanuvchi(user) odatda past imtiyozlar bilan ishlaydigan ilovalarni anglatadi. Biroq, bu atamalar haddan tashqari yuklangan va ba'zi kontekstlarda juda aniq ma'nolarga ega bo'lishi mumkin. Foydalanuvchi rejimi(user mode) va kernel rejimi(kernel mode) protsessorning ishlash rejimiga xos bo'lgan atamalardir. Kernel modeda ishlaydigan kod protsessorni to'liq boshqarishi mumkin, user modeda ishlaydigan kod esa ma'lum cheklovlarga ega. Agar user modeda ishlayotganda bunday operatsiyaga urinilsa, istisno hosil bo'ladi va kernel uni boshqarishni o'z zimmasiga oladi.
+
+<Callout type="info" emoji="">
+Ba'zi protsessorlar kernel modedan ham yuqori imtiyozlarga ega bo'lishi mumkin, masalan. hypervisor mode, unga faqat hypervisorda ishlaydigan kod kirish mumkin (virtual mashina monitori)
+</Callout>
+
+User space(foydalanuvchi maydoni) va kernel space(yadro maydoni), xususan,memory protectionga yoki kernel yoki foydalanuvchi ilovalari bilan bog'liq virtual address spacelariga tegishli bo'lishi mumkin. Juda soddalashtirilgan holda, kernel space kernel uchun ajratilgan memory area(xotira maydoni), user space  esa ma'lum bir foydalanuvchi jarayoni uchun ajratilgan xotira maydoni. Kernel spacega kirish himoyalangan bo'lib, user applications(foydalanuvchi ilovalari) unga to'g'ridan-to'g'ri kira olmaydi, user space esa kernel modeda ishlaydigan koddan to'g'ridan-to'g'ri kirish mumkin.
+
+<Callout type="info" emoji="">
+Asosiy operatsion tizim atamalari va tushunchalari:
+* Operating System (OS)
+* Kernel
+* Process
+* Thread
+* Scheduler
+* Memory Management
+* File System
+* Device Drivers
+* System Calls
+* Virtualization
+* Interrupt
+* Multitasking
+va boshqalar
+</Callout>
+
+### Oddiy operatsion tizim arxitekturasi
+
+Oddiy operatsion tizim arxitekturasida (quyidagi rasmga tasvirlangan) operatsion tizim kerneli bir nechta ilovalar bilan xavfsiz va to'gri tarzda hardwarega kirish va almashish uchun javobgardir.
+
+![Tizim arxitekturasi](/images/article/os-kernel/1.png)
+
+Kernel odatda "System Calls(Tizim qo'ng'iroqlari)" deb ataladigan ilovalar chiqaradigan API to'plamini taklif qiladi. Ushbu API'lar oddiy kutubxona API'laridan farq qiladi, chunki ular execution mode, user modedan kernel modega o'tish chegarasi hisoblanadi. Application(ilova) mosligini ta'minlash uchun system calllari kamdan-kam hollarda o'zgartiriladi. Linux, ayniqsa, buni amalga oshiradi (kerak bo'lganda o'zgarishi mumkin bo'lgan kernel API-laridan farqli o'laroq). Kernel kodining o'zi kernel kodida va qurilma drayverlari kodida logical(mantiqiy) ravishda ajratilishi mumkin. Asosiy kernel kodi umumiy bo'lsa, qurilma drayverlari kodi muayyan qurilmalarga kirish uchun javobgardir. Kernel yadrosi(core) yana bir nechta logical subsystem tizimlarga bo'linishi mumkin (masalan, fayllarga kirish, tarmoqqa ulanish, jarayonni boshqarish va boshqalar).
+
+### Monolithic kernel
+
+Monolitik kernel operatsion tizim dizaynining bir turi bo'lib, unda butun operatsion tizim kernel spaceda yoki "boss rejimida" ishlaydi. Bu shuni anglatadiki, rejalashtirish, fayllarni boshqarish va xotirani boshqarish kabi barcha asosiy tizim xizmatlari bir joyda mahkam birlashtirilgan va eng yuqori imtiyozlar darajasida ishlaydi.
+
+Afzallik shundaki, bu yuqori samaradorlikka olib kelishi mumkin, chunki barcha xizmatlarga osongina kirish mumkin va bir-biri bilan bevosita muloqot qilish mumkin. Ammo salbiy tomoni shundaki, agar bir qism ishlamay qolsa, u butun tizimni ishdan chiqarishi mumkin, chunki hamma narsa bir-biriga bog'langan.
+
+Bu sizning uyingiz uchun barcha boshqaruv elementlari - chiroqlar, harorat, qulflar - bitta katta boshqaruv panelida bo'lganga o'xshaydi. Bu samarali va tez, lekin panelda biror narsa noto'g'ri bo'lsa, hamma narsa ishlamay qolishi mumkin.
+
+Monolit krernel - bu kernelning turli quyi tizimlari(subsystem) o'rtasida kirish himoyasi mavjud bo'lmagan va umumiy funksiyalarni turli subsystemlar o'rtasida bevosita chaqirish mumkin bo'lgan kerneldir.
+
+![Tizim arxitekturasi](/images/article/os-kernel/2.png)
+
+Biroq, ko'pgina monolit kernellar subsytemlar o'rtasida, ayniqsa kernel coresi va qurilma drayverlari o'rtasida logical separation(mantiqiy ajratish)ni ta'minlaydi, ular bitta subsystem yoki qurilma drayverlari tomonidan taklif qilinadigan servicelarga kirish uchun ishlatilishi kerak bo'lgan nisbatan qat'iy API-larga ega (lekin o'rnatilgan bo'lishi shart emas).

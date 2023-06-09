@@ -103,5 +103,26 @@
       "toc": false,
       "pagination": true
     }
+  },
+  "linux-kernel": {
+    "title": "Asosiy operatsion tizim atamalari va tushunchalari",
+    "longTitle": "Asosiy operatsion tizim atamalari va tushunchalari",
+    "description": "Asosiy operatsion tizim atamalari va tushunchalari",
+    "level": "Hamma uchun",
+    "category": "Computer Science",
+    "author": {
+      "name": "Otabek Ismoilov",
+      "image": "/images/tutorials/authors/ismoilovdev.jpeg"
+    },
+    "createdAt": "2023-06-09",
+    "minutesRead": 16,
+    "href": "/tutorials/article/linux-kernel",
+    "theme": {
+      "breadcrumb": false,
+      "footer": true,
+      "sidebar": false,
+      "toc": false,
+      "pagination": true
+    }
   }
 }
