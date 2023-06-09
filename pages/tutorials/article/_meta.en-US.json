@@ -1,0 +1,107 @@
+{
+  "cpu-cache": {
+    "title": "CPU cache nima va u qanday ishlaydi?",
+    "longTitle": "CPU cache nima va u qanday ishlaydi?",
+    "description": "CPU cache nima va u qanday ishlaydi?",
+    "level": "Hamma uchun",
+    "category": "Computer Science",
+    "author": {
+      "name": "Otabek Ismoilov",
+      "image": "/images/tutorials/authors/ismoilovdev.jpeg"
+    },
+    "createdAt": "2023-03-07",
+    "minutesRead": 6,
+    "href": "/tutorials/article/cpu-cache",
+    "theme": {
+      "breadcrumb": false,
+      "footer": true,
+      "sidebar": false,
+      "toc": false,
+      "pagination": true
+    }
+  },
+  "kernel": {
+    "title": "Kernel nima va u qanday ishlaydi?",
+    "longTitle": "Kernel nima va u qanday ishlaydi?",
+    "description": "Kernel nima va u qanday ishlaydi?",
+    "level": "Hamma uchun",
+    "category": "Computer Science",
+    "author": {
+      "name": "Otabek Ismoilov",
+      "image": "/images/tutorials/authors/ismoilovdev.jpeg"
+    },
+    "createdAt": "2023-03-07",
+    "minutesRead": 8,
+    "href": "/tutorials/article/kernel",
+    "theme": {
+      "breadcrumb": false,
+      "footer": true,
+      "sidebar": false,
+      "toc": false,
+      "pagination": true
+    }
+  },
+  "linux-file-system": {
+    "title": "Linux fayl tizimi uchun keng qamrovli qo'llanma",
+    "longTitle": "Linux fayl tizimi uchun keng qamrovli qo'llanma",
+    "description": "Linux fayl tizimi uchun keng qamrovli qo'llanma",
+    "level": "Hamma uchun",
+    "category": "Computer Science",
+    "author": {
+      "name": "Otabek Ismoilov",
+      "image": "/images/tutorials/authors/ismoilovdev.jpeg"
+    },
+    "createdAt": "2023-03-07",
+    "minutesRead": 5,
+    "href": "/tutorials/article/linux-file-system",
+    "theme": {
+      "breadcrumb": false,
+      "footer": true,
+      "sidebar": false,
+      "toc": false,
+      "pagination": true
+    }
+  },
+  "wasm": {
+    "title": "WebAssembly WASM",
+    "longTitle": "WebAssembly WASM",
+    "description": "WebAssembly WASM",
+    "level": "Hamma uchun",
+    "category": "Computer Science",
+    "author": {
+      "name": "Otabek Ismoilov",
+      "image": "/images/tutorials/authors/ismoilovdev.jpeg"
+    },
+    "createdAt": "2023-03-17",
+    "minutesRead": 17,
+    "href": "/tutorials/article/wasm",
+    "theme": {
+      "breadcrumb": false,
+      "footer": true,
+      "sidebar": false,
+      "toc": false,
+      "pagination": true
+    }
+  }, 
+  "quantum": {
+    "title": "#1 Kvant dasturlashga sayohat",
+    "longTitle": "#1 Kvant dasturlashga sayohat",
+    "description": "#1 Kvant dasturlashga sayohat",
+    "level": "Hamma uchun",
+    "category": "Computer Science",
+    "author": {
+      "name": "Otabek Ismoilov",
+      "image": "/images/tutorials/authors/ismoilovdev.jpeg"
+    },
+    "createdAt": "2023-05-01",
+    "minutesRead": 16,
+    "href": "/tutorials/article/quantum",
+    "theme": {
+      "breadcrumb": false,
+      "footer": true,
+      "sidebar": false,
+      "toc": false,
+      "pagination": true
+    }
+  }
+}

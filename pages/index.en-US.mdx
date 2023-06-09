@@ -1,0 +1,54 @@
+---
+title: 'Asosiy'
+---
+
+import Link from '@components/core/Link';
+import { Tabs, Tab } from 'nextra-theme-docs';
+import { Header, HeaderVideo } from '@components/react/docs';
+import Card, { Cards } from '@components/core/Card';
+
+# Open Source Developer Blog
+
+##### => Otabek Ismoilov
+
+Computer Science bo'yicha bepul ta'lim platformasi bo'lgan CS-UZ ga xush kelibsiz! Barcha mahorat darajalari uchun moʻljallangan darslar, qoʻllanmalar va dokumentatsiyalar toʻplamimiz bilan tanishing. Kod dunyosini birgalikda dekodlashda biz bilan birga o'rganing, o'rganing va rivojlaning. Keling, texnologiya kelajagini shakllantiraylik.
+
+[Telegram](https://t.me/Otabek_Ismoilov) blog-ga qo'shilish
+
+<div className="mt-8">
+  <Tabs items={[]}>
+    <Tab>
+      <div className="mb-8">
+        O'zimga qiziq bo'lgan mavzular bo'yicha blog postlar yozib boraman :)
+      </div>
+      <div className="mb-4 text-xl font-bold">Oxirgi yozilgan maqolalar</div>
+      <Cards num={3}>
+        <Card
+          title="WebAssembly WASM"
+          description=""
+          icon="▶️"
+          href="/tutorials/article/wasm"
+        />
+        <Card
+          title="Kernel nima va u qanday ishlaydi?"
+          description=""
+          icon="▶️"
+          href="/tutorials/article/kernel"
+        />
+        <Card
+          title="Linux fayl tizimi uchun keng qamrovli qo'llanma"
+          description=""
+          icon="▶️"
+          href="tutorials/article/linux-file-system"
+        />
+      </Cards>
+      <div className="text-right mt-4">
+        <Link href="tutorials/all">Hammasini ko'rish →</Link>
+      </div>
+    </Tab>
+    <Tab>
+    </Tab>
+    <Tab>
+    </Tab>
+  </Tabs>
+</div>
