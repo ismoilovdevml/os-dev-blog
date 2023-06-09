@@ -111,3 +111,244 @@ Ham user space, ham kernel space bir xil virtual address spacega ega, ammo ular 
 User va kernel space o'rtasidagi bu bo'linish user-space processidagi xato yoki xavfsizlik buzilishi tizimni buzmasligi yoki kernelni buzmasligini ta'minlashga yordam beradi. Kernel butun tizim ustidan to'liq nazoratga ega, shuning uchun uni noto'g'ri user-space processlaridan himoya qilish juda muhimdir.
 
 ![Tizim arxitekturasi](/images/article/os-kernel/4.png)
+
+
+### Execution contexts
+
+Execution Context, sodda qilib aytganda, kod bo'lagi ishlayotgan  'environment' yoki 'state' ga o'xshaydi. U rocess qayerda bajarilayotgani, o'zgaruvchilar qiymatlari va kodni to'g'ri ishga tushirish uchun zarur bo'lgan boshqa tafsilotlar kabi ma'lumotlarni o'z ichiga oladi.
+
+Masalan, kompyuteringizda dastur ishlayotgan bo'lsa, operatsion tizim uning uchun execution contextini yaratadi. Bu dastur nima qilayotganini kuzatib borishi kerak bo'lgan barcha tafsilotlarni o'z ichiga oladi, masalan, keyingi instruction(ko'rsatma)ni bajarishi, qanday ma'lumotlar bilan ishlayotgani va hokazo. Agar dasturni to'xtatib turish kerak bo'lsa (masalan, boshqa dasturni ishga tushirish uchun), operatsion tizim ushbu kontekstni saqlab qo'yishi va dastur to'xtagan joyidan davom etishi uchun uni keyinroq qayta yuklashi mumkin.
+
+Kernelning eng muhim vazifalaridan biri interruptlarga xizmat ko'rsatish va ularga samarali xizmat ko'rsatishdir. Bu juda muhimki, u bilan maxsus execution context bog'langan. Kernel interrupt natijasida ishlaganda interrupt contextda ishlaydi. Bunga interrupt handler kiradi, lekin u bilan cheklanmaydi, interrupt modeda ishlaydigan boshqa maxsus(software)  konstruksiyalar mavjud. Interrupt kontekstida ishlaydigan kod har doim kernel modeda ishlaydi va kerel dasturchisi bilishi kerak bo'lgan ma'lum cheklovlar mavjud (masalan, blokirovkalash funktsiyalarini chaqirmaslik yoki user spacega kirish). Interrupt kontekstiga qarshi process(jarayon )konteksti mavjud. Process kontekstida ishlaydigan kod buni user modeda(executing application code)  yoki kernel modeda (executing a system call) amalga oshirishi mumkin.
+
+### Multi-tasking
+
+Multitasking - bu operatsion tizimning bir nechta dasturlarni "bir vaqtning o'zida(simultaneously)" bajarish qobiliyati. Buni ishlaydigan processeslar o'rtasida tezda almashish orqali amalga oshiradi. Kooperativ multitasking dasturlardan ko'p vazifani bajarish uchun hamkorlik qilishni talab qiladi. Dastur ishga tushadi va CPU boshqaruvini OSga qaytaradi, keyin esa boshqa dasturni rejalashtiradi. Preemptive multitasking bilan kernel har bir  process uchun qat'iy cheklovlarni amalga oshiradi, shuning uchun barcha  processlarni ishga tushirish uchun  imkoniyat bo'ladi. Har bir processga vaqt boʻlagini (masalan, 100ms) ishga tushirishga ruxsat beriladi, shundan soʻng, agar u hali ham ishlayotgan boʻlsa, u majburiy ravishda oʻchiriladi va boshqa vazifa rejalashtiriladi.
+
+Multi-tasking - bu kompyuterning bir vaqtning o'zida bir nechta task yoki processlarni bajarishi(run).
+
+Tasavvur qiling, siz bir vaqtning o'zida musiqa tinglash, hujjat yozish va Internetni ko'rish uchun kompyuteringizdan foydalanyapsiz. Sizning kompyuteringiz multi-tasking(ko'p vazifali) bo'lib, bu vazifalarni soniyada bir necha marta oldinga va orqaga almashtiradi.
+
+Bu bir vaqtning o'zida bir nechta taom tayyorlayotgan oshpazga o'xshaydi va hamma narsa tayyor bo'lishi uchun ular orasida doimiy almashadi. Oshpaz bir vaqtning o'zida hamma narsani qiladi deb o'ylashingiz mumkin, lekin ular aslida vazifalarni juda tez o'zgartiradilar. Multi-tasking kompyuteringizda shunday ishlaydi.
+
+### Preemptive kernel
+
+Preemptive multitasking va preemptive kernellari turli atamalardir.
+
+Agar kernel modeda ishlayotganda processni oldini olish mumkin bo'lsa, kernel preemptive hisoblanadi.
+
+Biroq, preemptiv bo'lmagan kernellar preemptive multitaskingni qo'llab-quvvatlashi mumkinligini unutmang.
+
+Operatsion tizimdagi preemptiv kernel tizimga yuqoriroq ustuvor task(vazifa) foydasiga joriy ishlayotgan taskni interrupt qilishi yoki to'xtatish imkonini beradi. Bu shuni anglatadiki, agar muhimroq task paydo bo'lsa, kernel joriy taskni "oldindan o'tkazishi(preempt)" yoki to'xtatib qo'yishi va muhimi birinchi bo'lib ishga tushishi mumkin.
+
+Buni oziq-ovqat do'konidagi kassada bo'lish kabi o'ylab ko'ring. Agar siz tekshirish o'rtasida bo'lsangiz-u, lekin kimdir shoshilinch ehtiyojga duch kelsa, masalan, narxni tekshirish, kassir (kernel kabi) tranzaktsiyangizni to'xtatib qo'yishi mumkin (joriy task), shoshilinch ehtiyojni hal qilishi mumkin (yuqori - ustuvor task (higher-priority task)) va keyin tranzaktsiyani tugatish uchun qaytib keling. Bu preemptive kernel qiladigan narsaga o'xshaydi: u muhim tasklarni tezda hal qilinishini ta'minlaydi va tizimning umumiy samaradorligini oshiradi.
+
+### Sahifalanadigan(pageable) kernel memory
+
+Agar kernel xotirasining qismlari (kod, ma'lumotlar, stek yoki dinamik ravishda ajratilgan xotira) diskka almashtirilishi mumkin bo'lsa, kernel pageable kernel memoryni qo'llab-quvvatlaydi.
+
+Pageable kernel memory - bu system memoryning bir qismi bo'lib, kerak bo'lganda physical(jismoniy) memoryni (RAM) bo'shatish uchun hard diskka ko'chiriladi. Operatsion tizim buni xotirani kichik bo'laklarga yoki "sahifalarga(pages)" bo'lish orqali amalga oshiradi va faqat hozir keraklilarini operativ xotirada saqlaydi.
+
+Pageable kernel memoryni kitob javoni kabi o'ylab ko'ring. Siz faqat javondagi (RAM) kitoblarni (maʼlumotlarni) oʻqishingiz mumkin, lekin javon toʻlgan boʻlsa va siz yangi kitob qoʻshishingiz kerak boʻlsa, hozir oʻqimayotgan kitoblaringizdan birini saqlash qutisiga koʻchirishingiz mumkin. (hard disk). Sizga yana kitob kerak bo'lganda, siz uni javonga almashtirasiz, ehtimol qutiga boshqa kitob qo'yasiz. Bu jarayon, xuddi pageable kernel memory kabi, cheklangan miqdordagi javon maydoni (RAM) bilan ko'p sonli kitoblarni (ma'lumotlarni) boshqarish imkonini beradi. Bu tizimni har doim operativ xotirada saqlashga to'g'ri kelganidan ko'ra ko'proq vazifalar va ma'lumotlarni boshqarish imkonini berib, tizimni yanada moslashuvchan va samarali qiladi.
+
+### Kernel stack
+
+Har bir process kernel modeda bajarilayotganda system call natijasida funksiya chaqiruvi(function call) zanjiri va local o'zgaruvchilar(variable) holatini saqlab turish uchun ishlatiladigan kernel stekiga ega.
+
+Kernel stegi kichik (4KB - 12 KB), shuning uchun kernel dasturchisi to'g'ri chegaralanmagan stek yoki recursive calllarda katta structurelarni ajratishdan qochishi kerak.
+
+Kernel stack - bu operatsion tizimdagi har bir taskga(vazifa) (yoki theread) tayinlangan kichik hajmdagi xotira. Bu taskni bajarish uchun zarur bo'lgan ma'lumotlarni saqlash uchun ishlatiladi, masalan, function call ma'lumotlari, local variablelar va return addreslari.
+
+Kitoblar to'plamini tasavvur qiling, bu yerda siz faqat yuqoridan kitob qo'shishingiz yoki olib tashlashingiz mumkin. Funksiya chaqirilganda, uning ma'lumotlari (masalan, yangi kitob) stek ustiga qo'shiladi. Funksiya tugagach, uning ma'lumotlari stekning yuqori qismidan o'chiriladi. Bu funksiya chaqiruvlari bilan bog'liq ma'lumotlarni saqlash va boshqarishda kernel stekining qanday ishlashiga o'xshaydi.
+
+Ushbu stuctura zarur, chunki u tizimga funksiyalarni chaqirish tartibini eslab qolishga yordam beradi. Turli tasklar ma'lumotlari o'rtasida chalkashliklarga yo'l qo'ymaslik uchun har bir task yoki thread o'z stekini oladi. Agar task boshqa funksiyani chaqiradigan funksiyani chaqirsa, stek hamma narsa sodir bo'lishini va to'g'ri tartibda tugashini ta'minlaydi. Bu operatsion tizimlar vazifalar va funksiya chaqiruvlarini qanday boshqarishining asosiy qismidir.
+
+
+### Portability
+
+Turli arxitekturalar va hardware konfiguratsiyalarida portativlikni oshirish uchun zamonaviy kernellar yuqori darajada quyidagicha tashkil etilgan:
+
+* Arxitektura va mashinaga xos kod (C & ASM)
+* Mustaqil arxitektura kodi (C):
+* Kernel core (keyinchalik bir nechta quyi tizimlarga bo'lingan)
+* qurilma drayverlari
+Bu turli arxitekturalar va mashine konfiguratsiyalari o'rtasida kodni iloji boricha qayta ishlatishni osonlashtiradi.
+
+Portativ kernel turli hardware arxitekturalari yoki platformalarida ishlash uchun osongina moslash yoki ko'chirish uchun mo'ljallangan, operatsion tizimning asosiy komponenti bo'lgan kernelga ishora qiladi. U hardwarega xos assembler tili o‘rniga C kabi yuqori darajadagi tilda yozilgan bo‘lib, turli tizimlar uchun o‘zgartirishni osonlashtiradi.
+
+Agar sizda retsept bo'lsa, qaysi oshxonada bo'lishingizdan qat'i nazar, o'zingizning oshxonangizmi, do'stingizning oshxonasimi yoki  ijarada bo'lgan oshxonami, o'sha taomni pishirishingiz mumkin. Turli xil qozon va kostryulkalar yoki pechning quvvati uchun biroz sozlashingiz kerak bo'lishi mumkin, ammo retsept aslida bir xil bo'lib qoladi.
+
+Xuddi shunday tarzda, portativ kernel turli xil hardware platformalarida (masalan, turli oshxonalarda bo'lish) ba'zi o'zgarishlar bilan ishlashi mumkin. Xuddi retsept kabi, u o'zining asosiy funksiyalari va tuzilishini saqlab qolgan holda turli muhitlarda ishlash qobiliyatiga ega.
+
+Portativ kernelning mashhur namunalaridan biri bu Linux kerneli bo'lib, u asosiy kadrlar va superkompyuterlardan tortib shaxsiy kompyuterlar, mobil qurilmalar va hatto kichik embedded systemlargacha bo'lgan juda ko'p turli xil hardware vositalarida ishlash uchun ko'chirilgan. Ushbu portativlik Linuxning keng ommalashishi va qo'llanilishining sabablaridan biridir.
+
+### Asymmetric MultiProcessing (ASMP)
+
+Asymmetric MultiProcessing (ASMP) bu kernel tomonidan bir nechta protsessorlarni (corelarni) qo'llab-quvvatlash usuli bo'lib, bu yerda protsessor kernelga ajratilgan va boshqa barcha protsessorlar user space dasturlarini boshqaradi. Ushbu yondashuvning ojizligi shundaki, kernel o'tkazuvchanligi (masalan, system call, interrupt handling va h.k.) protsessorlar soniga mos kelmaydi va shuning uchun odatiy processlar tez-tez system callardan foydalanadi. Yondashuvning kengaytirilishi juda aniq tizimlar (masalan, ilmiy ilovalar) bilan cheklangan.
+
+Asymmetric MultiProcessing (ASMP) - bu tizimdagi bir nechta protsessorlarga operatsion tizim tomonidan har biriga o'ziga xos tasklar yoki rollar tayinlangan hisoblash arxitekturasining bir turi.
+
+Loyiha ustida ishlayotgan jamoani tasavvur qiling. Ushbu jamoada har bir kishi dizayner, dasturchi, loyiha menejeri va boshqalar kabi o'ziga xos ish roliga ega va ularning har biri o'z vazifalariga e'tibor qaratadi. Xuddi shunday, ASMP tizimida har bir protsessorga muayyan tasklar yoki rollar beriladi. Bu har bir protsessorga o'z ishiga e'tibor qaratish, samaradorlik va ish faoliyatini yaxshilash imkonini beradi.
+
+Misol uchun, bitta protsessor operatsion tizimni ishga tushirishga bag'ishlangan bo'lishi mumkin, ikkinchisi esa foydalanuvchi ilovalarini boshqaradi. Bu barcha protsessorlarga teng munosabatda bo'lgan va har qanday protsessor har qanday vazifani bajarishi mumkin bo'lgan Symmetric MultiProcessing (SMP) dan farqli o'laroq.
+
+ASMP ko'p protsessorli tizimlarning oldingi kunlarida ko'proq qo'llanilgan, ammo bugungi tizimlar load balancingni yaxshilanganligi va barcha mavjud qayta ishlash quvvatlaridan yaxshiroq foydalanish tufayli odatda SMP ni afzal ko'radi. Biroq, ASMP mantiqiy bo'lgan ba'zi maxsus stsenariylar mavjud bo'lishi mumkin, masalan, aniq vazifalar uchun kafolatlangan qayta ishlash resurslari kerak bo'lgan real vaqt tizimlarida.
+
+
+![Tizim arxitekturasi](/images/article/os-kernel/5.png)
+
+### Symmetric MultiProcessing (SMP)
+
+ASMP dan farqli o'laroq, SMP rejimida kerel user processlari kabi mavjud protsessorlarning har qandayida ishlashi mumkin. Ushbu yondashuvni amalga oshirish qiyinroq, chunki u kernelda poyga sharoitlarini yaratadi, agar ikkita process bir xil memory locationga kiradigan kernel funksiyalarini ishga tushirsa.
+
+SMP-ni qo'llab-quvvatlash uchun kernel faqat bitta protsessor muhim bo'limni bajarishini kafolatlash uchun sinxronizatsiya primitivlarini (masalan, spin locks) amalga oshirishi kerak.
+
+Symmetric MultiProcessing (SMP)- bu kompyuter tizimidagi ikki yoki undan ortiq bir xil protsessorlar xotirani va I/O(input/output) bus yoki data pathni almashadigan qayta ishlash konfiguratsiyasining bir turi. Har bir protsessor resurslardan teng foydalanish huquqiga ega va ushbu vazifa uchun ma'lumotlar xotirada qayerda joylashganidan qat'i nazar, istalgan vazifani(task) bajarishi mumkin.
+
+Buni restoran oshxonasidagi oshpazlar jamoasi kabi tasavvur qiling. Barcha oshpazlar barcha ingredientlardan (xotira) va asboblardan (I/O bus) teng foydalanish huquqiga ega va har qanday oshpaz menyudan istalgan taom tayyorlashi mumkin (har qanday task bajarish). Shunday qilib, workloadi teng taqsimlanadi va oshxonada ovqatni tezroq va samaraliroq tayyorlash mumkin.
+
+SMP - bu bir vaqtning o'zida bir nechta foydalanuvchilarga veb-saytga xizmat ko'rsatish yoki grafiklarni ko'rsatish kabi kichikroq vazifalarga osongina bo'linadigan og'ir processing loadlarini yoki vazifalarni bajaradigan tizimlarning ishlashini yaxshilash usullaridan biridir. Bu ko'plab zamonaviy kompyuterlar, serverlardan consumer desktop va noutbuklar uchun, ayniqsa, multi-core(ko'p yadroli(core)) protsessorlarga ega bo'lganlar uchun odatiy sozlash.
+
+![Tizim arxitekturasi](/images/article/os-kernel/6.png)
+
+### CPU Scalability
+
+CPU scalability corelar soni bilan ishlashning qanchalik yaxshi miqyosda ekanligini anglatadi. Kernel dasturchisi CPU scalability bilan bog'liq bir nechta narsalarni yodda tutishi kerak:
+
+* Concurrency and Parallelism
+* Load Balancing
+* Synchronization
+* Resource Management
+* Scalable Data Structures
+* Interrupt Handling
+* Power Efficiency
+* Portability
+
+Kernel Dasturchilar bir nechta CPUlardan haqiqatan ham foydalanish uchun kernelni diqqat bilan loyihalashlari va optimallashtirishlari kerak.
+
+CPU scalability kompyuter tizimining ko'proq protsessorlarni (yoki multi-core tizimlar kontekstida corelarni) qo'shish yoki kuchliroq protsessorga yangilash orqali ish faoliyatini oshirish qobiliyatini anglatadi.
+
+Magistral yo'lni tasavvur qiling. Ikki qatorli avtomagistralda tirbandlik juda ko'p bo'lsa, uni to'rt qatorga kengaytirishingiz mumkin. Unda bir vaqtning o'zida ko'proq avtomobillar harakatlanishi mumkin, shuning uchun transport yaxshi harakatlanadi. Xuddi shunday, qo'shimcha protsessorlar yoki corelarni qo'shish kompyuter tizimiga bir vaqtning o'zida ko'proq vazifalarni bajarishga va umumiy ish faoliyatini yaxshilashga imkon beradi.
+
+Biroq, avtomagistralni kengaytirish chorrahalarni qayta ishlashni va belgilarni o'zgartirishni talab qilishi mumkin bo'lganidek, CPU scalability ham har doim ham oson emas. Tizimning dasturiy ta'minoti, jumladan, operatsion tizim va applicationlar, tasklarni samarali taqsimlash orqali bir nechta protsessorlar yoki corelardan foydalanish uchun mo'ljallangan bo'lishi kerak. Bundan tashqari, qancha protsessor yoki core qo'shilishi mumkinligi uchun physical(jismoniy) yoki architectural(erxetekturaviy) cheklovlar bo'lishi mumkin.
+
+Oxir oqibat, CPU scalability ko'proq protsessorlar/corelarni qo'shish yoki kuchliroqlaridan foydalanish orqali qayta ishlash quvvatini oshirish orqali tizim ish faoliyatini yaxshilash bilan bog'liq.
+
+
+
+## Linux Kernelining umumiy ko'rinishi
+
+Linux kerneli Linux operatsion tizimining asosiy komponenti bo'lib, kompyuter hardware va uning processlari o'rtasidagi asosiy interfeys hisoblanadi. U kompyuterning hardware va dasturiy ta'minoti o'rtasida aloqa o'rnatadi va tizim resurslarini iloji boricha samarali boshqaradi.
+
+Linux kerneli monolitdir, ya'ni uning barcha funksiyalari to'g'ridan-to'g'ri kernel imagega, jumladan, qurilma drayverlari, fayl tizimi bilan ishlash, tarmoq protokollari va boshqalarga kiritilgan.
+
+Dastlab Linus Torvalds tomonidan yozilgan Linux kerneli open source dasturiy ta'minot bo'lib, uning manba kodi jamoatchilikka bepul bo'lishini anglatadi va uni GNU General Public License (GPL) shartlariga muvofiq har kim o'zgartirishi va tarqatishi mumkin. U Ubuntu, Fedora va Debian, shuningdek, Android mobil operatsion tizimi kabi turli xil Linux distributivlari uchun asos bo'lib xizmat qiladi.
+
+Shunday qilib, siz Internetni ko'rib chiqyapsizmi, hujjat yozyapsizmi yoki Linux tizimida o'yin o'ynayapsizmi, barchasi muammosiz ishlashi uchun sahna ortida ishlaydigan Linux kerneli.
+
+### Linux development model
+
+Linux operatsion tizimi ko'pincha "Linux kernel development model" deb ataladigan ishlab chiqish modeliga amal qiladi. Bu open source loyihadir, ya'ni manba(source) kodi ommaga ochiq(public) va har kim unga hissa qo'shishi(contribute qilishi) mumkin. Biroq, bu jarayonni boshqaradigan ba'zi asosiy tamoyillar va rollar mavjud:
+
+Linus Torvalds: Linuxning asl yaratuvchisi Linus Torvalds hali ham Linux kernelini ishlab chiqish bo'yicha eng yuqori vakolatga ega. Qaysi o'zgartirishlar, tuzatishlar va qo'shimchalar uni asosiy kernel deb nomlanuvchi kernelning rasmiy versiyasiga kiritishini oxir-oqibat u hal qiladi.
+
+Maintainerlar: Tarmoq drayverlari yoki fayl tizimlari kabi kernelning muayyan qismlari uchun mas'ul bo'lgan ko'plab subsystem maintainerlari mavjud. Ular kernelning tegishli qismlari uchun o'zgarishlarni ko'rib chiqadilar va qabul qiladilar, so'ngra bu o'zgarishlarni yakuniy tasdiqlash uchun Linus Torvaldsga topshiradilar.
+
+Contributorlar: Har kim kodni yaxshilash yoki xatolarni tuzatish orqali Linux kerneliga contribute qilishi mumkin. Contributionlar odatda tegishli subsystem maintainerlariga elektron pochta orqali patcheslar sifatida yuboriladi.
+
+Release Cycle: Linux kerneli yangi versiyalar odatda har 9-10 haftada chiqariladigan release cyclelini kuzatib boradi. Har bir reliz davri ikki haftalik bmerge windowni o'z ichiga oladi, unda yangi xususiyatlar qo'shiladi, so'ngra barqarorlashtirish davri keladi, bu yerda faqat xatolarni tuzatish qabul qilinadi.
+
+Linux Distributionlari: Rasmiy Linux kerneli turli xil Linux distributivlari uchun asos bo'lib xizmat qiladi (Ubuntu, Fedora va boshqalar). Ushbu distributionlar asosiy kernel ustiga qo'shimcha funksiyalar, oldindan tuzilgan sozlamalar yoki foydalanuvchi uchun qulay vositalarni qo'shishi mumkin.
+
+GPL Litsenziyasi: Linux kerneli GNU General Public License (GPL) ostida chiqarilgan boʻlib, u har kimga dasturiy taʼminotdan foydalanish, oʻzgartirish va tarqatish imkonini beradi, agar ular har qanday oʻzgartirish yoki yaxshilanishlar kiritsa, open source.
+
+Open Source va hamkorlikdagi rivojlanish modeli Linuxni kichik embedded qurilmalardan tortib yirik superkompyuterlargacha bo'lgan hamma narsada qo'llanilishiga olib keldi. Turli xil contributorlar va foydalanuvchilar uni doimiy ravishda rivojlantirish va takomillashtirishga yordam beradi.
+
+### Maintainer hierarchy
+
+Linux kerneli ishlab chiquvchilarning ierarxik tuzilishi(hierarchical structure) bilan ta'minlanadi, uni quyidagicha soddalashtirish mumkin:
+
+Linus Torvalds: Ierarxiyaning yuqori qismida Linuxning asl yaratuvchisi Linus Torvalds turadi. Rasmiy Linux kerneliga qaysi oʻzgarishlar kiritilishi haqida soʻnggi soʻzni u aytadi.
+
+Leytenant Maintainerlar: Linusning to'g'ridan-to'g'ri ostida leytenant maintainerlar, vaqt o'tishi bilan izchil va yuqori sifatli hissa(contribute qilgan) qo'shgan ishonchli shaxslar. Bu shaxslar kernelning turli qismlarini saqlab turadilar, o'ziga xos subsystem(quyi tizim)lari uchun patchelarni ko'rib chiqadilar va Linusga ma'qullagan patchelarni yo'naltiradilar.
+
+Subsystem Maintainerlari: Ushbu Maintainerlar Linux kernelining networking stackgi(tarmoq stegi), fayl tizimi, qurilma drayverlari va boshqalar kabi ma'lum subsystemlari yoki componentlari(tarkibiy qismlari) uchun javobgardir. Ular o'z hududiga tegishli patchelar va contributionlarni ko'rib chiqadilar va o'zlari ma'qullaganlarini leytenantga yuboradilar. maintainerlarga yoki to'g'ridan-to'g'ri Linus Torvaldsga.
+
+Contributorlar: Bular kernelga patchelarni qo'shadigan butun dunyo bo'ylab dasturchilardir. Ular o'zlarining patchelarini ko'rib chiqish uchun tegishli subsystem maintainerga taqdim etadilar.
+
+Ushbu ierarxiya Linux loyihasining keng ko'lamini boshqarishga yordam beradi, har bir relizda yuz minglab kod satrlari o'zgartiriladi. Shuni ta'kidlash kerakki, bu soddalashtirilgan tushuntirish va haqiqiy tuzilma murakkabroq va harakatchan bo'lishi mumkin, ba'zi shaxslar bir nechta rollarni o'ynaydi.
+
+
+## Linux manba kodining tartibi
+
+![Tizim arxitekturasi](/images/article/os-kernel/7.png)
+
+Linux kernelining manba kodi har bir kernelning turli qismlarini o'z ichiga olgan ma'lum bir directory structureda tashkil etilgan. Bu yerda tartibning yuqori darajadagi umumiy ko'rinishi:
+
+
+`/arch:` Bu yerda siz arxitekturaga xos kodni topasiz. Linux tomonidan qo'llab-quvvatlanadigan kompyuter arxitekturasining har bir turi (masalan, `x86`, `arm`, `mips`) bu yerda alohida subdirectoryga ega.
+
+`/block:` Ushbu directoryda siz hard drivelar, SSDlar kabi storage devicelariga "blocks"lardagi ma'lumotlarni o'qish va yozishni(read/write) boshqaradigan kernelning bir qismi bo'lgan blokli I/O(input/output) qatlami kodini topasiz, va boshqa block devicelar.
+
+`/certs:` Ushbu directory module signatureni tekshirish uchun sertifikatlarni saqlash uchun ishlatiladi. Xavfsiz yuklash(secure boot) stsenariysida ushbu directorydagi sertifikatlar kernel modullarining digital signaturelarini(raqamli imzolarini) kernela yuklanishidan oldin tekshirish uchun ishlatiladi. Bu faqat ishonchli, o'zgartirilmagan modullarning yuklanishini(load) ta'minlashga yordam beradi va tizim xavfsizligini oshiradi.
+
+`/crypto:` Ushbu directoryda siz Linux kernelining kriptografik API-ni topasiz. Ushbu API turli xil kriptografik algoritmlarni amalga oshirishni o'z ichiga oladi, ular butun kernelda xavfsizlik xususiyatlarini ta'minlash uchun ishlatiladi.
+
+`/Documentation:` Ushbu directoryda siz kernelning turli qismlarini, ular qanday ishlashini va ulardan qanday foydalanishni tavsiflovchi turli xil hujjat fayllarini topasiz. Bu kernel ustida ishlaydigan developerlar yoki kernel qanday ishlashini tushunishni istaganlar uchun qimmatli manbadir.
+
+`/drivers:` Ushbu directory barcha turli hardware device driverlari uchun kodni o'z ichiga oladi. Qurilma drayveri - kernelning ma'lum bir hardware qismi bilan o'zaro ta'sirini ta'minlaydigan dasturiy ta'minot. Masalan, hard devicelar, USB devicelari, network cardlari va boshqalar uchun drayverlar mavjud. Har bir toifadagi drayverlar `/drivers` directorysida o'z subdirectorysiga ega.
+
+`/firmware:` Ushbu directoryda siz ba'zi drayverlar to'g'ri ishlashi uchun kerak bo'lgan firmware fayllarini topasiz. Firmware low-leveldagi dasturiy ta'minot bo'lib, uning funksiyalarini boshqarish uchun qurilmaga o'rnatiladi. Ba'zi hardware devicelari o'zlarining drayverlari tomonidan ma'lum firmware filelarini yuklashni talab qiladi va bu directory ushbu firmware fayllari saqlanadigan joydir.
+
+`/fs:` Ushbu directory fayl tizimi(file system) ilovalarini o'z ichiga oladi. Fayl tizimlari - bu storage devicelarida(saqlash qurilmalari) ma'lumotlarni saqlash va tartibga solish usullari. `/fs` directoryda siz Linux tomonidan qo'llab-quvvatlanadigan `ext4`, `XFS`, `Btrfs` va boshqa ko'plab fayl tizimlarining kodini topasiz.
+
+`/include:` directoryda siz butun kernelda ishlatiladigan header filelarini topasiz. Header filelari odatda funksiyalar va o'zgaruvchilarning definitionlarini, shuningdek, kernelning bir nechta qismlarida ishlatiladigan ma'lumotlar turlari va tuzilmalarini o'z ichiga oladi. Ushbu umumiy elementlarni header filelarida `/include` directoryda saqlash orqali ularni kerak bo'lganda osongina kiritish mumkin, bu kodni qayta ishlatish va tartibga solishga yordam beradi.
+
+`/init:` directory kernelni yuklash uchun javobgar bo'lgan kodni o'z ichiga oladi. Kernelni ishga tushirish jarayoni shu yerda boshlanadi, jumladan xotira boshqaruvini sozlash, dastlabki jarayonni yaratish va boshqalar.
+
+`/ipc:` directoryda siz inter-process communication(jarayonlararo aloqa)(IPC) mexanizmlarini amalga oshirishni topasiz. IPC mexanizmlari turli jarayonlarni bir-biri bilan aloqa qilish va sinxronlashtirish imkonini beruvchi usullardir. Message queuelari, emaphorelar va shared memory.
+
+`/kernel` directory Linux kernelining asosiy qismlarini o'z ichiga oladi. U process management(jarayonlarni boshqarish) (scheduling, creating va destroying process), interrupt handling va system calllarini amalga oshirish kabi muhim kichik tizimlarni o'z ichiga oladi. Aslini olganda, u kernelning "yuragi" ni ushlab turadi.
+
+`/lib` directoryda siz kernel tomonidan ishlatiladigan turli xil library routinelarini topasiz. Bular kernelning bir nechta joylarida ishlatiladigan umumiy funksiyalardir. Bularni libraryga qo‘yish orqali ularni kerakli joyda qayta ishlatish mumkin, bu esa DRY (Don't Repeat Yourself) kod bazasini saqlaydi.
+
+`/mm` directory Linux kernelining memory management subsystemni o'z ichiga oladi. U xotirani qanday ajratish, ajratish va tartibga solish, jumladan, paging va swappingni boshqaradi. Bu tizimning muhim qismi boʻlib, har bir process oʻziga kerakli xotirani olishini va jismoniy xotiradan samarali foydalanishni taʼminlaydi.
+
+`/net` directoryda turli tarmoq protokollarini (TCP/IP, UDP va boshqalar) amalga oshiradigan va tarmoq aloqasini boshqaradigan networking subsystemi joylashgan. Tarmoqlarning keng qo'llanilishi bilan bu har qanday zamonaviy operatsion tizimning muhim qismidir.
+
+`/samples` directory Linux kernelining turli funksiyalari va API-laridan qanday foydalanishni ko'rsatadigan namuna kodini o'z ichiga oladi. Bu kernel uchun kod yozishni o'rganayotgan developerlar uchun foydali bo'lishi mumkin.
+
+`/scripts` directory siz kernelni yaratish va sozlash bilan bog'liq turli maqsadlarda ishlatiladigan skriptlarni topasiz. Bunga konfiguratsiya fayllarini yaratish, kernelni kompilyatsiya qilish va boshqalar uchun skriptlar kiradi.
+
+`/security` directoryda Linux Security Modules (LSM)(Linux Xavfsizlik Modullari) frameworki hamda unga ulanishi mumkin bo'lgan turli xil xavfsizlik modullari, masalan, SELinux, AppArmor va hokazolar bor. Kernelning xavfsizlik bilan bog'liq kodining katta qismi shu yerda joylashgan. Standart (Unix) xavfsizlik modelini kengaytirish, shuningdek, SELinux, smack, apparmor, tomoyo va boshqalar kabi bir nechta kengaytmalarni amalga oshirish imkonini beruvchi Linux Xavfsizlik Moduli fremworki directorysi.
+
+`/sound` directoryda siz sound subsystemni, jumladan, ovoz drayverlari va turli xil audio qurilmalar bilan o'zaro ishlash uchun kodni topasiz. ALSA (Advanced Linux Sound System), Linux sound framework (OSS)
+
+`/tools` directory kernel bilan ishlash uchun turli xil tollarni o'z ichiga oladi. Ushbu tollarning ba'zilari kernelni ishlab chiqishda qo'llaniladi, boshqalari esa kernel bilan ishlaydigan tizimlarni boshqaruvchi administratorlar uchun foydalidir.
+
+`/usr` directory tashqi modullarni yaratish uchun  headerlar va Makefilelar mavjud. To'g'ridan-to'g'ri kernelning bir qismi bo'lmasa-da, bu fayllar kernel bilan o'zaro aloqada bo'lgan modullarni yozayotgan yoki yaratayotgan ishlab chiquvchilar uchun muhim bo'lishi mumkin.
+
+`/virt` directory virtualizatsiya bilan bog'liq kodni o'z ichiga oladi. Xususan, u Linux kerneliga integratsiyalangan virtualizatsiya yechimi bo'lgan Kernel-based Virtual Machine (KVM)(Kernelga asoslangan virtual mashina) amalga oshirishni o'z ichiga oladi.
+
+#### Linux kerneli arxitekturasi
+
+![Tizim arxitekturasi](/images/article/os-kernel/8.png)
+
+
+### arch
+
+Linux kerneli manba kodida `arch` directorysi arxitekturaga xos kodni bildiradi. U Linux kerneli tomonidan qo'llab-quvvatlanadigan turli protsessor arxitekturalari va platformalariga mos keladigan subdirectorilarni o'z ichiga oladi. `arch` ichidagi har bir subdirectory `x86`, `ARM`, `MIPS`, `PowerPC` va boshqalar kabi o'ziga xos arxitekturani ifodalaydi. `arch` directorysining maqsadi low-leveldagi funksionallikning arxitekturaga xos ilovalarini, jumladan, hardwarega xos kodni, qurilma drayverlari va kernelning low-level darajadagi ishga tushirish tartiblari.
+
+Keling, `arch` directorysi tuzilishining texnik tafsilotlarini ko'rib chiqaylik:
+
+#### archga xos(arch-specific) directorylar
+
+`arch/x86:` Bu directory x86 arxitekturasiga xos kodni o'z ichiga oladi, u 32-bitli va 64-bitli tizimlarni qamrab oladi. U 32 bitli tizimlar uchun `x86_32` va 64 bitli tizimlar uchun `x86_64` kabi turli xil x86 platformalari uchun subdirectorilarni o'z ichiga oladi.
+
+`arch/arm:` directoryda embedded systemlar va mobil qurilmalarda keng qo'llaniladigan ARM arxitekturasi uchun kod mavjud. U turli xil ARM platformalari uchun `arm`, `arm64`, `arm32` va boshqalar kabi kichik subdirectorilarni o'z ichiga oladi.
+
+`arch/mips:` directory odatda tarmoq uskunalari va embedded systemlarda mavjud bo'lgan MIPS arxitekturasi uchun kodni o'z ichiga oladi.
+
+`arch/powerpc:` directory turli tizimlarda, jumladan serverlar, o'yin konsollari va embedded devicelarda qo'llaniladigan PowerPC arxitekturasi uchun kodni o'z ichiga oladi.
+
+#### Machine-specific Directorylar
