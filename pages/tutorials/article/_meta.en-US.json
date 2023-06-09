@@ -61,27 +61,6 @@
       "toc": false,
       "pagination": true
     }
-  },
-  "wasm": {
-    "title": "WebAssembly WASM",
-    "longTitle": "WebAssembly WASM",
-    "description": "WebAssembly WASM",
-    "level": "Hamma uchun",
-    "category": "Computer Science",
-    "author": {
-      "name": "Otabek Ismoilov",
-      "image": "/images/tutorials/authors/ismoilovdev.jpeg"
-    },
-    "createdAt": "2023-05-07",
-    "minutesRead": 17,
-    "href": "/tutorials/article/wasm",
-    "theme": {
-      "breadcrumb": false,
-      "footer": true,
-      "sidebar": false,
-      "toc": false,
-      "pagination": true
-    }
   }, 
   "quantum": {
     "title": "#1 Kvant dasturlashga sayohat",
@@ -96,6 +75,48 @@
     "createdAt": "2023-02-15",
     "minutesRead": 16,
     "href": "/tutorials/article/quantum",
+    "theme": {
+      "breadcrumb": false,
+      "footer": true,
+      "sidebar": false,
+      "toc": false,
+      "pagination": true
+    }
+  },
+  "llvm": {
+    "title": "LLVM Arxitekturasi",
+    "longTitle": "LLVM Arxitekturasi",
+    "description": "LLVM Arxitekturasi",
+    "level": "Hamma uchun",
+    "category": "Computer Science",
+    "author": {
+      "name": "Otabek Ismoilov",
+      "image": "/images/tutorials/authors/ismoilovdev.jpeg"
+    },
+    "createdAt": "2023-03-01",
+    "minutesRead": 15,
+    "href": "/tutorials/article/llvm",
+    "theme": {
+      "breadcrumb": false,
+      "footer": true,
+      "sidebar": false,
+      "toc": false,
+      "pagination": true
+    }
+  },
+  "wasm": {
+    "title": "WebAssembly WASM",
+    "longTitle": "WebAssembly WASM",
+    "description": "WebAssembly WASM",
+    "level": "Hamma uchun",
+    "category": "Computer Science",
+    "author": {
+      "name": "Otabek Ismoilov",
+      "image": "/images/tutorials/authors/ismoilovdev.jpeg"
+    },
+    "createdAt": "2023-05-07",
+    "minutesRead": 17,
+    "href": "/tutorials/article/wasm",
     "theme": {
       "breadcrumb": false,
       "footer": true,
