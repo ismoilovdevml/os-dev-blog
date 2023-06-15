@@ -104,6 +104,27 @@
       "pagination": true
     }
   },
+  "blockchain": {
+    "title": "Blockchain",
+    "longTitle": "Blockchain",
+    "description": "Blockchain",
+    "level": "Hamma uchun",
+    "category": "Computer Science",
+    "author": {
+      "name": "Otabek Ismoilov",
+      "image": "/images/tutorials/authors/ismoilovdev.jpeg"
+    },
+    "createdAt": "2023-03-16",
+    "minutesRead": 17,
+    "href": "/tutorials/article/blockchain",
+    "theme": {
+      "breadcrumb": false,
+      "footer": true,
+      "sidebar": false,
+      "toc": false,
+      "pagination": true
+    }
+  },
   "wasm": {
     "title": "WebAssembly WASM",
     "longTitle": "WebAssembly WASM",
