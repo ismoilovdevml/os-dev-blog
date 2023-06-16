@@ -166,5 +166,26 @@
       "toc": false,
       "pagination": true
     }
+  },
+  "system-calls": {
+    "title": "System Calls",
+    "longTitle": "System Calls",
+    "description": "System Calls",
+    "level": "Hamma uchun",
+    "category": "Computer Science",
+    "author": {
+      "name": "Otabek Ismoilov",
+      "image": "/images/tutorials/authors/ismoilovdev.jpeg"
+    },
+    "createdAt": "2023-06-16",
+    "minutesRead": 20,
+    "href": "/tutorials/article/system-calls",
+    "theme": {
+      "breadcrumb": false,
+      "footer": true,
+      "sidebar": false,
+      "toc": false,
+      "pagination": true
+    }
   }
 }
