@@ -57,3 +57,35 @@ Biroq, diqqat bilan qaraydigan bo'lsak, system call aslida funksiya chaqiruvlari
 Linuxda system callari raqamlar bilan aniqlanadi va system callari parametrlari machine word size (32 yoki 64 bit). Maksimal 6 ta system call parametrlari bo'lishi mumkin. System call raqami ham, parametrlari ham ma'lum registrlarda saqlanadi.
 
 Masalan, 32 bitli x86 arxitekturasida system call identifikatori EAX registrida, parametrlar esa EBX, ECX, EDX, ESI, EDI, EBP registrlarida saqlanadi. System librarielari (masalan, libc) applicationdan foydalanishni osonlashtirish uchun actual system calllarini amalga oshiradigan funksiyalarni taklif qiladi. Userchining kernel modega o'tishi sodir bo'lganda, execution flow to'xtatiladi va u kernel entry pointga o'tkaziladi. Bu interruptlar va exceptionlar qanday ko'rib chiqilishiga o'xshaydi (aslida ba'zi arxitekturalarda bu transition exception natijasida sodir bo'ladi).
+
+System call entry pointi registrlarni (user spacedagi qiymatlarni, shu jumladan system call raqami va system call parametrlarini o'z ichiga oladi) stekda saqlaydi va keyin system call dispetcherini bajarishni davom ettiradi.
+
+<Callout type="info" emoji="">
+Eslatma!
+User - kernel modega o'tish vaqtida stek ham user stekidan kernel stekiga o'tkaziladi. Buni keyingi   interruptlar mavzusida batafsilroq ko'rib chiqamiz.
+</Callout>
+
+![Syscalls](/images/article/syscalls/3.png)
+
+System Call dispetcherining maqsadi system call raqamini tekshirish va system call bilan bog'liq kernel funksiyasini ishga tushirishdir.
+
+```c
+__visible void do_int80_syscall_32(struct pt_regs *regs)
+{
+    enter_from_user_mode();
+    local_irq_enable();
+    do_syscall_32_irqs_on(regs);
+}
+
+/* Linux x86 32bitli System Call Dispatcherining soddalashtirilgan versiyasi */
+static __always_inline void do_syscall_32_irqs_on(struct pt_regs *regs)
+{
+    unsigned int nr = regs->orig_ax;
+
+    if (nr < IA32_NR_syscalls)
+        regs->ax = ia32_sys_call_table[nr](regs->bx, regs->cx,
+                                           regs->dx, regs->si,
+                                           regs->di, regs->bp);
+    syscall_return_slowpath(regs);
+}
+```
