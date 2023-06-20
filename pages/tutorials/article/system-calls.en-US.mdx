@@ -17,3 +17,15 @@ Blog post maqsadlari
 ## Linux system callarini amalga oshirish(Implemention)
 
 Yuqori darajadagi(high level) system call(tizim qo'ng'iroqlari) kernel tomonidan user applicationriga taqdim etiladigan "servicelar" bo'lib, ular library API-lariga o'xshaydi, chunki ular nom, parametrlar va return value(qaytish qiymati) bilan function call(funksiya chaqiruvi) sifatida tavsiflanadi.
+
+![Syscalls](/images/article/syscalls/2.png)
+
+Biroq, diqqat bilan qaraydigan bo'lsak, system call aslida funksiya chaqiruvlari emas, balki quyidagi amallarni bajaradigan maxsus assembly instructionlari (arxitektura va kernel specific) ekanligini ko'rishimiz mumkin:
+
+* System call va uning parametrlarini aniqlash uchun sozlash ma'lumotlari
+* Kernel modeni o'zgartirishni ishga tushirish
+* System callning natijasini olish
+
+Linuxda system callari raqamlar bilan aniqlanadi va system callari parametrlari machine word size (32 yoki 64 bit). Maksimal 6 ta system call parametrlari bo'lishi mumkin. System call raqami ham, parametrlari ham ma'lum registrlarda saqlanadi.
+
+Masalan, 32 bitli x86 arxitekturasida system call identifikatori EAX registrida, parametrlar esa EBX, ECX, EDX, ESI, EDI, EBP registrlarida saqlanadi. System librarielari (masalan, libc) applicationdan foydalanishni osonlashtirish uchun actual system calllarini amalga oshiradigan funksiyalarni taklif qiladi. Userchining kernel modega o'tishi sodir bo'lganda, execution flow to'xtatiladi va u kernel entry pointga o'tkaziladi. Bu interruptlar va exceptionlar qanday ko'rib chiqilishiga o'xshaydi (aslida ba'zi arxitekturalarda bu transition exception natijasida sodir bo'ladi).
