@@ -89,3 +89,32 @@ static __always_inline void do_syscall_32_irqs_on(struct pt_regs *regs)
     syscall_return_slowpath(regs);
 }
 ```
+
+Biz quyidagilar haqida bilishimiz kerak: System Calls, Interrupts, System Call Dispatchers, kernel va bularning barchasida CPU roli.
+
+System Calls
+
+System Calls process va operatsion tizim o'rtasidagi interfeysni ta'minlaydi. Ular foydalanuvchi dasturlari uchun yadrodan servicelarni so'rashning bir usuli. Bu servicelarga processlarni yaratish, fayllarni o'qish va yozish, boshqa processlar bilan aloqa qilish va boshqalar kiradi.
+
+Interrupts
+
+Interrupt - bu protsessorga zudlik bilan e'tibor berish kerak bo'lgan eventni ko'rsatadigan signal. Interrupt sodir bo'lganda, protsessor joriy faoliyatini to'xtatadi va Interrupt Service Routine (ISR) kodini bajarishni boshlaydi.
+
+System Call Dispatcher
+
+System Call Dispatcheri system callarni boshqarish uchun mas'ul bo'lgan operatsion tizim kernelining tarkibiy qismidir. System Call chaqirilganda, boshqaruv user spacedan kernel spacega o'tkaziladi va system call dispetcheri chaqiriladi. Uning roli system call raqamini tekshirish va system call bilan bog'liq kernel funksiyasini ishga tushirishdir.
+
+Kernel
+
+Kernel(yadro) operatsion tizimning core(asosiy) qismidir. U process management, memory management, device management va file system management kabi tizimning ishlashi uchun muhim bo'lgan barcha task(vazifalar)ni boshqaradi.
+CPU haqida to'liq maqola mavjud:
+* Kernel bilan tanishuv?(https://ismoilovdev.uz/uz/guide/kernel.html)
+
+CPU
+
+Central Processing Unit (CPU) kompyuterning asosiy komponenti bo'lib, u kompyuter ichidagi ishlov berishning katta qismini bajaradi. U turli vazifalar o'rtasida almashinadi va ularning bajarilishini ta'minlaydi.
+CPU haqida to'liq maqola mavjud:
+
+* 1-qism: CPU nima va u qanday ishlaydi?(https://ismoilovdev.uz/uz/guide/cpu.html)
+* 2-qism: CPU qanday ishlaydi va qanday tuzilgan (chuqurlashtirilgan)(https://ismoilovdev.uz/uz/guide/cpu_2.html)
+* CPU cache nima va u qanday ishlaydi?(https://ismoilovdev.uz/uz/guide/cpu_cache.html)
