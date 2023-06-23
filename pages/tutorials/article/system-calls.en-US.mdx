@@ -108,13 +108,33 @@ Kernel
 
 Kernel(yadro) operatsion tizimning core(asosiy) qismidir. U process management, memory management, device management va file system management kabi tizimning ishlashi uchun muhim bo'lgan barcha task(vazifalar)ni boshqaradi.
 CPU haqida to'liq maqola mavjud:
-* Kernel bilan tanishuv?(https://ismoilovdev.uz/uz/guide/kernel.html)
+* [Kernel bilan tanishuv?](https://ismoilovdev.uz/uz/guide/kernel.html)
 
 CPU
 
 Central Processing Unit (CPU) kompyuterning asosiy komponenti bo'lib, u kompyuter ichidagi ishlov berishning katta qismini bajaradi. U turli vazifalar o'rtasida almashinadi va ularning bajarilishini ta'minlaydi.
 CPU haqida to'liq maqola mavjud:
 
-* 1-qism: CPU nima va u qanday ishlaydi?(https://ismoilovdev.uz/uz/guide/cpu.html)
-* 2-qism: CPU qanday ishlaydi va qanday tuzilgan (chuqurlashtirilgan)(https://ismoilovdev.uz/uz/guide/cpu_2.html)
-* CPU cache nima va u qanday ishlaydi?(https://ismoilovdev.uz/uz/guide/cpu_cache.html)
+* [1-qism: CPU nima va u qanday ishlaydi?](https://ismoilovdev.uz/uz/guide/cpu.html)
+* [2-qism: CPU qanday ishlaydi va qanday tuzilgan (chuqurlashtirilgan)](https://ismoilovdev.uz/uz/guide/cpu_2.html)
+* [CPU cache nima va u qanday ishlaydi?](https://ismoilovdev.uz/uz/guide/cpu_cache.html)
+
+Endi, taqdim etilgan kodni tushunish uchun, u x86 32-bitli Linux tizimi uchun system call dispetcherining o'ziga xos namunasini namoyish etishini tushunish muhimdir. Kodning asosiy qismlari quyidagilardir:
+
+<Callout type="info" emoji="">
+     `do_int80_syscall_32(struct pt_regs *regs)` Bu funksiya 32-bitli Linuxda system callni chiqarishning anʼanaviy usuli boʻlgan `0x80` interruptni boshqaradi.
+
+     `do_syscall_32_irqs_on(struct pt_regs *regs)` Bu 32-bitli Linux uchun system call dispetcherining soddalashtirilgan versiyasidir. U markaziy protsessor registrlarini system call chaqirilishidan oldingidek aks ettiruvchi tuzilmani oladi.
+
+     `unsigned int nr = regs->orig_ax;` Bu qator `regs` strukturasining `orig_ax` maydonidan system call raqamini oladi. System call raqami qaysi system callni chaqirish kerakligini aniqlaydi.
+
+     `regs->ax = ia32_sys_call_table[nr](regs->bx, regs->cx,
+                                        regs->dx, regs->si,
+                                        regs->di, regs->bp);`
+     Agar system call raqami haqiqiy bo'lsa (ya'ni, `IA32_NR_syscalls` jadvalida belgilangan system callari sonidan kamroq), bu qator `ia32_sys_call_table`-da system call funksiyasini qidiradi va uni system callga o'tkazilgan parametrlar bilan chaqiradi. Keyin system callning qaytish(return) qiymati `regs` strukturasining `ax` maydonida saqlanadi.
+
+     `syscall_return_slowpath(regs);` Bu system calldan qaytishni boshqaradigan funksiya. U saqlangan user-space registrlarini tiklaydi va bajarilishini user-spacega qaytaradi.
+</Callout>
+
+
+Bu jarayon system call amalga oshirilganda user modedan kernel modega (va orqaga) bor tekis va xavfsiz o'tishni ta'minlaydi. Bu tizimning yaxlitligi va barqarorligini ta'minlash uchun juda muhim, chunki u foydalanuvchi dasturlariga kernel kodi va ma'lumotlariga to'g'ridan-to'g'ri kirishni oldini oladi va kernelga tizim resurslariga qanday va qachon kirishni nazorat qilish imkonini beradi.
