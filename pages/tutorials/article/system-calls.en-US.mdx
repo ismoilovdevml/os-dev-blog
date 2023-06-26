@@ -194,3 +194,28 @@ Keling, ushbu kod qismini batafsil ko'rib chiqamiz:
 </Callout>
 
 Ushbu table keyinchalik system call amalga oshirilganda kernel tomonidan ishlatiladi. Kernel user leveldagi process tomonidan taqdim etilgan system call raqamini ko'rib chiqadi, uni tasdiqlaydi va keyin tegishli system call funksiyasini topish va bajarish uchun uni `ia32_sys_call_table` indeksi sifatida ishlatadi.
+
+
+## System call parameters handling
+
+System Call yoki syscall user-leveldagi jarayonlarga operatsion tizim kernelidan process yaratish, faylni o'qish, faylga yozish va hokazo kabi ba'zi servicelarni so'rash imkonini beruvchi mexanizmdir. Syscallar muhim ahamiyatga ega, chunki ular tizim resurslaridan foydalanishning boshqariladigan vositalarini va himoyalangan tizim ma'lumotlariga kirishni ta'minlaydi.
+
+Parametrlarni syscallarga o'tkazish arxitektura va operatsion tizimga qarab o'zgaradi. Biroq, umumiy process shundan iboratki, parametrlar protsessor registrlari orqali o'tkaziladi va bajariladigan maxsus tizim ko'pincha maxsus registr orqali ham uzatiladi.
+
+Parametrlar soni mavjud registrlar sonidan oshib ketganda, ba'zi tizimlar barcha parametrlar saqlanadigan xotira manzilini saqlash uchun bitta registrdan foydalanadi (bu ba'zan blok ko'rsatkichi usuli deb ataladi). Ba'zi tizimlar parametrlarning soni va turiga qarab ikkita usulning aralashmasidan foydalanadi.
+
+Keling, x86-64 tizimida Linuxda system callari qanday ishlashini ko'rib chiqaylik.
+
+
+X86-64 arxitekturasida system callari quyidagi registrlardan foydalanadi:
+
+<Callout type="info" emoji="">
+     RAX: system call raqami(system call number)
+     RDI: birinchi argument(first argument)
+     RSI: ikkinchi argument(second argument)
+     RDX: uchinchi argument(third argument)
+     R10: to'rtinchi argument(fourth argument)
+     R8: beshinchi argument(fifth argument)
+     R9: oltinchi argumnet(sixth argument)
+</Callout>
+
