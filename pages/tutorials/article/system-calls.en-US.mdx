@@ -219,3 +219,33 @@ X86-64 arxitekturasida system callari quyidagi registrlardan foydalanadi:
      R9: oltinchi argumnet(sixth argument)
 </Callout>
 
+System Call amalga oshirilganda, bu registrlar tegishli syscall raqami va argumentlar bilan to'ldiriladi. Shundan so'ng syscall instruction chaqiriladi, bu user modedan kernel modega o'tishni boshlaydi va kernel ichida tegishli system callni bajarishni boshlaydi.
+
+Keling, haqiqiy misolni ko'rib chiqaylik: Linuxda fayldan o'qish. Buning uchun system call `ssize_t read(int fd, void *buf, size_t count);`
+
+* `fd` biz o'qimoqchi bo'lgan faylning fayl deskriptoridir.
+* `buf` - bu o'qilgan tarkib saqlanadigan bufer.
+* `count` - o'qish uchun baytlar soni.
+
+Shunday qilib, ushbu system callni amalga oshirish uchun biz `RAX` registrida `read()` uchun system call raqamini, `RDI` registridagi fayl deskriptorini, `RSI` registridagi bufer manzilini va `RDX` registridagi countni joylashtiramiz. Keyin biz tizimni ishga tushiramiz.
+
+<Callout type="info" emoji="">
+Assambleyerda misol:
+
+
+```asm
+mov $0, %rax            ; o'qish uchun syscall raqami
+mov $3, %rdi            ; file descriptor 3
+mov $buffer, %rsi       ; bufferga pointer
+mov $64, %rdx           ; 64 byteni o'qish
+syscall                 ; syscall-ni bajarish
+
+```
+
+</Callout>
+
+Ushbu misolda read system call 3-fayl descriptorida (odatda allaqachon ochiq faylga to'g'ri keladi) amalga oshiriladi, buffer located  memory addressda joylashgan buferga 64 bayt o'qiladi.
+
+Bu oddiy misol, lekin u jarayonni ko'rsatadi: System call parametrlari tegishli registrlarga yuklanadi, so'ngra protsessorni kernel modega o'tkazadigan va berilgan parametrlar bilan belgilangan system callni bajaradigan syscall ishga tushiriladi.
+
+System Call amalga oshirilgandan so'ng, natija odatda `RAX` registriga qaytariladi. Read(o'qish) syscall uchun bu aslida o'qilgan baytlar soni bo'ladi. Agar xatolik yuz bergan bo'lsa, uning o'rniga xato kodi qaytariladi.
