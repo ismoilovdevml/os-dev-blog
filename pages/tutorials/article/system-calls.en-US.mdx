@@ -69,6 +69,7 @@ User - kernel modega o'tish vaqtida stek ham user stekidan kernel stekiga o'tkaz
 
 System Call dispetcherining maqsadi system call raqamini tekshirish va system call bilan bog'liq kernel funksiyasini ishga tushirishdir.
 
+<Callout type="info" emoji="">
 ```c
 __visible void do_int80_syscall_32(struct pt_regs *regs)
 {
@@ -89,6 +90,7 @@ static __always_inline void do_syscall_32_irqs_on(struct pt_regs *regs)
     syscall_return_slowpath(regs);
 }
 ```
+</Callout>
 
 Biz quyidagilar haqida bilishimiz kerak: System Calls, Interrupts, System Call Dispatchers, kernel va bularning barchasida CPU roli.
 
@@ -149,7 +151,7 @@ Application system call yubormoqchi bo'lganida, u hardware interruptni ishga tus
 
 Ushbu yondashuv OSga system call raqamini tekshirishga imkon beradi (uning jadval uchun tegishli diapazonda bo'lishini ta'minlash uchun) va bajarilishini boshqariladigan tarzda tegishli kernel funksiyasiga o'tkazish va shu bilan tizimning xavfsizligi va barqarorligini ta'minlaydi. Tizim qo'ng'iroqlari jadvali, shuningdek, yangi system callarni qo'shish yoki mavjudlarini o'zgartirishni osonlashtiradi: kernel dasturchilari shunchaki jadvaldagi(table) function pointerlarini yangilashlari kerak.
 
-
+<Callout type="info" emoji="">
 ```c
 #define __SYSCALL_I386(nr, sym, qual) [nr] = sym,
 
@@ -171,6 +173,7 @@ __SYSCALL_I386(5, compat_sys_open)
 __SYSCALL_I386(6, sys_close)
 
 ```
+</Callout>
 
 Ushbu kod IA-32 (x86) arxitekturasi uchun Linux kernelida system call table qanday amalga oshirilishining soddalashtirilgan tasviridir.
 
@@ -210,13 +213,13 @@ Keling, x86-64 tizimida Linuxda system callari qanday ishlashini ko'rib chiqayli
 X86-64 arxitekturasida system callari quyidagi registrlardan foydalanadi:
 
 <Callout type="info" emoji="">
-     RAX: system call raqami(system call number)
-     RDI: birinchi argument(first argument)
-     RSI: ikkinchi argument(second argument)
-     RDX: uchinchi argument(third argument)
-     R10: to'rtinchi argument(fourth argument)
-     R8: beshinchi argument(fifth argument)
-     R9: oltinchi argumnet(sixth argument)
+* RAX: system call raqami(system call number)
+* RDI: birinchi argument(first argument)
+* RSI: ikkinchi argument(second argument)
+* RDX: uchinchi argument(third argument)
+* R10: to'rtinchi argument(fourth argument)
+* R8: beshinchi argument(fifth argument)
+* R9: oltinchi argumnet(sixth argument)
 </Callout>
 
 System Call amalga oshirilganda, bu registrlar tegishli syscall raqami va argumentlar bilan to'ldiriladi. Shundan so'ng syscall instruction chaqiriladi, bu user modedan kernel modega o'tishni boshlaydi va kernel ichida tegishli system callni bajarishni boshlaydi.
