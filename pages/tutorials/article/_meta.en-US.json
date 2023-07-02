@@ -187,5 +187,26 @@
       "toc": false,
       "pagination": true
     }
+  },
+  "linux-de": {
+    "title": "Linuxda DE qanday ishlaydi?",
+    "longTitle": "Linuxda DE qanday ishlaydi?",
+    "description": "Linuxda DE qanday ishlaydi?",
+    "level": "Hamma uchun",
+    "category": "Computer Science",
+    "author": {
+      "name": "Otabek Ismoilov",
+      "image": "/images/tutorials/authors/ismoilovdev.jpeg"
+    },
+    "createdAt": "2023-06-16",
+    "minutesRead": 20,
+    "href": "/tutorials/article/linux-de",
+    "theme": {
+      "breadcrumb": false,
+      "footer": true,
+      "sidebar": false,
+      "toc": false,
+      "pagination": true
+    }
   }
 }
