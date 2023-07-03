@@ -17,3 +17,26 @@ Siz tajribali Linux foydalanuvchisi bo'lasizmi, tizimingizning ichki ishlashiga 
 Xorg, shuningdek, X.org yoki X.Org Server deb ataladi, Unix-ga o'xshash operatsion tizimlar, shu jumladan Linux bilan ishlaydigan desktop environment kompyuterlari uchun eng mashhur displey serveridir. Ba'zan windowing system deb ataladigan displey serveri ilovalarning ekranda grafik chiqishini ko'rsatish usulini ta'minlovchi komponent hisoblanadi.
 
 Xorg open-source loyiha bo'lib, X.Org Foundation tomonidan boshqariladi va X Window System (odatda X11 yoki X nomi bilan tanilgan) ga asoslangan. Xorg Linux va boshqa Unix-ga o'xshash operatsion tizimlardagi ko'plab desktop environmentlari uchun standart displey serveridir.
+
+## Xorg arxitekturasi va funksionalligi
+
+Xorg arxitekturasi client-server modeliga asoslangan. Xorg serveri kompyuter hardwareida ishlaydi va grafik hardwarelar bilan communicating qilish(aloqa qilish), input devicelari bilan ishlash va displeyni boshqarish kabi vazifalar uchun javob beradi. Applicationlar, bu kontekstda, o'zlarining grafik natijalarini ko'rsatish uchun server bilan bog'lanadigan clientlardir.
+
+Xorg arxitekturasining asosiy xususiyati uning network transparency-dir. Bu shuni anglatadiki, applications (clientlar) Xorg serverida ishlaydigan kompyuterdan boshqa kompyuterda ishlashi mumkin. Clientlar X11 deb nomlangan tarmoq protokoli orqali server bilan bog'lanadi.
+
+Chizilgan oynalarni chizish va ma'lumotlarni qayta ishlashning asosiy funksiyalaridan tashqari, Xorg qo'shimcha funksiyalarni ta'minlaydigan bir qator kengaytmalarni ham qo'llab-quvvatlaydi. Bularga quyidagilar kiradi:
+
+<Callout type="info" emoji="">
+* Ekran o'lchamlari va bir nechta monitorlarni boshqarish uchun RandR extensioni.
+* Hardware-accelerate videoni ijro etish uchun XVideo extensioni.
+* OpenGL orqali hardware-accelerated 3D grafika uchun GLX extensioni.
+</Callout>
+
+## Client-server model va network transparency
+
+X client–server modelidan foydalanadi. X server dasturi grafik displeyli kompyuterda ishlaydi va turli client dasturlari bilan aloqa qiladi. X serveri user va client dasturlari oʻrtasida oʻzaro bogʻlovchi vazifasini bajaradi, client dasturlaridan grafik chiqish (oynalar)(graphical output (windows)) uchun TCP 6000 portidagi soʻrovlarni(requestlar) qabul qiladi va ularni userga koʻrsatadi (displey), shuningdek user maʼlumotlarini (klaviatura, sichqoncha) va uni client dasturlariga yuboradi. 
+
+
+X server userning kompyuterida ishlaydi, clientlar esa masofaviy(remote) mashchinelarda ishlashi mumkin. Ushbu terminologiya client–server tizimlarining umumiy tushunchasini o'zgartiradi, bunda client odatda userning mahalliy(local) kompyuterida ishlaydi va server masofaviy(remote) kompyuterda ishlaydi. X Window terminologiyasi X Window dasturi barcha faoliyatning markazida ekanligi, ya'ni X Window dasturi applicationlardan hamda userning sichqoncha va klaviaturadan kiritgan so'rovlarini(request) qabul qiladi va ularga javob beradi. Shuning uchun applicationlar (remote kompyuterlarda) X Window server dasturining clientlari sifatida ko'riladi.
+
+![X-SERVER](/images/article/linux-de/1.png)
