@@ -48,10 +48,10 @@ X server userning kompyuterida ishlaydi, clientlar esa masofaviy(remote) mashchi
 Server va clientlar o'rtasidagi aloqa tarmoq kanali(network channel) orqali paketlarni almashish orqali amalga oshiriladi. Client birinchi paketni yuborib, ulanishni o'rnatadi. Server ulanishni qabul qilish yoki rad etish yoki keyingi autentifikatsiya so'rovi bilan paketni qaytarib yuborish orqali javob beradi. Agar ulanish qabul qilingan bo'lsa, qabul paketi clientning server bilan keyingi o'zaro aloqasida foydalanishi uchun ma'lumotlarni o'z ichiga oladi. Ulanish o'rnatilgandan so'ng, client va server kanal orqali to'rt xil turdagi paketlarni almashadilar:
 
 <Callout type="info" emoji="">
-* 1. Request(So'rov): client serverdan ma'lumot so'raydi yoki biror amalni(action) bajarishni so'raydi.
-* 2. Reply(Javob): server requestga javob beradi. Hamma so'rovlar ham javob bermaydi.
-* 3. Event: server clientga eventni yuboradi, masalan, klaviatura yoki sichqoncha kiritish yoki oyna ko'chirilayotgan, o'lchami o'zgartirilgan yoki ochilgan.
-* 4. Error(Xato): agar request noto'g'ri(invalid) bo'lsa, server error paketini yuboradi. Requestlar navbatga qo'yilganligi sababli, request tomonidan yaratilgan error paketlari darhol yuborilmasligi mumkin.
+1. Request(So'rov): client serverdan ma'lumot so'raydi yoki biror amalni(action) bajarishni so'raydi.
+2. Reply(Javob): server requestga javob beradi. Hamma so'rovlar ham javob bermaydi.
+3. Event: server clientga eventni yuboradi, masalan, klaviatura yoki sichqoncha kiritish yoki oyna ko'chirilayotgan, o'lchami o'zgartirilgan yoki ochilgan.
+4. Error(Xato): agar request noto'g'ri(invalid) bo'lsa, server error paketini yuboradi. Requestlar navbatga qo'yilganligi sababli, request tomonidan yaratilgan error paketlari darhol yuborilmasligi mumkin.
 </Callout>
 
 X server bir qator asosiy servicelarni taqdim etadi. Client dasturlari server bilan o'zaro aloqada bo'lish orqali yanada murakkab funksiyalarni amalga oshiradi.
@@ -72,3 +72,26 @@ Identifikatorlar nafaqat clientga, balki serverga xosdir; masalan, ikkita turli 
 
 ### Attributlar va propertilar
 
+Har bir oynada oldindan belgilangan atributlar va propertielar to'plami mavjud bo'lib, ularning barchasi X serverida saqlanadi va tegishli so'rovlar orqali clientlarga kirish mumkin. Atributlar oyna haqidagi ma'lumotlar, masalan, uning o'lchami, joylashuvi, fon rangi va boshqalar. Propertielar - oynaga biriktirilgan ma'lumotlar bo'laklari. Atributlardan farqli o'laroq, X Window core protokoli darajasida propertielar hech qanday ma'noga ega emas. Client o'zboshimchalik bilan ma'lumotlarni oynaning propertisida saqlashi mumkin.
+
+Propertie nomi, turi va qiymati bilan tavsiflanadi. Propertielar imperativ dasturlash tillaridagi o'zgaruvchilarga o'xshaydi, chunki application ma'lum nom va ma'lum turdagi yangi propertini yaratishi va unda qiymatni saqlashi mumkin. Propertielar oynalar bilan bog'langan: bir xil nomdagi ikkita properti har xil turdagi va qiymatlarga ega bo'lgan ikki xil oynada mavjud bo'lishi mumkin.
+
+Propertielar asosan clientlar o'rtasidagi aloqa uchun ishlatiladi. Masalan, `WM_NAME` nomli properti oyna nomini saqlaydi; oyna menejerlari odatda bu xususiyatni o'qiydilar va uning yuqori qismida oyna nomini ko'rsatadilar.
+
+`Xprop` dasturi oynaning propertilarini ko'rsatishi mumkin. Xususan, `xprop -root` X resurslarni (dasturlar parametrlarini) o'z ichiga olgan ildiz oynasining propertilarini ko'rsatadi.
+
+### Eventlar
+
+Eventlar - bu clientni qiziqtiradigan biror narsa sodir bo'lganligi haqida xabar berish uchun server tomonidan clientga yuborilgan paketlar. Client serverdan eventni boshqa clientga yuborishni so'rashi mumkin; Bu clientlar o'rtasidagi aloqa uchun ishlatiladi. Misol uchun, client hozirda tanlangan matnni so'raganda, event hozirda tanlovni ushlab turadigan oyna bilan ishlayotgan clientga yuboriladi.
+
+Oynaning mazmuni ba'zi sharoitlarda (masalan, deraza qoplangan bo'lsa(window is covered)) "destroyed(yo'q qilish)" qilishi mumkin. Yo'q qilingan kontent maydoni ko'rinadigan bo'lsa, server clientga oynaning bir qismini chizish kerakligi haqida xabar berish uchun Expose eventini yaratadi.
+
+Boshqa eventlar clientlarga klaviatura yoki sichqoncha kiritilishi, yangi oynalar yaratilishi va hokazolar haqida xabar berish uchun xizmat qilishi mumkin.
+
+Ba'zi turdagi eventlar har doim clientga yuboriladi, lekin ko'pgina eventlar faqat client ularga qiziqish bildirgan taqdirdagina yuboriladi, chunki clientlar faqat qandaydir eventlarga qiziqishi mumkin. Misol uchun, client klaviatura bilan bog'liq eventga qiziqishi mumkin, ammo sichqoncha bilan bog'liq eventlar emas.
+
+### Color modelar(Rang rejimlari)
+
+X Window System ranglarni boshqarish usuli ba'zan foydalanuvchilarni chalkashtirib yuborishi mumkin va tarixan bir nechta turli xil rejimlar qo'llab-quvvatlanadi. Ko'pgina zamonaviy ilovalar to'liq rangdan foydalanadi (24-bit rang, qizil, yashil va ko'kning har biri uchun 8 bit), lekin eski yoki maxsus ilovalar boshqa rang rejimini talab qilishi mumkin. Ko'pgina tijorat mutaxassislari ilovalari `PseudoColor` dan foydalanadi.
+
+X11 protokoli aslida ko'pgina grafik operatsiyalarda bitta rangni ifodalash uchun piksel qiymati deb ataladigan bitta 32 bitli belgisiz butun sondan foydalanadi. Asosiy ranglarning intensivligini uzatishda har bir rang komponenti uchun 16 bitli butun son ishlatiladi. Ranglarning quyidagi ko'rinishlari mavjud; ularning hammasi ham ma'lum bir qurilmada qo'llab-quvvatlanmasligi mumkin.
