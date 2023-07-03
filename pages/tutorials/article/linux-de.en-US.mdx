@@ -95,3 +95,34 @@ Ba'zi turdagi eventlar har doim clientga yuboriladi, lekin ko'pgina eventlar faq
 X Window System ranglarni boshqarish usuli ba'zan foydalanuvchilarni chalkashtirib yuborishi mumkin va tarixan bir nechta turli xil rejimlar qo'llab-quvvatlanadi. Ko'pgina zamonaviy ilovalar to'liq rangdan foydalanadi (24-bit rang, qizil, yashil va ko'kning har biri uchun 8 bit), lekin eski yoki maxsus ilovalar boshqa rang rejimini talab qilishi mumkin. Ko'pgina tijorat mutaxassislari ilovalari `PseudoColor` dan foydalanadi.
 
 X11 protokoli aslida ko'pgina grafik operatsiyalarda bitta rangni ifodalash uchun piksel qiymati deb ataladigan bitta 32 bitli belgisiz butun sondan foydalanadi. Asosiy ranglarning intensivligini uzatishda har bir rang komponenti uchun 16 bitli butun son ishlatiladi. Ranglarning quyidagi ko'rinishlari mavjud; ularning hammasi ham ma'lum bir qurilmada qo'llab-quvvatlanmasligi mumkin.
+
+##### DirectColor
+
+Piksel qiymati alohida qizil, yashil va ko'k pastki maydonlarga(subfield) bo'linadi. Har bir kichik maydon alohida colormapini indekslaydi. Barcha rang xaritalaridagi yozuvlarni o'zgartirish mumkin.
+
+##### TrueColor
+
+DirectColor bilan bir xil, faqat colormap yozuvlari hardware tomonidan oldindan belgilangan va ularni o'zgartirib bo'lmaydi. Odatda, qizil, yashil va ko'k rang colormaplarining har biri (near) chiziqli intensivlikni ta'minlaydi.
+
+##### GrayScale
+Piksel qiymati monoxrom intensivlikni o'z ichiga olgan bitta colormapini indekslaydi. Colormap yozuvlarini o'zgartirish mumkin.
+
+##### StaticGray
+
+GrayScale bilan bir xil, faqat colormapi yozuvlari hardware tomonidan oldindan belgilangan va ularni o'zgartirib bo'lmaydi.
+
+##### PseudoColor (Chunky)
+
+Piksel qiymati rang intensivligini o'z ichiga olgan bitta colormapini indekslaydi. Colormap yozuvlarini o'zgartirish mumkin.
+
+##### StaticColor
+
+PseudoColor bilan bir xil, faqat colormapi yozuvlari hardware tomonidan oldindan belgilangan va ularni o'zgartirib bo'lmaydi.
+
+### Xlib va boshqa client librarilar
+
+Ko'pgina client dasturlari Xlib clientlar kutubxonasi(librarie) orqali server bilan bog'lanadi. `Xlib` bilan bir qatorda, `XCB` kutubxonasi `X` protokoliga yaqinroq ishlaydi. Xususan, ko'pchilik clientlar `Xaw`, `Motif`, `GTK+` yoki `Qt` kabi kutubxonalardan foydalanadilar, ular o'z navbatida server bilan o'zaro aloqa qilish uchun `Xlib`-dan foydalanadilar. Qt 5.0 versiyasi bilan Xlib-dan `XCB`-ga o'tdi, ammo client dasturlari bu o'zgarishdan deyarli ta'sirlanmadi.
+
+
+## Display Manager
+
