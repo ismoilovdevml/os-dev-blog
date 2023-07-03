@@ -32,7 +32,7 @@ Chizilgan oynalarni chizish va ma'lumotlarni qayta ishlashning asosiy funksiyala
 * OpenGL orqali hardware-accelerated 3D grafika uchun GLX extensioni.
 </Callout>
 
-## Client-server model va network transparency
+### Client-server model va network transparency
 
 X client–server modelidan foydalanadi. X server dasturi grafik displeyli kompyuterda ishlaydi va turli client dasturlari bilan aloqa qiladi. X serveri user va client dasturlari oʻrtasida oʻzaro bogʻlovchi vazifasini bajaradi, client dasturlaridan grafik chiqish (oynalar)(graphical output (windows)) uchun TCP 6000 portidagi soʻrovlarni(requestlar) qabul qiladi va ularni userga koʻrsatadi (displey), shuningdek user maʼlumotlarini (klaviatura, sichqoncha) va uni client dasturlariga yuboradi. 
 
@@ -40,3 +40,23 @@ X client–server modelidan foydalanadi. X server dasturi grafik displeyli kompy
 X server userning kompyuterida ishlaydi, clientlar esa masofaviy(remote) mashchinelarda ishlashi mumkin. Ushbu terminologiya client–server tizimlarining umumiy tushunchasini o'zgartiradi, bunda client odatda userning mahalliy(local) kompyuterida ishlaydi va server masofaviy(remote) kompyuterda ishlaydi. X Window terminologiyasi X Window dasturi barcha faoliyatning markazida ekanligi, ya'ni X Window dasturi applicationlardan hamda userning sichqoncha va klaviaturadan kiritgan so'rovlarini(request) qabul qiladi va ularga javob beradi. Shuning uchun applicationlar (remote kompyuterlarda) X Window server dasturining clientlari sifatida ko'riladi.
 
 ![X-SERVER](/images/article/linux-de/1.png)
+![X-SERVER](/images/article/linux-de/2.gif)
+
+
+### Core protocol
+
+Server va clientlar o'rtasidagi aloqa tarmoq kanali(network channel) orqali paketlarni almashish orqali amalga oshiriladi. Client birinchi paketni yuborib, ulanishni o'rnatadi. Server ulanishni qabul qilish yoki rad etish yoki keyingi autentifikatsiya so'rovi bilan paketni qaytarib yuborish orqali javob beradi. Agar ulanish qabul qilingan bo'lsa, qabul paketi clientning server bilan keyingi o'zaro aloqasida foydalanishi uchun ma'lumotlarni o'z ichiga oladi. Ulanish o'rnatilgandan so'ng, client va server kanal orqali to'rt xil turdagi paketlarni almashadilar:
+
+<Callout type="info" emoji="">
+* 1. Request(So'rov): client serverdan ma'lumot so'raydi yoki biror amalni(action) bajarishni so'raydi.
+* 2. Reply(Javob): server requestga javob beradi. Hamma so'rovlar ham javob bermaydi.
+* 3. Event: server clientga eventni yuboradi, masalan, klaviatura yoki sichqoncha kiritish yoki oyna ko'chirilayotgan, o'lchami o'zgartirilgan yoki ochilgan.
+* 4. Error(Xato): agar request noto'g'ri(invalid) bo'lsa, server error paketini yuboradi. Requestlar navbatga qo'yilganligi sababli, request tomonidan yaratilgan error paketlari darhol yuborilmasligi mumkin.
+</Callout>
+
+X server bir qator asosiy servicelarni taqdim etadi. Client dasturlari server bilan o'zaro aloqada bo'lish orqali yanada murakkab funksiyalarni amalga oshiradi.
+
+### Windows(oynalar)
+
+Boshqa grafik foydalanuvchi interfeyslari odatda window(oyna) deb ataladigan element X Window tizimidagi top-level windowdir. Window(Oyna) atamasi boshqa window ichida joylashgan windowlar, ya'ni ota-windowning subwindowlari uchun ham qo'llaniladi. Buttonlar(Tugmalar), menyular, piktogrammalar va boshqalar kabi grafik elementlarning barchasi oynalar yordamida amalga oshiriladi.
+
