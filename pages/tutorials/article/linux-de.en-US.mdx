@@ -58,5 +58,17 @@ X server bir qator asosiy servicelarni taqdim etadi. Client dasturlari server bi
 
 ### Windows(oynalar)
 
-Boshqa grafik foydalanuvchi interfeyslari odatda window(oyna) deb ataladigan element X Window tizimidagi top-level windowdir. Window(Oyna) atamasi boshqa window ichida joylashgan windowlar, ya'ni ota-windowning subwindowlari uchun ham qo'llaniladi. Buttonlar(Tugmalar), menyular, piktogrammalar va boshqalar kabi grafik elementlarning barchasi oynalar yordamida amalga oshiriladi.
+Boshqa grafik foydalanuvchi interfeyslari odatda window(oyna) deb ataladigan element X Window tizimidagi top-level windowdir. Window(Oyna) atamasi boshqa window ichida joylashgan windowlar, ya'ni ota-windowning subwindowlari uchun ham qo'llaniladi. Buttonlar(Tugmalar), menyular, piktogrammalar va boshqalar kabi grafik elementlarning barchasi oynalar yordamida amalga oshiriladi. Oyna faqat asosiy oynaning subwindowi sifatida yaratilishi mumkin. Bu oynalarni treeda ierarxik tarzda joylashtirishga olib keladi. X server avtomatik ravishda root(ildiz) oynasi deb ataladigan treening ildizini yaratadi. Top-leveldagi oynalar aynan ildiz oynasining bevosita subwindowlaridir. Ko'rinib turibdiki, root window ekran kabi katta va boshqa barcha oynalar orqasida yotadi.
+
+![X-SERVER](/images/article/linux-de/3.png)
+
+Rasmda: Ba'zi oynalarning mumkin bo'lgan joylashuvi: 1 - butun ekranni qoplaydigan ildiz oynasi(root window); 2 va 3 - top-leveldagi oynalar; 4 va 5 - 2 ning subwindowlari. Oynaning ota-onasidan tashqaridagi qismlari ko'rinmaydi
+
+### Identifikatorlar
+
+X serveri oynalar, shriftlar va boshqalar haqidagi barcha ma'lumotlarni saqlaydi. Client bu obyektlarning identifikatorlarini biladi - server bilan o'zaro aloqada bo'lganda ular uchun nom sifatida foydalanishi mumkin bo'lgan butun sonlar. Misol uchun, agar client oyna yaratilishini xohlasa, u serverdan uni yaratishni so'raydi va (muvaffaqiyatli bo'lsa) evaziga yangi yaratilgan oyna bilan bog'langan server identifikatorini oladi. Identifikator keyinchalik client tomonidan, masalan, oynada chizilgan satrni so'rash uchun ishlatilishi mumkin.
+
+Identifikatorlar nafaqat clientga, balki serverga xosdir; masalan, ikkita turli client tomonidan yaratilgan bo'lsa ham, ikkita oynada bir xil identifikator mavjud emas. Clirnt identifikatori berilgan istalgan obyektga kirishi mumkin, hatto boshqa client obyektni yaratgan bo'lsa ham.
+
+### Attributlar va propertilar
 
