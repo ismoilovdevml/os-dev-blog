@@ -1,6 +1,6 @@
 import { Callout } from "nextra-theme-docs";
 
-# Linuxda DE(desktop environment) qanday ishlaydi?
+# Linuxda Grafika
 
 ### Maqolaning maqsadi
 
@@ -226,6 +226,32 @@ GTK chizilgan widgetlarning ko'rinishini o'zgartirish uchun sozlanishi mumkin; b
 2005 yilda chiqarilgan 2.8 versiyasidan boshlab, GTK o'zining grafik boshqaruv elementlarining ko'p widgetlarini render qilish uchun Cairodan foydalanishga o'tishni boshladi. GTK 3.0 versiyasidan boshlab barcha renderlash Cairo yordamida amalga oshiriladi.
 
 ![GTK](/images/article/linux-de/7.png)
+![GTK](/images/article/linux-de/6.svg)
 
 ### Qt
 
+Qt grafik foydalanuvchi interfeyslarini, shuningdek, Linux, Windows, macOS, Android yoki embedded systemlar kabi turli dasturiy va hardware platformalarida ishlaydigan o'zaro platforma ilovalarini yaratish uchun bepul va open-source cross-platform dasturidir. Bu GTK+ bilan solishtirganda kengroq asos boʻlib, “bir marta yozing, istalgan joyda kompilyatsiya qiling(write once, compile anywhere)” falsafasi bilan mashhur. U Trolltech tomonidan yaratilgan bo'lib, hozirda The Qt kompaniyasiga tegishli. Asosiy kodlar bazasida juda oz yoki umuman o'zgarish bo'lmaydi, shu bilan birga mahalliy imkoniyatlar va tezlikka ega bo'lgan mahalliy dastur.
+
+Qt hozirda The Qt Company, ochiq ro'yxatga olingan kompaniya va Qt Project tomonidan Qtni ilgari surish uchun ishlaydigan individual ishlab chiquvchilar va tashkilotlarni o'z ichiga olgan open-source boshqaruv ostida ishlab chiqilmoqda. Qt ham tijorat litsenziyalari, ham open-source GPL 2.0, GPL 3.0, va LGPL 3.0 litsenziyalari ostida mavjud.
+
+Qt C++ tilida yozilgan va u bir nechta boshqa dasturlash tillari bilan bog'lanishni ta'minlaydi. Shuningdek, u o'zining meta-object compiler (MOC) va fluid, yorug'lik(light) va touch-friendly qulay interfeyslarni ishlab chiqish uchun QML skript tiliga ega.
+
+Qt ning muhim xususiyatlariga quyidagilar kiradi:
+
+`Widgetlar`: GTK+ singari, Qt ham GUI ilovalarini ishlab chiqish uchun widgetlar to‘plamini taqdim etadi.
+
+`QtQuick`: UI dizaynerlariga UI xatti-harakatlarini to'g'ridan-to'g'ri ifodalash imkonini beruvchi eclarative language (QML)dan foydalangan holda fluid va dynamic user interfacelarini yaratish texnologiyasi.
+
+`Signallar va Slotlar`: Qt-da obyektlar o'rtasidagi aloqa uchun kiritilgan til konstruktsiyasi Observer patternni amalga oshirishni osonlashtiradi, shu bilan birga boilerplate codedan qochadi.
+
+`Networking, database access va multi-threading`: GUI ishlab chiqishdan tashqari, Qt tarmoq dasturlash, ma'lumotlar bazasiga kirish va ko'p bosqichli dasturlash uchun kutubxonalarni ham taqdim etadi.
+
+`Tools`: Qt Qt Designer (GUI-ni vizual tarzda yaratish uchun), Qt Assistant (hujjatlarni ko'rish uchun) va Qt Linguist (ilovalarni xalqarolashtirish uchun) kabi bir qator tolllarni taqdim etadi.
+
+
+
+Ikkalasi ham desktop environmentlarda (GNOME-da GTK+, KDE-da Qt) qo'llanilsa-da, Qt embedded va mobil makonda ko'proq tarqalgan, bu qisman faqat GUI ishlab chiqishdan tashqariga chiqadigan kutubxonalar va tollarning keng to'plami tufayli. GTK+ esa oʻzining soddaligi bilan mashhur va GNU loyihasi doirasida va GNOME desktop environmenti uchun ishlab chiqilgan ilovalarda mashhur.
+
+Litsenziyalashga kelsak, GTK+ ham, Qt ham bepul va open-sourcedir, lekin ular turli litsenziyalardan foydalanadilar. GTK+ kamroq cheklovchi `LGPL` dan foydalanadi, bu esa ishlab chiquvchilarga GTK+ ni ham bepul, ham xususiy dasturiy ta'minot bilan hech qanday majburiyatlarsiz bog'lash imkonini beradi. Bundan farqli o'laroq, Qt LGPL yoki tijorat litsenziyasidan foydalanadi, bu esa tijorat, yopiq manbali ilovalar uchun ba'zi cheklovlar yoki xarajatlarni qo'yishi mumkin.
+
+![GTK](/images/article/linux-de/4.png)

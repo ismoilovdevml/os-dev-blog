@@ -189,9 +189,9 @@
     }
   },
   "linux-de": {
-    "title": "Linuxda DE qanday ishlaydi?",
-    "longTitle": "Linuxda DE qanday ishlaydi?",
-    "description": "Linuxda DE qanday ishlaydi?",
+    "title": "Linuxda Grafika",
+    "longTitle": "Linuxda Grafika",
+    "description": "Linuxda Grafika",
     "level": "Hamma uchun",
     "category": "Computer Science",
     "author": {
