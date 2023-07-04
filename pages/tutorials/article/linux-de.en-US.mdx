@@ -180,3 +180,34 @@ Turli displey menejerlari turli xususiyatlar va turli grafik interfeyslarni taqd
 `LXDM:` LXDE desktop environmentlari uchun standart DM. Bu yengil va kuchi kamroq tizimlar uchun javob beradi.
 
 Displey menejeri grafik foydalanuvchi interfeysidan foydalanadigan Unix-ga o'xshash operatsion tizimlarning muhim tarkibiy qismidir. U foydalanuvchi autentifikatsiyasi va seansni boshqarish bilan shug'ullanadi, foydalanuvchilarga o'z tizimiga kirish uchun qulay interfeys bilan ta'minlaydi.
+
+
+## Widget Toolkits
+
+Widget toolkitlar, shuningdek, GUI toolkit sifatida ham tanilgan, kompyuter dasturlarida grafik foydalanuvchi interfeyslarini (GUI graphical user interfaces) yaratish uchun "widgetlar" deb nomlanuvchi kerakli qurilish bloklarini ta'minlovchi dasturiy kutubxonalardir. Widgetlarga misollar matn maydonchalari(text boxes), tugmalar(button), checkbokslar, slayderlar, oynalar va menyulardir. Ushbu elementlarning har biri foydalanuvchi bilan ma'lum bir tarzda o'zaro aloqa qilish uchun mo'ljallangan va shu bilan foydalanuvchi va kompyuter o'zaro ta'sirini osonlashtiradi.
+
+Widget toolkitni tanlash bir nechta omillarga bog'liq, jumladan, ilovaning kerakli ko'rinishi va hissi, ilova ishlaydigan maxsus platforma(lar) va dastur yoziladigan dasturlash tili.
+Widget toolkitning komponentlari
+
+1. `Widgetlar`: Bular foydalanuvchi interfeysining qurilish bloklari. Ularga buttonlar, cheksboxlar, text boxlar, slayderlar va boshqalar kiradi. Har bir widjet o‘rnatilishi yoki o‘qilishi mumkin bo‘lgan propertielarga va foydalanuvchining muayyan harakatlari bilan qo‘zg‘atilishi mumkin bo‘lgan xatti-harakatlarga ega. Masalan, button widgeti label text va ekrandagi joylashuvi kabi propertielarga ega bo'lishi mumkin, shuningdek, uni bosganda nima sodir bo'ladi.
+
+2. `Event Handling`: Widgetlar eventlarga javob beradi. Event sichqonchani bosish, tugmani bosish yoki sensorli ekranga(touchscreen) teginish kabi foydalanuvchi harakati bo'lishi mumkin. Toolkit sizning dasturingizga ushbu eventlar ma'lum bir widgetda sodir bo'lganda nima sodir bo'lishini aniqlash usulini taqdim etadi (masalan, event handling). Bu, odatda, eventga asoslangan dasturlash modeli orqali amalga oshiriladi, bu yerda aniq harakatlar event handlerlari bilan bog'lanadi.
+
+3. `Layout Management`: Widgetlar ekranning biror joyiga joylashtirilishi kerak. Layout manageri - bu widgetlarni ba'zi bir algoritmga muvofiq avtomatik ravishda tartibga soluvchi komponent. Bu turli xil oyna o'lchamlari, ekran o'lchamlari va foydalanuvchi afzalliklariga mos keladigan foydalanuvchi interfeysini yaratishni osonlashtiradi.
+
+4. `Threading va Concurrency`: Ba'zi toolkitlar multithreadingni qo'llab-quvvatlashni o'z ichiga oladi, bunda dastur ishi unumdorlikni oshirish uchun bir vaqtning o'zida bir nechta threadlarga bo'linadi. Bu, ayniqsa, grafik interfeyslar uchun foydali bo'lishi mumkin, chunki bu fonda hisoblash og'ir vazifalarni bajarishda ularga javob berish imkonini beradi.
+
+5. `Graphics Rendering`: Ba’zi advanced toolkitlar maxsus grafik va animatsiyalarni, jumladan, hardware-accelerated 2D va 3D grafiklarni qo‘llab-quvvatlaydi.
+
+6. Accessibility: Ko‘pgina toolkitlar, shuningdek, ko‘rish qobiliyati zaif foydalanuvchilar uchun ekranni o‘qish dasturlari kabi maxsus imkoniyatlarni qo‘llab-quvvatlashni ham o‘z ichiga oladi.
+
+Ko'p widget toolkitlar mavjud. Mana bir nechta misollar:
+
+`Qt`: Bu C++ da ilovalar yaratish uchun keng qamrovli, multi-platform toolkit. U turli xil widgetlarni taqdim etadi va kuchli layout manageriga ega. Shuningdek, u OpenGL bilan 3D grafikalarni qoʻllab-quvvatlaydi va murakkab ilovalarni yaratish uchun koʻp qirrali vositalar toʻplamini oʻz ichiga oladi, jumladan, integratsiyalashgan ishlab chiqish muhiti (IDE), shakllar dizayneri va xalqarolashtirish(internationalization) tizimi.
+
+`GTK`: GIMP Toolkit (GTK) grafik interfeyslarni yaratish uchun multi-platform toolkitdir. `GIMP` loyihasining bir qismi sifatida ishlab chiqilgan, keyinchalik u `GNOME` desktop environmenti uchun asos sifatida qabul qilingan. U ko'plab mashhur dasturiy paketlarda qo'llaniladi va asosan C tilida dasturlashtirilgan.
+
+`JavaFX/Swing`: Bular Java-da GUI yaratish uchun ikkita related toolkitdir. Swing ikkalasining eng oldingisi bo'lib, ko'p yillar davomida Java GUI ishlab chiqish uchun de-fakto standarti bo'lgan. JavaFX - bu Swing o'rnini bosish uchun mo'ljallangan zamonaviyroq toolkit. U CSS-ga o'xshash uslublar va hardware-accelerated grafika kabi zamonaviy xususiyatlarni qo'llab-quvvatlashni o'z ichiga oladi.
+
+`.NET Framework/WPF`: Windows Presentation Foundation (WPF) - bu Windowsda desktop applicationlarini yaratish uchun GUI toolkit. U .NET Frameworkning bir qismi bo'lib, C# tilida yozilgan. U 2D va 3D grafikalarni, maʼlumotlarni ulashni va XAML (markup language for defining interfaces) bilan stylingni oʻz ichiga olgan turli xil funksiyalarni qoʻllab-quvvatlaydi.
+
