@@ -145,3 +145,38 @@ Xlib kutubxonasi X serveri bilan o'zaro aloqada bo'lgan har qanday dastur bo'lis
 Displey menejeri kontekstida X serverini Displey menejeri va haqiqiy foydalanuvchi sessiyasi o'rtasidagi vositachi sifatida ko'rish mumkin. Displey menejeri yangi seansni boshlaganida, u boshqaruvni X mijozi bo'lgan va X server bilan bog'lanish uchun Xlib dan foydalanadigan oyna boshqaruvchisiga topshiradi.
 
 X Displey menejeri umumiy jarayonni boshqaradi, X server displeyni boshqaradi va Xlib kutubxonasi applicationlar uchun (jumladan, oyna(window) menejeri va boshqa X clientlari) X server bilan o'zaro aloqada bo'lish usulini taqdim etadi. Ushbu komponentlar birgalikda Unix-ga o'xshash tizimlarda grafik interfeyslarni ishga tushirish uchun to'liq muhitni ta'minlaydi.
+
+
+### Display Manager
+
+Displey menejeri (DM) grafik kirish menejeri bo'lib, foydalanuvchilarga o'z tizimiga kirish uchun qulay interfeysni ta'minlaydi.
+
+Displey menejerlari `X Window System (X11)` ning bir qismidir, lekin `Wayland` bilan tobora ko'proq foydalaniladi. Ular foydalanuvchi seanslarini boshqaradi va grafik muhitni o'rnatish boshida foydalanuvchi autentifikatsiyasini boshqaradi. Muvaffaqiyatli autentifikatsiyadan so'ng, DM seansni boshlaydi, bu window manager yoki desktop environment ishga tushirishni o'z ichiga olishi mumkin.
+
+Displey menejerining ishlashi
+
+Jarayon quyidagicha:
+
+`Initialisation:` Displey menejeri odatda yuklash jarayonining(boot proces) oxirida ishga tushadi. U tizimning init skriptlarida aniqlanadi.
+
+`Grafik kirish:`(Graphical Login) DM foydalanuvchiga foydalanuvchi nomi va parolini kiritishi mumkin bo'lgan grafik kirish ekranini taqdim etadi. U bir vaqtning o'zida bir nechta foydalanuvchilarning tizimga kirishini boshqarishi mumkin, ularning har biri o'z shaxsiy sessiyasiga ega.
+
+`Session Management:` Foydalanuvchi autentifikatsiya qilingandan so'ng, DM ushbu foydalanuvchi uchun seansni boshlaydi. Buning o'ziga xos xususiyatlari har xil bo'lishi mumkin, lekin u odatda window manager yoki desktop environment ishga tushirishni o'z ichiga oladi, shuningdek, butun seans uchun mavjud bo'lishi kerak bo'lgan boshqa dasturlar yoki servicelarni ishga tushirishni ham o'z ichiga olishi mumkin.
+
+`Session Termination:` Seans tugagach (foydalanuvchi tizimdan chiqqanligi sababli yoki boshqa hodisa tufayli), DM sessiya bilan bog'liq har qanday resurslarni tozalashi va keyin kirish ekraniga qaytishi mumkin va boshqa sessiyani boshlashga tayyor.
+
+Displey menejerlariga misollar
+
+Turli displey menejerlari turli xususiyatlar va turli grafik interfeyslarni taqdim etishi mumkin. Mana bir nechta mashhurlari:
+
+`LightDM:` desktop environmentlar orasidagi displey menejeri. Uning asosiy xususiyatlari - bu bir nechta GUI, foydalanuvchi almashinuvi va mehmon seanslarini amalga oshirish imkonini beruvchi yaxshi aniqlangan greeter API.
+
+`GDM` (GNOME Displey menejeri): GNOME desktop environmentlari uchun standart DM. U sozlanishi, mavzuga mos keladi va vaqtli kirish va foydalanuvchini almashtirish kabi boshqa xususiyatlarga ega.
+
+`SDDM` (Simple Desktop Display Manager): KDE Plazma environmentlari uchun standart DM. U Qt-ga asoslangan va zamonaviy ko'rinishi va hissiyotlari bilan mashhur.
+
+`XDM `(X Display Manager): Bu X Window System uchun standart displey menejeri. Bu nisbatan oddiy va zamonaviy displey menejerlari kabi ko'plab xususiyatlarga ega emas minimalist DM.
+
+`LXDM:` LXDE desktop environmentlari uchun standart DM. Bu yengil va kuchi kamroq tizimlar uchun javob beradi.
+
+Displey menejeri grafik foydalanuvchi interfeysidan foydalanadigan Unix-ga o'xshash operatsion tizimlarning muhim tarkibiy qismidir. U foydalanuvchi autentifikatsiyasi va seansni boshqarish bilan shug'ullanadi, foydalanuvchilarga o'z tizimiga kirish uchun qulay interfeys bilan ta'minlaydi.
