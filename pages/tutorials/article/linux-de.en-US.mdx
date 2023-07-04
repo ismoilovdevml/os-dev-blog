@@ -211,3 +211,21 @@ Ko'p widget toolkitlar mavjud. Mana bir nechta misollar:
 
 `.NET Framework/WPF`: Windows Presentation Foundation (WPF) - bu Windowsda desktop applicationlarini yaratish uchun GUI toolkit. U .NET Frameworkning bir qismi bo'lib, C# tilida yozilgan. U 2D va 3D grafikalarni, maʼlumotlarni ulashni va XAML (markup language for defining interfaces) bilan stylingni oʻz ichiga olgan turli xil funksiyalarni qoʻllab-quvvatlaydi.
 
+### GTK
+
+GTK+ `GIMP` Toolkitni anglatadi, uning kelib chiqishi GNU Image Manipulation Program (GIMP) ning rivojlanishiga borib taqaladi. Dastlab Linux uchun ishlab chiqilgan bo'lsa, endi u o'zaro platforma hisoblanadi va Windows va macOS kabi tizimlarda ham ishlaydi. U C tilida yozilgan, lekin Python, C++ va boshqalar kabi ko'plab mashhur tillar bilan bog'langan.
+
+GTK (ilgari GTK+) grafik foydalanuvchi interfeyslarini (GUI) yaratish uchun bepul va open-source cross-platform widget toolkitdir. U `GNU Lesser General Public License` shartlariga muvofiq litsenziyalangan bo'lib, undan bepul va xususiy dasturlardan foydalanishga imkon beradi. Bu `Wayland` va `X11` windowing systemlari uchun eng mashhur toolkitlardan biridir.
+
+GTK jamoasi muntazam ravishda yangi versiyalarni chiqaradi. GTK 4 va GTK 3 saqlanib qolgan, GTK 2 esa muddati tugagan. GTK1 mustaqil ravishda `CinePaint` loyihasi tomonidan ta'minlanadi.
+
+GTK kutubxonasi grafik boshqaruv elementlari (widgetlar) to'plamini o'z ichiga oladi; 3.22.16 versiyasida 186 ta faol va 36 ta eskirgan widgetlar mavjud. GTK - bu C dasturlash tilida yozilgan obyektga yo'naltirilgan widgetlar to'plami; obyektni yo'naltirish uchun `GObject`, ya'ni `GLib` obyekt tizimidan foydalanadi. GTK asosan X11 va Wayland asosidagi windowing systemlari uchun bo'lsa-da, u boshqa platformalarda, jumladan Microsoft Windows (Windows API interfeysi) va macOS (Quartz bilan interfeys) ishlaydi. Broadway deb nomlangan HTML5 back-end ham mavjud.
+
+GTK chizilgan widgetlarning ko'rinishini o'zgartirish uchun sozlanishi mumkin; bu turli display enginelari yordamida amalga oshiriladi. Amaldagi platformadagi native widgetlarning ko'rinishini taqlid qilishga harakat qiladigan bir nechta display enginellari mavjud.
+
+2005 yilda chiqarilgan 2.8 versiyasidan boshlab, GTK o'zining grafik boshqaruv elementlarining ko'p widgetlarini render qilish uchun Cairodan foydalanishga o'tishni boshladi. GTK 3.0 versiyasidan boshlab barcha renderlash Cairo yordamida amalga oshiriladi.
+
+![GTK](/images/article/linux-de/7.png)
+
+### Qt
+
