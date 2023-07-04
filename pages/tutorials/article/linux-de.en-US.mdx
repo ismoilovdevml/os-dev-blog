@@ -124,5 +124,24 @@ PseudoColor bilan bir xil, faqat colormapi yozuvlari hardware tomonidan oldindan
 Ko'pgina client dasturlari Xlib clientlar kutubxonasi(librarie) orqali server bilan bog'lanadi. `Xlib` bilan bir qatorda, `XCB` kutubxonasi `X` protokoliga yaqinroq ishlaydi. Xususan, ko'pchilik clientlar `Xaw`, `Motif`, `GTK+` yoki `Qt` kabi kutubxonalardan foydalanadilar, ular o'z navbatida server bilan o'zaro aloqa qilish uchun `Xlib`-dan foydalanadilar. Qt 5.0 versiyasi bilan Xlib-dan `XCB`-ga o'tdi, ammo client dasturlari bu o'zgarishdan deyarli ta'sirlanmadi.
 
 
-## Display Manager
+## Xlib va X display manager
 
+X ning o'zi grafik foydalanuvchi interfeysini ta'minlamaydi, lekin u GUI va tarmoq shaffofligini(network transparency) yaratish uchun qurilish bloklarini taqdim etadi, bu dastur uchun grafik interfeysni dastur ishlayotganidan boshqa mashinada ko'rsatishga imkon beradi.
+
+X tizimi bir nechta komponentlardan iborat. Ushbu komponentlardan ikkitasi X Displey menejeri va Xlib kutubxonasi bo'lib, ular bir-biri bilan va X tizimining boshqa komponentlari bilan o'zaro aloqada bo'lib, grafik interfeyslarni boshqarish uchun to'liq muhitni ta'minlaydi.
+
+Keling, har bir komponentni batafsil ko'rib chiqaylik:
+
+X Displey menejeri (XDM): X Displey menejeri X serverida ishlaydigan seansni boshlash uchun standart mexanizmni taqdim etadi. XDM XDM bilan bir xil machineda yoki turli machinelarda ishlashi mumkin bo'lgan X serverlar to'plamini boshqaradi. U X serverini ishga tushirish, foydalanuvchini autentifikatsiya qilish va seansni boshlash xizmatlarini taqdim etadi. Seans boshlangandan so'ng, boshqaruv oyna boshqaruvchisiga topshiriladi. Seans tugagach, boshqaruv XDM ga qaytadi.
+
+Xlib kutubxonasi: Bu X Window tizimidan foydalanadigan applicationlarni yozish uchun standart C kutubxonasi. Bu X server protokoli uchun low-leveldagi interfeys bo'lib, asosan X serveriga requestlar(so'rov) yuboradigan va responselarni(javoblar) qabul qiluvchi funksiyalarni ta'minlaydi. Ushbu kutubxona X serveriga ulanish, oyna yaratish, asosiy shakllarni chizish, input eventlarni boshqarish va clientlar va X server o'rtasidagi aloqani boshqarish kabi vazifalarni bajaradi.
+
+Keling, o'zaro ta'sirni ko'rib chiqaylik:
+
+X Displey menejeri yangi X sessiyasini ishga tushirish va ishga tushirishni boshqaradi. U displeyni boshqaradigan X serveri bilan bog'lanadi. X server ishga tushganda, u X clientlari bilan aloqa qilish uchun network socketini ochadi. X tizimi tomonidan taqdim etilgan network transparency tufayli bu clientlar local yoki boshqa machineda bo'lishi mumkin.
+
+Xlib kutubxonasi X serveri bilan o'zaro aloqada bo'lgan har qanday dastur bo'lishi mumkin bo'lgan X clientini yozayotganda ishga tushadi. Xlib tomonidan taqdim etilgan funksiyalardan foydalanib, X clienti X serveriga ulanishni ochishi, oynalarni yaratishi va boshqarishi, bu oynalarda grafiklarni chizishi, klaviatura va sichqonchadan kiritilgan ma'lumotlarni boshqarishi va hokazo. Shu tarzda, Xlib applicationlar uchun X server tomonidan taqdim etilgan servicelardan foydalanish usulini taqdim etadi.
+
+Displey menejeri kontekstida X serverini Displey menejeri va haqiqiy foydalanuvchi sessiyasi o'rtasidagi vositachi sifatida ko'rish mumkin. Displey menejeri yangi seansni boshlaganida, u boshqaruvni X mijozi bo'lgan va X server bilan bog'lanish uchun Xlib dan foydalanadigan oyna boshqaruvchisiga topshiradi.
+
+X Displey menejeri umumiy jarayonni boshqaradi, X server displeyni boshqaradi va Xlib kutubxonasi applicationlar uchun (jumladan, oyna(window) menejeri va boshqa X clientlari) X server bilan o'zaro aloqada bo'lish usulini taqdim etadi. Ushbu komponentlar birgalikda Unix-ga o'xshash tizimlarda grafik interfeyslarni ishga tushirish uchun to'liq muhitni ta'minlaydi.
