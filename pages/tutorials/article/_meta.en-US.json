@@ -188,7 +188,7 @@
       "pagination": true
     }
   },
-  "linux-de": {
+  "linux-graphics-1": {
     "title": "Linuxda Grafika",
     "longTitle": "Linuxda Grafika",
     "description": "Linuxda Grafika",
@@ -200,7 +200,28 @@
     },
     "createdAt": "2023-06-16",
     "minutesRead": 20,
-    "href": "/tutorials/article/linux-de",
+    "href": "/tutorials/article/linux-graphics-1",
+    "theme": {
+      "breadcrumb": false,
+      "footer": true,
+      "sidebar": false,
+      "toc": false,
+      "pagination": true
+    }
+  },
+  "linux-graphics-2": {
+    "title": "Linuxda Grafika (2-qism)",
+    "longTitle": "Linuxda Grafika (2-qism)",
+    "description": "Linuxda Grafika (2-qism)",
+    "level": "Hamma uchun",
+    "category": "Computer Science",
+    "author": {
+      "name": "Otabek Ismoilov",
+      "image": "/images/tutorials/authors/ismoilovdev.jpeg"
+    },
+    "createdAt": "2023-06-16",
+    "minutesRead": 20,
+    "href": "/tutorials/article/linux-graphics-2",
     "theme": {
       "breadcrumb": false,
       "footer": true,
