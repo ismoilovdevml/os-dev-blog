@@ -1,3 +1,42 @@
 import { Callout } from "nextra-theme-docs";
 
 # Linuxda Grafika
+
+Maqolaning maqsadi
+
+Ushbu keng qamrovli maqolaning maqsadi Linux operatsion tizimidagi grafikalarning nozik tomonlarini yoritishdir. Linux server muhitida, embedded tizimlarda va yaqinda, hatto iste'molchi uchun ish-stollarida keng qo'llanilishiga qaramay, ko'plab foydalanuvchilar va ishlab chiquvchilar uning grafik quyi tizimi bilan to'liq tanish emas. Ushbu qism dasturiy ta'minot ishlab chiquvchilari, Linux ishqibozlari, system administratorlar va Linuxning grafika bilan qanday ishlashini tushunishga qiziqqan barcha texnologiyaga ega bo'lgan barcha shaxslar uchun manba bo'lib xizmat qilishiga qaratilgan.
+
+
+#### Linux grafikasi haqida qisqacha ma'lumot
+
+Linuxda grafik ishlov berish - bu ekranda vizual chiqishni ta'minlash uchun uzluksiz o'zaro ta'sir qiluvchi komponentlar majmuasini o'z ichiga olgan murakkab, ko'p bosqichli jarayon. Ushbu komponentlar qatoriga 2D va 3D vektorli grafikalarni koʻrsatish, GUI yaratish, software applicationlar va grafik hardwarelar oʻrtasidagi aloqani taʼminlashgacha boʻlgan bir qator funksiyalarni taklif qiluvchi librarylar kiradi.
+
+Bundan tashqari, Linux grafik muhiti doimiy ravishda rivojlanib bormoqda, landshaftni qayta belgilashga qaratilgan yangi tendentsiyalar va texnologiyalar. Ushbu maqola Linuxning grafik ishlovi, librarylar(kutubxona), kernel roli, jalb qilingan drayverlar va ushbu makonni shakllantiradigan kelajakdagi qiziqarli tendentsiyalarni to'liq ko'rib chiqadigan ushbu elementlarni o'rganadi.
+
+Ushbu maqolaning oxiriga kelib, o'quvchilar Linuxda grafikalar haqida yaxshi tushunchaga ega bo'ladilar, bu esa rivojlanish, muammolarni bartaraf etish yoki shunchaki shaxsiy qiziqishni qondirish uchun keyingi tadqiqotlar uchun mustahkam poydevor yaratadi. Keling, Linux grafikasining jozibali dunyosiga sayohatimizni boshlaylik.
+
+
+## Linux Graphics Stack
+
+Linux Graphics Stack - bu layerli structura(qatlamli tuzulma) bo'lib, u kompyuter applicationlariga kompyuter ekranida tasvirlarni yaratish, o'zgartirish va ko'rsatish imkonini beradi. Stack application leveldan boshlanadi va hardwaregacha bo'lgan jarayonni o'z ichiga oladi. Buni layerma-layer ko'rib chiqanuz
+
+
+`Application Layer` stackning yuqori qismi applicationlar joylashgan joy. Bu sizning web-browserngiz, matn muhariringiz yoki ekraningizga tasvir yoki matnni ko'rsatishi kerak bo'lgan boshqa turdagi application(dastur, ilova) bo'lishi mumkin.
+
+`Toolkit Layer` Applicationlar foydalanuvchi interfeyslarini(user interface) ko'rsatishga yordam berish uchun ko'pincha grafik toolkitlardan foydalanadilar. Ushbu toolkitlar tugmalar(button), matn maydonchalari(text boxes), slayderlar(slider) va boshqalar kabi oldindan tayyorlangan elementlar kutubxonalarini taqdim etadi. Masalan, `GTK`, `Qt` yoki `FLTK`.
+
+`Window System Layer` Keyingi layer Window System Layer. Ushbu layer oynalarni(window) boshqa joyga ko'chirish, o'lchamlarini o'zgartirish yoki Z-tartibini o'zgartirish kabi asosiy imkoniyatlarni taqdim etadi. Ko'pgina Linux tizimlarida bu `X Window System (X11)` yoki `Wayland` bo'ladi.
+
+`Compositing Window Manager` Window System Layerning ustiga qo'yish - Compositing Window Manager. Hamma tizimlarda ham bunday layer bo'lmaydi. Compositing Window Managerlari (masalan, Compiz yoki Mutter) ekranga yuborishdan oldin oynalarni buferga birlashtiradi. Bu shaffoflik(transparency), animatsiya yoki 3D desktop kabi effektlarni beradi.
+
+`Window System Server Layer` Window System Server Layeri client applicationlari(mijoz ilovalari) va display hardware o'rtasidagi aloqani boshqarish uchun javobgardir. Linuxda buning eng keng tarqalgan misoli `X11` bilan ishlaydigan tizimlardagi `X Server` bo'lishi mumkin.
+
+`Graphics Library Layer`  Window System Serveri ostida Graphics Library(grafik kutubxona) joylashgan. Bu dasturiy ta'minotning GPU bilan standartlashtirilgan tarzda o'zaro ishlashiga imkon beruvchi APIni taqdim etadi. Bu yerda asosiy misol - `OpenGL` va `Vulkan` kabi bir nechta grafik API-larni amalga oshiradigan `Mesa`.
+
+`Kernel Mode Setting (KMS) va Direct Rendering Manager (DRM) layeri` Bu layer to'g'ridan-to'g'ri kernel bilan ishlaydi. KMS resolutionni aniqlash, rang chuqurligi(color depth) va refresh rateni(yangilanish tezligi) uchun javobgardir. DRM Linux kernelining subsystem(quyi tizi)mi bo'lib, u GPU-lar bilan interfeysga ega va memory management, interrupt handling va DMA kabi vazifalarni bajaradi.
+
+`Kernel Layer` kernel operatsion tizimning asosiy qismidir. U to'g'ridan-to'g'ri hardware bilan bog'lanadi va memory management va task scheduling(vazifalarni rejalashtirish) kabi low-leveldagi service(xizmat)larni taqdim etadi.
+
+`Hardware Layer` stackning pastki qismi actual grafik hardwaredir. Bu `NVIDIA GeForce`, `AMD Radeon` yoki `Intel` integratsiya qilingan GPU kabi bo'lishi mumkin bo'lgan grafik kartangiz.
+
+Stackning har bir layer(qatla)mi to'g'ridan-to'g'ri uning ustidagi va ostidagi layerlar bilan bog'lanib, abstraktsiya darajasini ta'minlaydi. Bu dasturiy ta'minotni ishlab chiquvchilarga boshqa layerlarning barcha tafsilotlarini tushunmasdan turib, o'zlarining maxsus vazifalariga e'tibor qaratish imkonini beradi.
