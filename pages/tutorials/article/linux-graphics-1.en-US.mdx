@@ -69,3 +69,26 @@ KMSning texnik tomonini yaxshiroq ko'rib chiqamiz
 `Boshqa komponentlar bilan o'zaro ta'sir` KMS Linux grafik stackining boshqa qismlari, masalan, Mesa (3D grafikalar uchun umumiy interfeysni ta'minlovchi user-space grafik kutubxonasi) va X server yoki Wayland (kirish va oynalarni boshqarish uchun mas'ul) bilan birgalikda ishlaydi.
 
 KMS dan foydalanish va uning davom etayotgan takomillashtirilishi displey miltillashini kamaytirish va zamonaviy grafik hardware va funksiyalarni yaxshiroq qo'llab-quvvatlash orqali Linuxda foydalanuvchi tajribasini sezilarli darajada yaxshiladi.
+
+
+## Direct Rendering Manager (DRM)
+
+Direct Rendering Manager (DRM) Linux kernelining quyi tizimi(subsystem) bo'lib, zamonaviy video kartalarning GPU-lari bilan o'zaro bog'lanish uchun javobgardir va dasturlarning grafik qurilmalar bilan o'zaro ta'siri uchun umumiy API taqdim etadi. DRM user space dasturlari buyruqlar va ma'lumotlarni GPUga yuborish va displeyning rejim sozlamalarini sozlash kabi operatsiyalarni bajarish uchun foydalanishi mumkin bo'lgan APIni ochib beradi. DRM birinchi marta X Server Direct Rendering Infratuzilmasining kernel-space komponenti sifatida ishlab chiqilgan , ammo o'shandan beri u Wayland kabi boshqa grafik stack alternativlari va `SDL2 `va `Kodi` kabi mustaqil ilovalar va kutubxonalar tomonidan qo'llanila boshlandi.
+
+User-space dasturlar DRM API-dan GPU-ga hardware-accelerator 3D renderlash va video dekodlash(video decoding), shuningdek, `GPGPU` hisoblashlarini buyurish uchun foydalanishi mumkin. DRM dastlab `XFree86` da Direct Rendering Infrastructure (DRI) qo'llab-quvvatlash uchun ishlab chiqilgan, ammo keyinchalik turli xil grafik funksiyalarni boshqarish uchun kengaytirilgan.
+
+DRM bir necha qismlardan iborat
+
+`Kernel` Bu DRM ning asosiy funksiyalarini, jumladan ishga tushirish(initialization) va tozalashni(cleanup) boshqarish, xotirani boshqarish(memory management), interrupt handling va DMA bilan ta'minlaydi.
+
+`DRM qurilma drayverlari` Bular har bir grafik kartaga xos bo'lib, hardwarening low-leveldagi tafsilotlarini boshqarish uchun javobgardir. Ular odatda hardware ishlab chiqaruvchilari tomonidan yoziladi, garchi open-source versiyalari ham mavjud.
+
+`Graphics Execution Manager (GEM)` Bu GPU xotirasini boshqarish uchun API. U Intel tomonidan eski `TTM` (Translation Table Maps) boshqaruvchisini almashtirish uchun ishlab chiqilgan va hozirda ko'pgina yirik GPU ishlab chiqaruvchilari tomonidan foydalaniladi. GEM xotirani taqsimlash, almashtirish va GPU uchun ishlov berish bilan shug'ullanadi, shuningdek, turli jarayonlar o'rtasida xotira buferlarini almashish mexanizmini taqdim etadi.
+
+`Kernel Mode Setting (KMS)` Bu kernel modeni sozlash imkonini beruvchi DRM xususiyatidir. Rejimni sozlash(mode setting) - bu video kartaning chiqish formatini (masalan, resolution,, color depth va refresh rate) sozlash jarayoni. Kernelda handling mode settingni sozlash bir qator afzalliklarga ega, masalan, xatolarni yanada ishonchli tiklash va foydalanuvchi interfeyslari o'rtasida yumshoqroq o'tish.
+
+`DMA-BUF` Bu turli drayverlarga bir xil xotira buferini almashish imkonini beruvchi bufer almashish mexanizmi. Bu, ayniqsa, murakkab grafik sozlamalari uchun foydalidir, bu yerda ma'lumotlar bir nechta GPU o'rtasida yoki GPU va video dekoderlar yoki displey kontrollerlari kabi boshqa qurilmalar o'rtasida almashish kerak bo'lishi mumkin.
+
+DRM ekranda grafiklarni ko'rsatish bilan bog'liq vazifalarni boshqarishda asosiy rol o'ynaydi, grafik qurilmaning murakkabligini mavhumlashtiradi va Linux grafik stackidagi yuqori qatlamlarga asosiy grafik uskunasining o'ziga xos xususiyatlaridan tashvishlanmaslik imkonini beradi.
+
+Texnik darajada, DRM user-space applicationlarga `ioctl` sstem callari orqali buyruqlarni GPUga yuborishga ruxsat berish orqali erishadi. DRM drayveri ushbu buyruqlarni GPUdagi buyruqlar navbatlariga(command queue) surishdan oldin tasdiqlaydi. Zamonaviy GPU-larda bir nechta buyruqlar navbati(multiple command queue) bir vaqtning o'zida bir nechta vazifalarni bajarish uchun ishlatilishi mumkin, bu esa GPU-dan umumiy foydalanish va unumdorlikni oshiradi.
