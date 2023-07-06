@@ -43,7 +43,9 @@ Stackning har bir layer(qatla)mi to'g'ridan-to'g'ri uning ustidagi va ostidagi l
 
 ## Kernel Mode Setting (KMS)
 
+
 Kernel Mode Setting (KMS) Linux kerneli grafik stackidagi metod bo'lib, kernelga grafik rejim displeylari bilan bog'liq sozlamalarni boshqarish imkonini beradi. Bu kernelga grafik qurilmalar ustidan toʻliq nazoratni taʼminlovchi texnika boʻlib, flicker-free boot processlari(miltillashsiz yuklash), crash recovery va multi-seat computing kabi qator afzalliklarni beradi.
+![Image](/images/article/linux-de/15.jpg)
 
 KMS dan oldin User Mode Setting (UMS) ishlatilgan, bu yerda rejimni sozlash operatsiyalari X serveri tomonidan user spaceda amalga oshirilgan. Biroq, KMS-ga o'tish X serverining endi imtiyozsiz ishlashini anglatadi, bu esa umuman xavfsizroq tizimni ta'minlaydi.
 
@@ -52,6 +54,8 @@ KMSning texnik tomonini yaxshiroq ko'rib chiqamiz
 `Responsibility of KMS`  Nomidan ko'rinib turibdiki, rejim sozlamalari(mode setting) monitoringizning piksellar sonini, rang chuqurligini(color depth) va yangilanish tezligini(refresh rate) sozlashdir. KMS shuningdek, matn va grafik konsollar o'rtasida almashinish, bir nechta monitorlarni sozlash va to'xtatib turish(suspend) va davom ettirish hodisalarini boshqarish uchun javobgardir.
 
 `DRM/KMS API` KMS Linux kernelidagi subsystem(quyi tizim) bo'lgan Direct Rendering Manager (DRM) orqali amalga oshiriladi. Bu user space dasturlari buyruqlar va ma'lumotlarni GPUga yuborish uchun foydalanishi mumkin bo'lgan APIni taqdim etadi. Ushbu API frame bufferlarini yaratish va boshqarish, monitor rejimini o'rnatish va framelar orasidagi smooth transition uchun sahifalarni aylantirish(page flipping) funksiyalarini o'z ichiga oladi.
+![Image](/images/article/linux-de/13.png)
+![Image](/images/article/linux-de/14.png)
 
 `Frame Buffer va Display Controllers:` Frame Buffer(Kadr bufer)i display controller tomonidan displeyga yuboriladigan bitmapni o'z ichiga olgan RAMning bir qismidir. KMS user applicationlariga frame bufferlarini yaratish va ular bilan bog'liq event(hodisa)larni boshqarish imkonini beradi. KMS GPUda mavjud bo'lgan `CRTCs` (Cathode Ray Tube Controllers) yoki display controllerlarini boshqaradi, ular frame buferidan ma'lumotlarni o'qiydi va ularni display hardwarega uzatadi.
 
