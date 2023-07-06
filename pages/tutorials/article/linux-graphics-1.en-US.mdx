@@ -40,3 +40,28 @@ Linux Graphics Stack - bu layerli structura(qatlamli tuzulma) bo'lib, u kompyute
 `Hardware Layer` stackning pastki qismi actual grafik hardwaredir. Bu `NVIDIA GeForce`, `AMD Radeon` yoki `Intel` integratsiya qilingan GPU kabi bo'lishi mumkin bo'lgan grafik kartangiz.
 
 Stackning har bir layer(qatla)mi to'g'ridan-to'g'ri uning ustidagi va ostidagi layerlar bilan bog'lanib, abstraktsiya darajasini ta'minlaydi. Bu dasturiy ta'minotni ishlab chiquvchilarga boshqa layerlarning barcha tafsilotlarini tushunmasdan turib, o'zlarining maxsus vazifalariga e'tibor qaratish imkonini beradi.
+
+## Kernel Mode Setting (KMS)
+
+Kernel Mode Setting (KMS) Linux kerneli grafik stackidagi metod bo'lib, kernelga grafik rejim displeylari bilan bog'liq sozlamalarni boshqarish imkonini beradi. Bu kernelga grafik qurilmalar ustidan toʻliq nazoratni taʼminlovchi texnika boʻlib, flicker-free boot processlari(miltillashsiz yuklash), crash recovery va multi-seat computing kabi qator afzalliklarni beradi.
+
+KMS dan oldin User Mode Setting (UMS) ishlatilgan, bu yerda rejimni sozlash operatsiyalari X serveri tomonidan user spaceda amalga oshirilgan. Biroq, KMS-ga o'tish X serverining endi imtiyozsiz ishlashini anglatadi, bu esa umuman xavfsizroq tizimni ta'minlaydi.
+
+KMSning texnik tomonini yaxshiroq ko'rib chiqamiz
+
+`Responsibility of KMS`  Nomidan ko'rinib turibdiki, rejim sozlamalari(mode setting) monitoringizning piksellar sonini, rang chuqurligini(color depth) va yangilanish tezligini(refresh rate) sozlashdir. KMS shuningdek, matn va grafik konsollar o'rtasida almashinish, bir nechta monitorlarni sozlash va to'xtatib turish(suspend) va davom ettirish hodisalarini boshqarish uchun javobgardir.
+
+`DRM/KMS API` KMS Linux kernelidagi subsystem(quyi tizim) bo'lgan Direct Rendering Manager (DRM) orqali amalga oshiriladi. Bu user space dasturlari buyruqlar va ma'lumotlarni GPUga yuborish uchun foydalanishi mumkin bo'lgan APIni taqdim etadi. Ushbu API frame bufferlarini yaratish va boshqarish, monitor rejimini o'rnatish va framelar orasidagi smooth transition uchun sahifalarni aylantirish(page flipping) funksiyalarini o'z ichiga oladi.
+
+`Frame Buffer va Display Controllers:` Frame Buffer(Kadr bufer)i display controller tomonidan displeyga yuboriladigan bitmapni o'z ichiga olgan RAMning bir qismidir. KMS user applicationlariga frame bufferlarini yaratish va ular bilan bog'liq event(hodisa)larni boshqarish imkonini beradi. KMS GPUda mavjud bo'lgan `CRTCs` (Cathode Ray Tube Controllers) yoki display controllerlarini boshqaradi, ular frame buferidan ma'lumotlarni o'qiydi va ularni display hardwarega uzatadi.
+
+![Frame Buffer](/images/article/linux-de/9.jpg)
+![Frame Buffer](/images/article/linux-de/10.jpg)
+![Frame Buffer](/images/article/linux-de/11.jpg)
+![Frame Buffer](/images/article/linux-de/12.jpg)
+
+`Atomic Mode Setting` An'anaviy KMSga nisbatan yaxshilanish sifatida kiritilgan Atomic Mode Setting - bu displey rejimlarini atomic tarzda yoki bir vaqtning o'zida(all-at-once) sozlash imkonini beruvchi metod. Ilgari, displey rejimini o'rnatish uchun bir nechta `IOCTLs (I/O Controls)` kerak edi va har bir IOCTL mos kelmaydigan holatlarga olib keladigan muvaffaqiyatsizlik ehtimoli bor edi. Atom rejimini sozlash barcha o'zgarishlarni bir vaqtning o'zida amalga oshirishga ruxsat berish orqali bu muammoni hal qiladi, barqaror va xatosiz rejim sozlamalarini ta'minlaydi.
+
+`Boshqa komponentlar bilan o'zaro ta'sir` KMS Linux grafik stackining boshqa qismlari, masalan, Mesa (3D grafikalar uchun umumiy interfeysni ta'minlovchi user-space grafik kutubxonasi) va X server yoki Wayland (kirish va oynalarni boshqarish uchun mas'ul) bilan birgalikda ishlaydi.
+
+KMS dan foydalanish va uning davom etayotgan takomillashtirilishi displey miltillashini kamaytirish va zamonaviy grafik hardware va funksiyalarni yaxshiroq qo'llab-quvvatlash orqali Linuxda foydalanuvchi tajribasini sezilarli darajada yaxshiladi.
