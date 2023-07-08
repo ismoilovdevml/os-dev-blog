@@ -50,26 +50,6 @@ Bu davrda yana bir muhim texnologiya, Kernel Mode Setting (KMS)(kernel rejimni s
 
 `Vulkan` (2016 yildan hozirgi kungacha) Vulkan - yuqori unumdor 3D grafika uchun low-leveladagi, o'zaro faoliyat platformali API. U GPU ustidan ko'proq to'g'ridan-to'g'ri nazorat(direct control ) qilish va protsessordan kamroq foydalanishni taklif qilish uchun mo'ljallangan, bu video o'yinlar va boshqa grafik talab qiladigan ilovalar uchun foydalidir.
 
-Linuxda grafika tarixi o'ttiz yildan ortiq davom etadigan va Linux yadrosining o'zi evolyutsiyasi bilan uzviy bog'liq bo'lgan sayohatdir. Bu innovatsiyalar, hamjamiyat hamkorligi va yuqori samarali, to'liq ochiq manbali grafik stekga tinimsiz intilish bilan ajralib turadigan hikoya.
-
-Erta kunlar (1990-yillar)
-
-Sayohat 1990-yillarning boshida, Linux yadrosi Linus Torvalds tomonidan birinchi marta chiqarilgandan so'ng boshlangan. Dastlabki kunlarda Linux o'ziga xos grafik tizimiga ega emas edi. U asosan buyruq qatori interfeyslari orqali boshqarildi, grafik displeylar uchun juda oddiy yordam bilan. Ammo foydalanuvchilar uchun qulayroq interfeysga ehtiyoj paydo bo'lishi bilan, X11 yoki oddiygina X deb nomlanuvchi X Window System Unix dunyosidan qabul qilindi.
-
-Dastlab 1984 yilda Massachusets texnologiya institutida ishlab chiqilgan X Window System grafik tasvirlarni ko'rsatish va oynalarni boshqarish uchun asosiy mexanizmlarni taqdim etdi, ammo u standart ko'rinish va hisni aniqlamadi. Ushbu moslashuvchanlik KDE va GNOME kabi turli xil ish stoli muhitlarini tug'dirdi, ularning har biri o'ziga xos estetika va xatti-harakatlarga ega.
-
-Grafik stekni etishtirish (2000-yillar)
-
-2000-yillarning boshida to'g'ridan-to'g'ri ko'rsatish infratuzilmasi (DRI) ko'rinishida sezilarli yutuqlarga erishildi. DRI ilovalarga X serverini chetlab o'tish va grafik qurilmalarga to'g'ridan-to'g'ri kirish imkonini berdi, bu esa ishlashning sezilarli yaxshilanishiga olib keldi, ayniqsa 3D grafikalar va o'yinlar uchun juda muhim.
-
-2000-yillarda, shuningdek, Linux platformasida OpenGLni amalga oshiruvchi ochiq kodli loyiha Mesa ning rivojlanishi va etukligi kuzatildi. Mesa apparat tezlashtirilgan 3D grafikalarni taqdim etish uchun DRI bilan birgalikda ishladi. Taxminan bir vaqtning o'zida, grafik karta ishlab chiqaruvchilari, ayniqsa Nvidia va AMD, Linux uchun xususiy drayverlarni taklif qila boshladilar, bu esa grafik ish faoliyatini yanada yaxshilaydi.
-
-Modernizatsiya sari (2010-yillar)
-
-Ushbu yutuqlarga qaramay, X Window System o'zining cheklovlariga ega edi, birinchi navbatda uning yoshi va dizayn falsafasidan kelib chiqqan holda, zamonaviy grafik qurilmalardan to'liq foydalana olmagan. Yechim 2008 yilda Kristian Xogsberg tomonidan boshlangan yangi displey protokoli Wayland ko'rinishida paydo bo'ldi. Wayland zamonaviy kompozitsion oyna boshqaruvchilari bilan yaratilgan soddaroq va samaraliroq displey tizimini taqdim etish orqali X11 o'rnini bosishni maqsad qilgan.
-
-Bu davrda yana bir muhim texnologiya, yadro rejimini sozlash (KMS) paydo bo'ldi. KMS ko'chirilgan rejimni sozlash vazifalari, jumladan, grafik rejimlarni tanlash va ramka buferlarini o'rnatish, Linux yadrosiga. Bu yuklash jarayonlari va ruxsatni o'zgartirish tugmachalarini yumshatishga olib keldi, shuningdek, yanada ilg'or grafik texnologiyalar uchun poydevor qo'ydi.
-
 #### Hozirgi kun (2020-yildan)
 
 Bugungi kunda Linux grafik stacklari rivojlanishda davom etmoqda. Wayland tobora ommalashib bormoqda, garchi Xorg moslik sabablari tufayli keng qo'llanilsa ham. Open Source grafik drayverlar sezilarli darajada yaxshilandi, ko'pincha xususiylar bilan teng sharoitlarda raqobatlashdi. Vulkan, yangi avlod grafikasi va hisoblash API-si ishlab chiquvchilarga grafik qurilmalar ustidan ko'proq nazoratni ta'minlab, o'ziga jalb etilmoqda.
@@ -112,6 +92,39 @@ Linux Graphics Stack - bu layerli structura(qatlamli tuzulma) bo'lib, u kompyute
 `Hardware Layer` stackning pastki qismi actual grafik hardwaredir. Bu `NVIDIA GeForce`, `AMD Radeon` yoki `Intel` integratsiya qilingan GPU kabi bo'lishi mumkin bo'lgan grafik kartangiz.
 
 Stackning har bir layer(qatla)mi to'g'ridan-to'g'ri uning ustidagi va ostidagi layerlar bilan bog'lanib, abstraktsiya darajasini ta'minlaydi. Bu dasturiy ta'minotni ishlab chiquvchilarga boshqa layerlarning barcha tafsilotlarini tushunmasdan turib, o'zlarining maxsus vazifalariga e'tibor qaratish imkonini beradi.
+
+## Display Server
+
+Linuxda Displey serverlari foydalanuvchining grafik interfeysida(user interface) asosiy rol o'ynaydi, ular user applicationlari va kompyuterning hardware vositalari, asosan, grafik qurilmalari o'rtasida vositachi vazifasini bajaradi. Displey serverining vazifalari klaviatura va sichqoncha kabi kiritish qurilmalarini boshqarish, qaysi oyna yuqorida bo'lishini hal qilish, tizim resurslarini taqsimlash va oyna mazmunini(window content) ekranga ko'rsatishni o'z ichiga oladi. Displey serverlarini tushunish juda muhim, chunki u Linux grafik stackidagi asosiy komponentlardan biridir. Displey serveri o'z clienlari bilan tarmoqda shaffof yoki oddiygina tarmoqqa ulanishi mumkin bo'lgan displey server protokoli, aloqa protokoli orqali bog'lanadi. Displey serveri har qanday grafik foydalanuvchi interfeysida, xususan, windowing systemida asosiy komponent hisoblanadi. Mustaqil displey serverining server/client munosabatlari bir oz ziddir, chunki "server" odatda katta, uzoq joylashgan machine sifatida tasavvur qilinadi, ammo mustaqil "displey server" kichik, mahalliy(local) tizim bo'lib, ko'pchilik clientlar katta markaziy machinenada bajariiladi. Tushuntirish shundan iboratki, displey serveri displey va kiritish qurilmalari(input device) xizmatlarini taqdim etadi.
+
+### Display server communications protocols
+
+## X11
+
+Displey serveriga misol sifatida kernelning tepasida ishlaydigan `X.Org` serveridir (odatda Unix-ga o'xshash kernel, masalan, Linux yoki BSD). U foydalanuvchi ma'lumotlarini oladi (masalan, Linux-dagi evdev-dan) va uni clientlaridan biriga uzatadi. Displey serveri o'z clientlaridan ma'lumotlarni ham oladi; u ma'lumotlarni qayta ishlaydi, birlashtirishni amalga oshiradi va Linuxda ma'lumotlarni uchta kernel komponentlaridan biriga - DRM, gem yoki KMS drayveriga uzatadi. Komponent ma'lumotlarni framebufferga yozadi va framebufferning mazmuni ulangan ekranga uzatiladi va ko'rsatiladi. X `GLX` ga tayanadi.
+
+GLX ("OpenGL Extension to X Window System" ning boshlang'ich belgisi) X Window System kernel protokolining kengaytmasi(extension) bo'lib, OpenGL va X Window System o'rtasidagi interfeysni hamda OpenGLning o'zi uchun kengaytmalarni ta'minlaydi. Bu OpenGL-dan foydalanishni xohlovchi dasturlarga buni X Window System tomonidan taqdim etilgan windowda amalga oshirish imkonini beradi. GLX ikkita "state" ni ajratadi: indirect state(bilvosita state) va direct state(bevosita state).
+
+Displey serveri kontseptsiyasining amalga oshirilishidan biri bu X Window System, xususan uning amalda qo'llanilgan versiyasi - X.Org Server va Xlib va XCB clientlar kutubxonalari. X.Org serveri displey serveridir, lekin joriy tatbiqida u kompozitsiyani bajarish uchun ikkinchi dasturga, ya'ni compositing window managerga tayanadi. Misollar Mutter yoki KWin. X11 displey server protokolini implement qiladigan displey serverlarining diqqatga sazovor namunalari `X.Org Server`, `XFree86`, `XQuartz` va `Cygwin/X`, X11 displey server protokolini implement qiluvchi clientlar kutubxonalari esa Xlib va XCB hisoblanadi.
+
+![Image](/images/article/linux-de/19.png)
+
+<Callout type="info" emoji="">
+Rasm: X.Org Server o'z clientlari bilan muloqot qiladi, masalan. Amarok, X11 protokoli orqali
+</Callout>
+
+## Wayland
+
+Wayland displey server protokolini impplement qiladigan displey serverlari Wayland kompozitorlari deb ataladi. Har qanday displey serveri singari, Wayland kompozitori ham o'z clientlari uchun kirish va chiqishni boshqarish uchun javobgardir va X11 dan farqli o'laroq - qo'shimcha ravishda kompozitsiya uchun. Masalan, `Weston`, `Mutter`, `KWin` yoki `Enlightenment`.
+
+Wayland kompozitorlari Wayland displey serveri protokoli orqali Wayland clientlari bilan bog'lanadi. Ushbu protokol clientlar EGL rendering API yordamida to'g'ridan-to'g'ri ma'lumotlarni framebufferga yozishi mumkinligini belgilaydi. Displey serveri hali ham qaysi oynaning tepasida ekanligini va shuning uchun foydalanuvchiga ko'rinadiganligini hal qiladi, shuningdek, evdev-dan o'z clientlariga kirish qurilmalariga tegishli ma'lumotlarni uzatish uchun javobgardir.
+
+Wayland ma'lum darajada Fedora kabi ba'zi Linux ish stoli(desktop) distributivlarida qo'llaniladi. U mobil kompyuterlar uchun ham juda mos keladi va masalan, smartfon va planshetlarga yo'naltirilgan `Tizen`, `Sailfish OS` va `AsteroidS` loyihalari tomonidan qabul qilingan.
+
+Wayland dasturi MIT litsenziyasi, libwayland-client va libwayland-server kutubxonalari(libraray) ostida mavjud.
+ChromeOS-ga Wayland yordamini qo'shish bo'yicha ishlar davom etmoqda.
+
+## Mir
 
 ## Kernel Mode Setting (KMS)
 
