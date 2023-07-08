@@ -16,6 +16,28 @@ Bundan tashqari, Linux grafik muhiti doimiy ravishda rivojlanib bormoqda, landsh
 Ushbu maqolaning oxiriga kelib, o'quvchilar Linuxda grafikalar haqida yaxshi tushunchaga ega bo'ladilar, bu esa rivojlanish, muammolarni bartaraf etish yoki shunchaki shaxsiy qiziqishni qondirish uchun keyingi tadqiqotlar uchun mustahkam poydevor yaratadi. Keling, Linux grafikasining jozibali dunyosiga sayohatimizni boshlaylik.
 
 
+## Linuxda grafikaning qisqacha tarixi
+
+Linuxda grafika tarixi o'ttiz yildan ortiq davom etadigan va Linux kernelining o'zi evolyutsiyasi bilan uzviy bog'liq bo'lgan sayohatdir. Bu innovatsiyalar, hamjamiyat hamkorligi va yuqori samarali, to'liq open-source grafik stackga tinimsiz intilish bilan ajralib turadigan hikoya.
+
+Erta kunlar (1990-yillar)
+
+Sayohat 1990-yillarning boshida, Linux kerneli Linus Torvalds tomonidan birinchi marta chiqarilgandan so'ng boshlangan. Dastlabki kunlarda Linux o'ziga xos grafik tizimiga ega emas edi. U asosan buyruq qatori interfeyslari(CLI) orqali boshqarildi, grafik displeylar uchun juda oddiy yordam bilan. Ammo foydalanuvchilar uchun qulayroq interfeysga ehtiyoj paydo bo'lishi bilan, `X11` yoki oddiygina `X` deb nomlanuvchi `X Window System` Unix dunyosidan qabul qilindi.
+
+Dastlab 1984 yilda `Massachusetts` texnologiya institutida ishlab chiqilgan X Window System grafik tasvirlarni ko'rsatish va oynalarni boshqarish uchun asosiy mexanizmlarni taqdim etdi, ammo u standart ko'rinish va hisni aniqlamadi. Ushbu moslashuvchanlik KDE va GNOME kabi turli xil desktop environmentlarini tug'dirdi, ularning har biri o'ziga xos estetika va xatti-harakatlarga ega. 
+
+`X Window System` (1984 yildan hozirgi kungacha) X, X11 yoki X Window System nomi bilan ham tanilgan, Unix-ga o'xshash operatsion tizimlarda, jumladan Linuxda grafik foydalanuvchi interfeyslari uchun asos bo'lgan protokol va dasturiy ta'minot. X 1980-yillarning o'rtalarida MITda Linuxdan oldin ishlab chiqilgan. Linux ishlab chiqilganda, u o'zining grafik muhiti uchun X ni qabul qildi. X GUI-ni ishlab chiqish uchun asosiy asosni taqdim etadi, bu ilovalarga GUI elementlarini ko'rsatish, sichqonchani bosish va tugmalarni bosish va hokazolarni boshqarish imkonini beradi. Biroq, X ish stoli(desktop) qanday ko'rinishini aniqlamaydi; bu window manageri va desktop environmentning roli. 
+
+`Window Managerlar` (1980-yillar - hozirgi) Window Manager - bu X Window System muhitida oynalarning ko'rinishi va joylashishini boshqaradigan X clientlari. Birinchi window managerlaridan ba'zilari `TWM` (Tab Window Manager) va keyinchalik `FVWM` (F Virtual Window Manager) ni o'z ichiga olgan. Ular minimalist va zamonaviy standartlarga nisbatan juda qulay emas edi, lekin ular keyingi rivojlanish uchun asos bo'ldi.
+
+`Desktop Environment` (1990-yillar - hozirgi) 1990-yillarning oʻrtalaridan oxirigacha ishlab chiquvchilar yanada kengroq desktop environment(ish stoli muhitlari)ni yaratishni boshladilar. KDE (K Desktop Environment) Unix workstationlari uchun birinchi desktop environment bo'lib, birinchi marta 1996 yilda chiqarilgan. GNOME, yana bir mashhur desktop environment 1999 yilda chiqarilgan. KDE ham, GNOME ham kengroq ilovalar, sozlamalar va yordamchi dasturlar to'plamini taqdim etgan. Linux kundalik foydalanuvchilar uchun qulayroq. Ular vazifalar paneli(taskbar), ishga tushirish menyusi va drag-and-drop(sudrab tashlash) fayllarni boshqarish kabi xususiyatlarni o'z ichiga olgan.
+
+Grafik stackni yetishtirish (2000-yillar)
+
+2000-yillarning boshida to'g'ridan-to'g'ri ko'rsatish infratuzilmasi (Direct Rendering Infrastructure DRI) ko'rinishida sezilarli yutuqlarga erishildi. DRI applicationlarga X serverini chetlab o'tish va grafik qurilmalarga to'g'ridan-to'g'ri kirish imkonini berdi, bu esa ishlashning sezilarli yaxshilanishiga olib keldi, ayniqsa 3D grafikalar va o'yinlar uchun juda muhim.
+
+2000-yillarda, shuningdek, Linux platformasida `OpenGL`ni impelement qiluvchi open-source loyiha `Mesa`ning rivojlanishi va yetukligi kuzatildi. Mesa hardware-accelerated 3D grafikalarni taqdim etish uchun DRI bilan birgalikda ishladi. Taxminan bir vaqtning o'zida, grafik karta ishlab chiqaruvchilari, ayniqsa Nvidia va AMD, Linux uchun xususiy drayverlarni taklif qila boshladilar, bu esa grafik ish faoliyatini yanada yaxshilaydi.
+
 ## Linux Graphics Stack
 
 Linux Graphics Stack - bu layerli structura(qatlamli tuzulma) bo'lib, u kompyuter applicationlariga kompyuter ekranida tasvirlarni yaratish, o'zgartirish va ko'rsatish imkonini beradi. Stack application leveldan boshlanadi va hardwaregacha bo'lgan jarayonni o'z ichiga oladi. Buni layerma-layer ko'rib chiqanuz
