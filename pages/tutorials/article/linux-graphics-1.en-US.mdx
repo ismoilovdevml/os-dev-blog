@@ -97,4 +97,28 @@ Texnik darajada, DRM user-space applicationlarga `ioctl` sstem callari orqali bu
 
 Mesa, shuningdek, `Mesa3D` va `The Mesa 3D Graphics Library` deb ataladi, `OpenGL`, `Vulkan` va boshqa grafik API spetsifikatsiyalarining open-source implementationi. Mesa ushbu spetsifikatsiyalarni vendor-specific grafik qurlma drayverlariga tarjima qiladi.  Uning eng muhim foydalanuvchilari asosan Intel va AMD tomonidan o'zlarining tegishli qurilmalari uchun ishlab chiqilgan va moliyalashtirilgan ikkita grafik drayverdir (AMD o'zlarining Mesa drayverlarini Radeon va RadeonSI-ni eskirgan AMD Catalyst orqali targ'ib qiladi va Intel faqat Mesa drayverini qo'llab-quvvatlaydi). Xususiy grafik drayverlar (masalan, Nvidia GeForce drayveri va Catalyst) barcha Mesa-ning o'rnini bosadi va grafik API-ni o'z amalga oshirishini ta'minlaydi. `Nouveau` deb nomlangan Mesa Nvidia drayverini yozish bo'yicha op-souce harakat asosan hamjamiyat tomonidan ishlab chiqilgan. O'yinlar kabi 3D ilovalardan tashqari, zamonaviy displey serverlari (X.org, `Glamour` yoki `Wayland Weston`) `OpenGL/EGL`dan foydalanadi; shuning uchun barcha grafikalar odatda Mesa orqali o'tadi. 
 
-Mesa `freedesktop.org` saytida joylashgan va `1993 yil avgust` oyida loyihada hali ham faol bo'lgan `Brayan Pol` tomonidan boshlangan. Keyinchalik Mesa keng tarqalgan bo'lib qabul qilindi va hozirda butun dunyo bo'ylab turli shaxslar va korporatsiyalarning, shu jumladan OpenGL spetsifikatsiyasini boshqaruvchi Khronos Group grafik qurilmalari ishlab chiqaruvchilarining ko'plab hissalarini o'z ichiga oladi. Linux uchun rivojlanish qisman crowdfunding tomonidan ham amalga oshirildi.
+![Image](/images/article/linux-de/15.jpg)
+
+Mesa `freedesktop.org` saytida joylashgan va `1993 yil avgust` oyida loyihada hali ham faol bo'lgan `Brayan Pol` tomonidan boshlangan. Keyinchalik Mesa keng tarqalgan bo'lib qabul qilindi va hozirda butun dunyo bo'ylab turli shaxslar va korporatsiyalarning, shu jumladan OpenGL spetsifikatsiyasini boshqaruvchi Khronos Group grafik qurilmalari ishlab chiqaruvchilarining ko'plab hissalarini o'z ichiga oladi. Linux uchun rivojlanish qisman crowdfunding(Crowdfunding - bu loyihalar va biznesni moliyalashtirish uchun pul yig'ish usuli.) tomonidan ham amalga oshirildi.
+
+![Image](/images/article/linux-de/18.jpg)
+
+Mesa bir nechta renderlash API-larini qo'llab-quvvatlaydi, jumladan:
+
+`OpenGL` Bu 2D va 3D vektor grafikalarini ko'rsatish uchun cross-language(tillararo), cross-platform(platformalararo) API. Mesa OpenGL spetsifikatsiyasining bir nechta versiyalarini to'liq amalga oshirishni ta'minlaydi.
+
+`Vulkan` Bu Khronos Groupning yangiroq, low-overhead grafik API (u ham OpenGLni boshqaradi). Vulkan OpenGL bilan solishtirganda GPU-ni to'g'ridan-to'g'ri boshqarishni va protsessorni kamroq yuklashni taklif qiladi. Mesa Vulkan 1.0 spetsifikatsiyasining to'liq amalga oshirilishini ta'minlaydi.
+
+`OpenCL` Bu turli xil platformalarda, jumladan CPU, GPU, DSP va boshqalarda bajariladigan dasturlarni yozish uchun asosdir. Mesa-ning OpenCL-ni qo'llab-quvvatlashi OpenGL va Vulkan kabi to'liq bo'lmasa-da, u hali ham turli xil hisoblash ilovalari uchun ishlatilishi mumkin.
+
+Ichkarida Mesa ikkita asosiy komponentga ega:
+
+`State Trackers` Bular Mesa komponentlari boʻlib, ular ommaga moʻljallangan grafik API-larni (masalan, OpenGL yoki Vulkan) amalga oshiradi. Ular API ning joriy holatini (masalan, joriy rang, transformatsiya matritsasi va h.k.) kuzatib boradi va API callarini qurilmadan mustaqil oraliq ko‘rinishga tarjima qiladi.
+
+`Gallium3D` Bu abstraction layer va 3D renderlash uchun yagona, drayverga bog'liq bo'lmagan APIni(driver-independent) ta'minlovchi yordamchi utilita(helper utilitie). Bu turli hardware drayverlariga umumiy kodni almashish imkonini beradi va yangi hardware yoki API uchun qo'llab-quvvatlashni osonlashtiradi. Gallium3D dan foydalanadigan drayverlar odatda an'anaviy drayverlarga qaraganda sodda va qisqaroq.
+
+Mesa shader kompilyatsiyasi uchun ba'zi drayverlarda LLVM dan foydalanadi. Shaderlar GPUda ishlaydigan kichik dasturlar bo'lib, ular tepaliklarni qayta ishlash(vertex processing), piksellarni qayta ishlash(pixel processing) va hokazolar uchun ishlatiladi. LLVM modulli va qayta foydalanish mumkin bo'lgan kompilyator(reusable compiler) va toolchain texnologiyalari to'plamidir va Mesa ushbu shader dasturlarini GPUga yuborishdan oldin optimallashtirish uchun foydalanadi.
+
+Mesa-ning asosiy vazifasi dastur tomonidan amalga oshirilgan API callarini GPU hardare tushunadigan buyruqlarga tarjima qilish, turli hardwarelar o'rtasidagi farqlarni boshqarish va dasturiy ta'minot ishlab chiqaruvchilari uchun yagona interfeysni ta'minlashdir.
+
+![Image](/images/article/linux-de/17.jpg)
