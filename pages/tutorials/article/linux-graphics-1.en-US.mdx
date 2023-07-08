@@ -122,3 +122,28 @@ Mesa shader kompilyatsiyasi uchun ba'zi drayverlarda LLVM dan foydalanadi. Shade
 Mesa-ning asosiy vazifasi dastur tomonidan amalga oshirilgan API callarini GPU hardare tushunadigan buyruqlarga tarjima qilish, turli hardwarelar o'rtasidagi farqlarni boshqarish va dasturiy ta'minot ishlab chiqaruvchilari uchun yagona interfeysni ta'minlashdir.
 
 ![Image](/images/article/linux-de/17.jpg)
+
+
+## Wayland
+
+Wayland - bu displey serveri va uning clientlari o'rtasidagi aloqani, shuningdek, ushbu protokolning C kutubxonasini implementationi belgilaydigan communication protocoli. Wayland protokolidan foydalanadigan displey serveri Wayland kompozitori deb ataladi, chunki u qo'shimcha ravishda kompozitsion window manager. vazifasini bajaradi. Wayland dastlab `[Kristian Høgsberg](https://github.com/krh)` boshchiligidagi bir guruh ko'ngillilar tomonidan `X Window` tizimini Linux va boshqa Unix-ga o'xshash  operatsion tizimlar uchun zamonaviy, xavfsiz va sodda windowing systemi bilan almashtirish maqsadida bepul va [open-source](https://github.com/krh/wayland) jamoa tomonidan ishlab chiqilgan. Loyihaning manba kodi MIT License, ruxsat beruvchi bepul dasturiy ta'minot litsenziyasi shartlariga muvofiq nashr etiladi. 
+
+Wayland Display Server loyihasi 2008 yilda Red Hat ishlab dasturchisi [Kristian Høgsberg](https://github.com/krh) tomonidan boshlangan.
+
+
+Kompozitor Kernel Mode Setting (KMS) va evdev input qurilmalari orqali to'g'ridan-to'g'ri hardware bilan ishlaydi. U an'anaviy tarzda Unix-ga o'xshash operatsion tizimlarda qo'llanilgan `X Window System (X11)` ga ancha sodda va zamonaviy muqobilni taqdim etadi.
+
+Wayland paradigmasida kompozitor X11 dan asosiy farqi bo'lgan displey serveridir. X11 da displey serveri window manageri yoki kompozitordan alohida obyekt hisoblanadi. Biroq, Wayland displey serverini, window managerini va kompozitorni birlashtiradi. Bu tizimni soddalashtiradi va samaradorlikni oshiradi.
+
+Wayland kompozitori quyidagilarni bajaradi.
+
+`Window Bufferlarini tasvirga(compozisia) birlashtiradi` Wayland har bir windowning contentini buferga jalb qilish orqali ishlaydi. Keyin kompozitor bu buferlarni oladi va ularni ekranda ko'rsatish uchun bitta tasvirga birlashtiradi.
+
+`Kirish va chiqishni boshqaradi` Wayland kompozitorlari sichqoncha, klaviatura va ekranlar kabi kirish va chiqish qurilmalari bilan bevosita bog'lanadi. Ular ushbu qurilmalardan kirish hodisalarini(event) oladi va ularni tegishli clientga yuboradi. Ular, shuningdek, displey ekranlarida chiqishni boshqaradi.
+
+`Client Isolation` Har bir client faqat o'z windowlari haqida biladi va to'g'ridan-to'g'ri ekranga chiza olmaydi. U boshqa clientlarning maʼlumotlariga yoki buferlariga kirish imkoniga ega emas, bu ularni xavfsizlik maqsadida izolyatsiya qilishga yordam beradi.
+
+Turli kompozitorlarda Wayland protokolining bir nechta turli xil ilovalari mavjud, jumladan Weston (reference implementation), GNOME ning Mutter va KDE ning KWin va boshqalar. Bular desktop environmentlari yoki qo'shimcha protokollar kabi qo'shimcha xususiyatlarni taklif qilishi mumkin.
+
+Wayland zamonaviy kodlar bazasi va xavfsizlikni oshirish kabi bir qator afzalliklarni taklif qilsa-da, u sekinroq qabul qilish tezligiga ega. Bu, asosan, eski X11 applicationlarini qo'llab-quvvatlashdagi qiyinchiliklar va X11 taqdim etgan tarmoq shaffofligi(network transparency) kabi xususiyatlar bilan bog'liq, ammo Waylandda implementaion qiyinroq.
+
