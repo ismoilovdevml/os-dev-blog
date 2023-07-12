@@ -196,6 +196,28 @@ DRM ekranda grafiklarni ko'rsatish bilan bog'liq vazifalarni boshqarishda asosiy
 
 Texnik darajada, DRM user-space applicationlarga `ioctl` sstem callari orqali buyruqlarni GPUga yuborishga ruxsat berish orqali erishadi. DRM drayveri ushbu buyruqlarni GPUdagi buyruqlar navbatlariga(command queue) surishdan oldin tasdiqlaydi. Zamonaviy GPU-larda bir nechta buyruqlar navbati(multiple command queue) bir vaqtning o'zida bir nechta vazifalarni bajarish uchun ishlatilishi mumkin, bu esa GPU-dan umumiy foydalanish va unumdorlikni oshiradi.
 
+## X Window System (X11)
+
+X Window System (X11 yoki oddiygina X) - bu Unix-ga o'xshash operatsion tizimlarda keng tarqalgan bitmapli displeylar uchun windowing system.
+
+X GUI environment uchun asosiy asosni taqdim etadi: displey qurilmasida oynalarni chizish va ko'chirish, sichqoncha va klaviatura bilan o'zaro ishlash. X foydalanuvchi interfeysini majburlamaydi - bu alohida dasturlar tomonidan boshqariladi. Shunday qilib, X-ga asoslangan muhitlarning vizual uslubi juda farq qiladi; turli dasturlar tubdan farqli interfeyslarni taqdim etishi mumkin.
+
+X 1984 yilda Massachusetts Institute of Technology (MIT) Athena loyihasining bir qismi sifatida paydo bo'lgan. X protokoli 1987 yil sentyabridan beri 11-versiyada (shuning uchun "X11") mavjud.
+X.Org Foundation MIT Litsenziyasi va shunga o'xshash ruxsat beruvchi litsenziyalar ostida bepul va open-source dasturiy ta'minot sifatida mavjud bo'lgan X.Org Server joriy ma'lumotnomasi bilan X loyihasini boshqaradi.
+
+X Window System (X11)ning turli tarkibiy qismlari va tushunchalari
+
+`X Server` X server X Window systemning asosiy komponentidir. U client dasturlari va tizim hardware bilan aloqa qiladi. Server graphical output (window) uchun so'rovlarni(requestlarni) qabul qiladi va foydalanuvchi ma'lumotlarini (klaviatura, sichqoncha yoki sensorli ekrandan) qaytarib yuboradi. Serverning funksionalligi displeyni boshqarish, kiritilgan ma'lumotlarni qayta ishlash va clientlar foydalanishi mumkin bo'lgan resurslarni boshqarishni o'z ichiga oladi.
+
+`X Client` X clientlari X Window Systemda ko'rsatiladigan amaliy dasturlardir. Clientlar server bilan oynalar(window) yaratish, ularni chizish, input eventlarini qabul qilish (klavishlar yoki sichqonchani bosish kabi) va boshqalar bilan bog'lanadi. E'tibor bering, X terminologiyasida client dastur, server esa displeydir; bu siz kutgan narsaning aksi.
+
+`X protokoli` X protokoli X clientlari va X server o'rtasida ishlatiladigan aloqa protokoli. Protokol mijozlardan serverga buyruqlar yuborish (oyna yaratish, grafiklarni chizish va h.k.) va serverdan input eventlarini clientlarga yuborish uchun ishlatiladi. X protokoli tarmoq uchun shaffofdir(network-transparent), ya'ni u tarmoq ulanishlari orqali ishlashi mumkin, bu esa masofaviy grafik interfeyslarga imkon beradi.
+
+`Xlib va XCB kutubxonalari` Xlib (X Library) va XCB (X protocol C-language Binding) applicationlar (clientlar) uchun X Window Systemdan foydalanish funksiyalarini taʼminlovchi kutubxonalardir. Bu kutubxonalar X protokoli tafsilotlari bilan ishlaydi, bu esa applicationlar uchun X dan foydalanishni osonlashtiradi. XCB Xlib o‘rnini bosish uchun mo‘ljallangan yangiroq kutubxona bo‘lib, yaxshilangan unumdorlikni va X protokoliga quyi darajadagi(lower-level) kirishni taklif qiladi.
+
+`Window Manager` Window Manager(Oyna menejeri) X Window Systemidagi oynalarning ko'rinishi va joylashishini boshqaruvchi X clientdir. U title bar, minimize/maximize tugmalari, oʻlchamini oʻzgartirish mumkin boʻlgan oynalar va boshqalar kabi xususiyatlarni taqdim etishi mumkin. Window Manageri oynalarni ko'chirish va o'lchamlarini o'zgartirish kabi operatsiyalarni bajarish uchun javobgardir va u boshqalar oldida qaysi oynalar ko'rsatilishi polisini belgilaydi.
+
+
 ## Mesa3D
 
 Mesa, shuningdek, `Mesa3D` va `The Mesa 3D Graphics Library` deb ataladi, `OpenGL`, `Vulkan` va boshqa grafik API spetsifikatsiyalarining open-source implementationi. Mesa ushbu spetsifikatsiyalarni vendor-specific grafik qurlma drayverlariga tarjima qiladi.  Uning eng muhim foydalanuvchilari asosan Intel va AMD tomonidan o'zlarining tegishli qurilmalari uchun ishlab chiqilgan va moliyalashtirilgan ikkita grafik drayverdir (AMD o'zlarining Mesa drayverlarini Radeon va RadeonSI-ni eskirgan AMD Catalyst orqali targ'ib qiladi va Intel faqat Mesa drayverini qo'llab-quvvatlaydi). Xususiy grafik drayverlar (masalan, Nvidia GeForce drayveri va Catalyst) barcha Mesa-ning o'rnini bosadi va grafik API-ni o'z amalga oshirishini ta'minlaydi. `Nouveau` deb nomlangan Mesa Nvidia drayverini yozish bo'yicha op-souce harakat asosan hamjamiyat tomonidan ishlab chiqilgan. O'yinlar kabi 3D ilovalardan tashqari, zamonaviy displey serverlari (X.org, `Glamour` yoki `Wayland Weston`) `OpenGL/EGL`dan foydalanadi; shuning uchun barcha grafikalar odatda Mesa orqali o'tadi. 
