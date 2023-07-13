@@ -93,6 +93,23 @@ Linux Graphics Stack - bu layerli structura(qatlamli tuzulma) bo'lib, u kompyute
 
 Stackning har bir layer(qatla)mi to'g'ridan-to'g'ri uning ustidagi va ostidagi layerlar bilan bog'lanib, abstraktsiya darajasini ta'minlaydi. Bu dasturiy ta'minotni ishlab chiquvchilarga boshqa layerlarning barcha tafsilotlarini tushunmasdan turib, o'zlarining maxsus vazifalariga e'tibor qaratish imkonini beradi.
 
+
+## Hardware Layer
+
+Linux grafik staxkining hardware layeri grafiklarni haqiqiy renderlash va ko'rsatish bilan shug'ullanadigan jismoniy(physical) komponentlardan iborat. Ushbu komponentlar GPU (Graphics Processing Unit), video xotira (VRAM- Video random-access memory) va monitorlar yoki ekranlar kabi displey hardwareni o'z ichiga oladi.
+
+`GPU` Graphics Processing Unit grafiklarni ko'rsatish uchun zarur bo'lgan hisob-kitoblar uchun optimallashtirilgan maxsus protsessordir. U tizimning asosiy protsessoridan mustaqil ishlaydi va boshqa vazifalar uchun resurslarni bo'shatadi. GPU piksellarni chizish, teksturalar bilan ishlash va 3D grafikalar va animatsiyalar uchun zarur bo'lgan murakkab calculationlarni bajarish uchun javobgardir.
+
+`VRAM` Video Random Access Memory - bu GPU grafik tasvirlarni yaratish uchun zarur bo'lgan ma'lumotlarni saqlash uchun foydalanadigan xotira. Bunga teksturalar, vertex ma'lumotlari va yakuniy ko'rsatilgan tasvirni saqlaydigan frame bufferi kiradi. VRAM odatda tezroq va tizimning asosiy xotirasidan ajralib turadi, bu GPUga grafik maʼlumotlarga tez kirish va qayta ishlash imkonini beradi.
+
+`Monitorlar/Ekranlar(Monitors/Screens)` Bular aslida foydalanuvchiga ko'rsatilgan grafiklarni ko'rsatadigan chiqish qurilmalari( output device). Ular GPU dan yakuniy tasvir ma'lumotlarini oladi va uni ko'rsatilishi mumkin bo'lgan formatga aylantiradi. Monitorlar kichik mobil displeylardan tortib yuqori aniqlikdagi katta ekranlargacha bo'lgan har xil turdagi, o'lcham va resolutionlarda bo'lishi mumkin.
+
+Dasturiy ta'minot nuqtai nazaridan, Linux grafik stackining hardware layerii birinchi navbatda kernel bilan o'zaro ta'sir qiladi, bu esa turli quyi tizimlar(subsystem) va interfeyslar orqali hardwarega low-leveldagi kirishni ta'minlaydi. Bunga GPUga kirishni boshqarish uchun Direct Rendering Manager (DRM), oddiy chizish operatsiyalari uchun framebuffer qurilmasi va videoni suratga olish va chiqarish uchun `Video4Linux` interfeysi kiradi.
+
+GPU va hardware layerining boshqa komponentlari bilan aloqa qilish uchun open-source va xususiy driver dasturiy ta'minotidan foydalaniladi. Driverlar high-leveldagi buyruqlarni operatsion tizimdan hardware tushunadigan low-leveldagi instructionlarga tarjima qiladi. Shuningdek, ular resurslarni boshqaradilar, xatolarni hal qiladilar va grafik hardwarening yaxshi va samarali ishlashini ta'minlash uchun tizimning qolgan qismi bilan muvofiqlashtiradilar.
+
+Ushbu hardware layer Linux grafik stackining qolgan qismi uchun asos bo'lib xizmat qiladi,
+
 ## Display Server
 
 Linuxda Displey serverlari foydalanuvchining grafik interfeysida(user interface) asosiy rol o'ynaydi, ular user applicationlari va kompyuterning hardware vositalari, asosan, grafik qurilmalari o'rtasida vositachi vazifasini bajaradi. Displey serverining vazifalari klaviatura va sichqoncha kabi kiritish qurilmalarini boshqarish, qaysi oyna yuqorida bo'lishini hal qilish, tizim resurslarini taqsimlash va oyna mazmunini(window content) ekranga ko'rsatishni o'z ichiga oladi. Displey serverlarini tushunish juda muhim, chunki u Linux grafik stackidagi asosiy komponentlardan biridir. Displey serveri o'z clienlari bilan tarmoqda shaffof yoki oddiygina tarmoqqa ulanishi mumkin bo'lgan displey server protokoli, aloqa protokoli orqali bog'lanadi. Displey serveri har qanday grafik foydalanuvchi interfeysida, xususan, windowing systemida asosiy komponent hisoblanadi. Mustaqil displey serverining server/client munosabatlari bir oz ziddir, chunki "server" odatda katta, uzoq joylashgan machine sifatida tasavvur qilinadi, ammo mustaqil "displey server" kichik, mahalliy(local) tizim bo'lib, ko'pchilik clientlar katta markaziy machinenada bajariiladi. Tushuntirish shundan iboratki, displey serveri displey va kiritish qurilmalari(input device) xizmatlarini taqdim etadi.
@@ -217,6 +234,13 @@ X Window System (X11)ning turli tarkibiy qismlari va tushunchalari
 
 `Window Manager` Window Manager(Oyna menejeri) X Window Systemidagi oynalarning ko'rinishi va joylashishini boshqaruvchi X clientdir. U title bar, minimize/maximize tugmalari, oʻlchamini oʻzgartirish mumkin boʻlgan oynalar va boshqalar kabi xususiyatlarni taqdim etishi mumkin. Window Manageri oynalarni ko'chirish va o'lchamlarini o'zgartirish kabi operatsiyalarni bajarish uchun javobgardir va u boshqalar oldida qaysi oynalar ko'rsatilishi polisini belgilaydi.
 
+`Display Manager` Display Manageri grafik kirish(login) menejeri bo'lib, u X serverida xuddi shu yoki boshqa kompyuterdan seansni boshlaydi. Umumiy misollar orasida `LightDM`, `GDM` va `XDM` mavjud.
+
+`Compositing Manager` Kompozitlash menejeri ixtiyoriy komponent bo'lib, u 3D animatsiyalari, shaffoflik, soyalar va boshqalar kabi ilg'or oyna effektlarini ta'minlaydi. Kompozitlash menejeri barcha renderlashni ekrandan tashqari buferlarga yo'naltirish orqali ishlaydi, so'ngra yakuniy natijani ishlab chiqarish uchun har bir oynaning buferini ekranga birlashtiradi. E'tiborli misollar orasida `Compiz` va `xcompmgr` mavjud.
+
+`Desktop Environment` Desktop Environment tizimdan foydalanish uchun to'liq grafik foydalanuvchi interfeysini ta'minlaydi. U odatda window manager, file manager, menyu va ishlaydigan ilovalar ro'yxati, utilitalar va toollar va boshqalarga ega panellarni o'z ichiga oladi. Desktop Environmentlariga misol qilib `GNOME`, `KDE`, `XFCE` va `LXDE` va boshqalar kiradi.
+
+X Window System yuqori darajada sozlanishi va turli xil hardware va dasturiy ta'minot bilan ishlatilishi mumkin. Unix-ga o'xshash operatsion tizimlarda grafik ilovalarni ishlab chiqishning standartlashtirilgan usulini taqdim etadi. Biroq, Waylandning samaradorligi va soddaligi oshgani uchun ba'zi distribyutorlarda u asta-sekin yangi Wayland protokoli bilan almashtirilmoqda.
 
 ## Mesa3D
 
