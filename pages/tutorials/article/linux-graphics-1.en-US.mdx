@@ -130,7 +130,7 @@ GPU bir nechta asosiy elementlardan iborat
 
 Esda tutingki, ushbu elementlarning barchasi grafik tasvirlash va hisoblash vazifalari uchun optimal ishlashni ta'minlash uchun uyg'unlikda ishlashga mo'ljallangan. Ushbu elementlarning o'ziga xos soni va konfiguratsiyasi GPU modeliga va undan foydalanish maqsadiga qarab juda farq qilishi mumkin.
 
-Shuni ham aytib o'tish kerakki GPu mavzusini o'zi katta mavzu shuning uchun qisqa to'xtalib o'tdik ))
+Shuni ham aytib o'tish kerakki GPU mavzusini o'zi katta mavzu shuning uchun qisqa to'xtalib o'tdik ))
 
 ![Image](/images/article/linux-de/24.jpg)
 
@@ -150,11 +150,57 @@ GPU ni yaxshiroq tushunish uchun animatsion videolar
 NVIDIA GeForce RTX 3070
 </Callout>
 
-`VRAM` Video Random Access Memory - bu GPU grafik tasvirlarni yaratish uchun zarur bo'lgan ma'lumotlarni saqlash uchun foydalanadigan xotira. Bunga teksturalar, vertex ma'lumotlari va yakuniy ko'rsatilgan tasvirni saqlaydigan frame bufferi kiradi. VRAM odatda tezroq va tizimning asosiy xotirasidan ajralib turadi, bu GPUga grafik maʼlumotlarga tez kirish va qayta ishlash imkonini beradi.
+`Video Random Access Memory (VRAM)` - kompyuter graphics processing unit (GPU) ishlov beradigan tasvir va video ma'lumotlarni saqlash uchun kompyuterlarda ishlatiladigan xotira turi. VRAM protsessor va video karta protsessori o'rtasidagi buferdir. Nomidan ko'rinib turibdiki, bu tasodifiy kirish, ya'ni GPU unda saqlangan ma'lumotlarga tezda kirishi mumkin.
+
+VRAM frame bufferi bo'lib xizmat qiladi, bu asosan hozirda ko'rsatilayotgan tasvirlar uchun ma'lumotlarni saqlaydigan xotira ("frame buffer" buferidagi "frame"). Nisbatan sekin bo'lgan monitor va ancha tez bo'lgan protsessor o'rtasidagi tezlik farqi tufayli frame bufferi kerak.
+
+Grafik kartaga kerak bo'lgan VRAM miqdori o'yinlaringiz yoki boshqa grafik talab qiladigan vazifalarni bajarayotganingizning ruxsatiga bog'liq. Yuqori aniqlik uchun ko'proq VRAM kerak. Xuddi shunday, anti-aliasing, yuqori dinamik diapazon (HDR) va murakkab yoritish yoki soya algoritmlari kabi ilg'or grafik texnikasi ko'proq VRAMni talab qiladi.
+
+VRAM turlariga quyidagilar kiradi:
+
+`GDDR (Graphics Double Data Rate)` Bu DDR xotira turi, lekin grafik kartadan foydalanish uchun maxsus moʻljallangan. U GDDR2, GDDR3, GDDR4, GDDR5, GDDR6 va GDDR6X versiyalarini o'z ichiga oladi. Har bir keyingi versiya odatda avvalgilariga nisbatan yaxshilanishlarni taklif etadi, masalan, quvvatni yaxshiroq boshqarish yoki yuqori tezlik.
+
+`HBM (High Bandwidth Memory)` Bu yuqori sifatli grafik kartalar va HPC (High Performance Computing) da qo'llaniladigan yuqori samarali RAM interfeysi. HBM GDDR xotira turlariga qaraganda kamroq quvvat sarflagan holda yuqori xotira tarmoqli kengligiga erishish uchun keng interfeysli arxitekturadan foydalanadi.
+
+`SGRAM (Synchronous Graphics RAM)` Ushbu turdagi VRAM kompyuterning bus speedi bilan bir xil tezlikda ishlaydi. Hozirgi kunda u kamroq tarqalgan, ammo ba'zi eski grafik kartalarda ishlatilgan.
+
+VRAM GPU ning muhim komponenti bo‘lib, uning hajmi, tezligi va samaradorligi GPU ishlashiga sezilarli ta’sir ko‘rsatishi mumkin. Zamonaviy grafik protsessorlar odatda eng yuqori darajadagi kartalarda bir necha gigabaytdan 24 Gb gacha bo'lgan VRAM miqdoriga ega.
+
+<Callout type="info" emoji="">
+![Image](/images/article/linux-de/26.jpg)
+</Callout>
 
 `Monitorlar/Ekranlar(Monitors/Screens)` Bular aslida foydalanuvchiga ko'rsatilgan grafiklarni ko'rsatadigan chiqish qurilmalari( output device). Ular GPU dan yakuniy tasvir ma'lumotlarini oladi va uni ko'rsatilishi mumkin bo'lgan formatga aylantiradi. Monitorlar kichik mobil displeylardan tortib yuqori aniqlikdagi katta ekranlargacha bo'lgan har xil turdagi, o'lcham va resolutionlarda bo'lishi mumkin.
 
-Dasturiy ta'minot nuqtai nazaridan, Linux grafik stackining hardware layerii birinchi navbatda kernel bilan o'zaro ta'sir qiladi, bu esa turli quyi tizimlar(subsystem) va interfeyslar orqali hardwarega low-leveldagi kirishni ta'minlaydi. Bunga GPUga kirishni boshqarish uchun Direct Rendering Manager (DRM), oddiy chizish operatsiyalari uchun framebuffer qurilmasi va videoni suratga olish va chiqarish uchun `Video4Linux` interfeysi kiradi.
+Monitorlar haqida gapirganda e'tiborga olish kerak bo'lgan ba'zi asosiy jihatlar
+
+Ekran o'lchami: Bu burchakdan burchakka diagonal ravishda o'lchanadi. Ish stoli monitorlari uchun odatiy o'lchamlar taxminan 20 dyuymdan 32 dyuymgacha yoki undan kattaroq, noutbuk ekranlari esa odatda 12 dan 17 dyuymgacha.
+
+Resolution: Bu ekranda ko'rsatilgan piksellar sonini bildiradi va odatda kenglik x balandlik sifatida ifodalanadi. Masalan, 1920x1080 o'lchamdagi monitor displeyning kengligi bo'ylab 1920 pikselni va balandligi bo'yicha 1080 pikselni ko'rsatishi mumkin. Yuqori aniqlik aniqroq, aniqroq tasvirni anglatadi, lekin ko'proq grafik quvvat talab qiladi. Umumiy resolutionlarga 1080p (Full HD), 1440p (2K yoki QHD) va 2160p (4K yoki UHD) kiradi.
+
+Aspect Ratio: Bu ekran kengligining balandligiga nisbati. Eng keng tarqalgan tomonlar nisbati 16:9, ammo 21:9 (ultra keng) va 4:3 (eski monitorlarda qo'llaniladi) kabi boshqa nisbatlar ham mavjud.
+
+Panel turi: Bu ekranda tasvirni yaratish uchun ishlatiladigan texnologiya turiga ishora qiladi. Eng keng tarqalgan turlari TN (Twisted Nematic), VA (Vertical Alignment) va IPS (In-Plane Switching). Har birining o'ziga xos kuchli va zaif tomonlari bor, IPS odatda eng yaxshi rang aniqligi va ko'rish burchaklarini ta'minlaydi, TN eng tez javob vaqtini taklif qiladi va VA o'rta darajadagi tanlovdir.
+
+Refresh Rate: Bu monitorning soniyada yangi ma'lumotlar bilan yangilanishi va gerts (Hz) bilan o'lchanadigan soni. Odatda yangilanish tezligi(Refresh Rate) 60Hz, 120Hz, 144Hz va 240Hz ni o'z ichiga oladi. Yuqori yangilanish stavkalari harakatni silliq ko'rinishga olib kelishi va kiritish kechikishini kamaytirishi mumkin, bu ayniqsa tez sur'atli video o'yinlarda qimmatlidir.
+
+Response Time: Bu pikselning qoradan oqga yoki bir kul rangdan ikkinchisiga o‘zgarishini qanchalik tez ko‘rsatishini o‘lchaydi. Kamroq javob vaqti(response time) tezroq harakat paytida kamroq xiralashgan harakat va aniqroq tasvirni anglatadi.
+
+Color Depth(rang chuqurligi) Bu monitor qancha rang ko'rsatishi mumkinligini o'lchaydi. Aksariyat monitorlar kamida 16,7 million rangni (24 bitli true color) ko'rsatishi mumkin, ammo professional darajadagi monitorlar 1,07 milliard (30 yoki 32 bit true color) yoki undan ko'p rangni ko'rsatishi mumkin.
+
+Yorqinlik(Brightness): Bu displeydan chiqadigan yorug'lik miqdori va odatda kvadrat metrga (cd/m²) candelalarda o'lchanadi.
+
+Contrast nisbati: Bu monitor ishlab chiqarishga qodir bo'lgan eng yorqin rang (oq) yorqinligining eng quyuq rangga (qora) nisbati. Yuqori kontrast stavkalari, odatda, monitor yanada nozik rang farqlari va chuqurroq qora ranglarni ko'rsatishi mumkinligini ko'rsatadi.
+
+Input Connectorlari: Bular monitorni kompyuteringizga ulash uchun ishlatiladigan portlardir. Umumiy turlarga HDMI, DisplayPort, DVI va VGA kiradi.
+
+Monitorlar, shuningdek, moslashuvchan sinxronlash texnologiyasi (NVIDIA G-Sync yoki AMD FreeSync), o'rnatilgan dinamiklar(built-in speaker), USB portlar, curved ekranlar va boshqalar kabi xususiyatlarga ega bo'lishi mumkin.
+
+<Callout type="info" emoji="">
+[Monitorlar haqida animatsion video](https://youtu.be/yxygknX1AiE)
+</Callout>
+
+Dasturiy ta'minot nuqtai nazaridan, Linux grafik stackining hardware layeri birinchi navbatda kernel bilan o'zaro ta'sir qiladi, bu esa turli quyi tizimlar(subsystem) va interfeyslar orqali hardwarega low-leveldagi kirishni ta'minlaydi. Bunga GPUga kirishni boshqarish uchun Direct Rendering Manager (DRM), oddiy chizish operatsiyalari uchun framebuffer qurilmasi va videoni suratga olish va chiqarish uchun `Video4Linux` interfeysi kiradi.
 
 GPU va hardware layerining boshqa komponentlari bilan aloqa qilish uchun open-source va xususiy driver dasturiy ta'minotidan foydalaniladi. Driverlar high-leveldagi buyruqlarni operatsion tizimdan hardware tushunadigan low-leveldagi instructionlarga tarjima qiladi. Shuningdek, ular resurslarni boshqaradilar, xatolarni hal qiladilar va grafik hardwarening yaxshi va samarali ishlashini ta'minlash uchun tizimning qolgan qismi bilan muvofiqlashtiradilar.
 
