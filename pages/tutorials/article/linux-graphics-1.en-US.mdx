@@ -210,31 +210,57 @@ Ushbu hardware layer Linux grafik stackining qolgan qismi uchun asos bo'lib xizm
 
 Linux grafik stackidagi kernel layeri to'g'ridan-to'g'ri hardware layerii bilan interfeyslarni o'rnatadi va interfeyslar va abstraksiyalarni stackning yuqori darajadagi komponentlariga, masalan, window system yoki user-space applicationlarga ochib beradi. Ushbu kontekstda kernel layerining asosiy komponentlari quyidagilardan iborat:
 
-`Direct Rendering Manager (DRM)` Linux kernelining quyi tizimi(subsystem) bo'lib, zamonaviy video kartalarning GPU-lari bilan o'zaro bog'lanish uchun javobgardir va dasturlarning grafik qurilmalar bilan o'zaro ta'siri uchun umumiy API taqdim etadi. DRM user-space dasturlari buyruqlar va ma'lumotlarni GPUga yuborish va displeyning rejim sozlamalarini sozlash kabi operatsiyalarni bajarish uchun foydalanishi mumkin bo'lgan APIni ochib beradi. DRM birinchi marta X Server Direct Rendering Infratuzilmasining kernel-space komponenti sifatida ishlab chiqilgan , ammo o'shandan beri u Wayland kabi boshqa grafik stack alternativlari va `SDL2 `va `Kodi` kabi mustaqil ilovalar va kutubxonalar tomonidan qo'llanila boshlandi.
+`Direct Rendering Manager (DRM)` Linux kernelining quyi tizimi(subsystem) bo'lib, zamonaviy video kartalarning GPU-lari bilan o'zaro bog'lanish uchun javobgardir va dasturlarning grafik qurilmalar bilan o'zaro ta'siri uchun umumiy API taqdim etadi. DRM user-space dasturlari buyruqlar va ma'lumotlarni GPUga yuborish va displeyning rejim sozlamalarini sozlash kabi operatsiyalarni bajarish uchun foydalanishi mumkin bo'lgan APIni ochib beradi. DRM birinchi marta X Server Direct Rendering Infratuzilmasining kernel-space komponenti sifatida ishlab chiqilgan , ammo o'shandan beri u Wayland kabi boshqa grafik stack alternativlari va `SDL2` va `Kodi` kabi mustaqil ilovalar va kutubxonalar tomonidan qo'llanila boshlandi.
 
 User-space dasturlar DRM API-dan GPU-ga hardware-accelerator 3D renderlash va video dekodlash(video decoding), shuningdek, `GPGPU` hisoblashlarini buyurish uchun foydalanishi mumkin. DRM dastlab `XFree86` da Direct Rendering Infrastructure (DRI) qo'llab-quvvatlash uchun ishlab chiqilgan, ammo keyinchalik turli xil grafik funksiyalarni boshqarish uchun kengaytirilgan.
 
+<Callout type="info" emoji="">
+![Image](/images/article/linux-de/27.jpg)
+</Callout>
+
 DRM bir necha qismlardan iborat
 
-`Kernel Component` Bu DRM ning asosiy qismidir. U user-space applicationlar uchun grafik qurilmalar bilan o'zaro ishlash uchun API taqdim etadi. Kernel komponenti xotirani boshqarish(memory management), interrupt handling va DMA (Direct Memory Access) kabi narsalar uchun javobgardir. DRM ning ushbu qismi GPU bajarishi kerak bo'lgan vazifalar ro'yxati bo'lgan buyruqlar navbatini ham boshqaradi.
-
-`DRM qurilma drayverlari` Bular har bir grafik kartaga xos bo'lib, hardwarening low-leveldagi tafsilotlarini boshqarish uchun javobgardir. Ular odatda hardware ishlab chiqaruvchilari tomonidan yoziladi, garchi open-source versiyalari ham mavjud.
-
-`Graphics Execution Manager (GEM)` Bu GPU xotirasini boshqarish uchun API. U Intel tomonidan eski `TTM` (Translation Table Maps) boshqaruvchisini almashtirish uchun ishlab chiqilgan va hozirda ko'pgina yirik GPU ishlab chiqaruvchilari tomonidan foydalaniladi. GEM xotirani taqsimlash, almashtirish va GPU uchun ishlov berish bilan shug'ullanadi, shuningdek, turli jarayonlar o'rtasida xotira buferlarini almashish mexanizmini taqdim etadi.
-
-`Kernel Mode Setting (KMS)` Bu kernel modeni sozlash imkonini beruvchi DRM xususiyatidir. Rejimni sozlash(mode setting) - bu video kartaning chiqish formatini (masalan, resolution,, color depth va refresh rate) sozlash jarayoni. Kernelda handling mode settingni sozlash bir qator afzalliklarga ega, masalan, xatolarni yanada ishonchli tiklash va foydalanuvchi interfeyslari o'rtasida yumshoqroq o'tish.
-
-`DMA-BUF` Bu turli drayverlarga bir xil xotira buferini almashish imkonini beruvchi bufer almashish mexanizmi. Bu, ayniqsa, murakkab grafik sozlamalari uchun foydalidir, bu yerda ma'lumotlar bir nechta GPU o'rtasida yoki GPU va video dekoderlar yoki displey kontrollerlari kabi boshqa qurilmalar o'rtasida almashish kerak bo'lishi mumkin.
-
-`DRM Driver` GPU ning har bir turi uchun ushbu GPU bilan qanday bog'lanishni biladigan DRM drayveri mavjud. DRM drayveri user-space applicationlar tomonidan taqdim etilgan umumiy buyruqlar va ma'lumotlarni GPU tomonidan talab qilinadigan maxsus formatga tarjima qiladi. Ko'p DRM drayverlari mavjud bo'lib, ularning har biri ma'lum bir GPU yoki GPU oilasiga moslashtirilgan.
-
-`User-space Componet` Bu DRM ning applicationlar bilan oʻzaro aloqada boʻlgan qismidir. User-space komponenti applicationlar DRM kernel komponenti orqali GPUga buyruqlar va ma'lumotlarni yuborish uchun foydalanishi mumkin bo'lgan kutubxonani (libdrm) taqdim etadi. Bu ilovalarga grafik hardwaredan qurilma qanday ishlashini tafsilotlarini bilmasdan foydalanish imkonini beradi.
-
-`Direct Rendering Infrastructure (DRI)` Bu DRM tizimining bir qismi bo'lib, u user-space applicationlarga X serverini chetlab o'tish va grafik hardwarega bevosita kirish imkonini beradi. Bu 3D ilovalari ish faoliyatini sezilarli darajada yaxshilashi mumkin.
+`Kernel Component, DRM qurilma drayverlari, Graphics Execution Manager (GEM), Kernel Mode Setting (KMS), DMA-BUF, DRM Driver, User-space Componet, Direct, Rendering Infrastructure (DRI)
 
 DRM ekranda grafiklarni ko'rsatish bilan bog'liq vazifalarni boshqarishda asosiy rol o'ynaydi, grafik qurilmaning murakkabligini mavhumlashtiradi va Linux grafik stackidagi yuqori qatlamlarga asosiy grafik uskunasining o'ziga xos xususiyatlaridan tashvishlanmaslik imkonini beradi.
 
 Texnik darajada, DRM user-space applicationlarga `ioctl` sstem callari orqali buyruqlarni GPUga yuborishga ruxsat berish orqali erishadi. DRM drayveri ushbu buyruqlarni GPUdagi buyruqlar navbatlariga(command queue) surishdan oldin tasdiqlaydi. Zamonaviy GPU-larda bir nechta buyruqlar navbati(multiple command queue) bir vaqtning o'zida bir nechta vazifalarni bajarish uchun ishlatilishi mumkin, bu esa GPU-dan umumiy foydalanish va unumdorlikni oshiradi.
+
+`Graphics Execution Manager (GEM)` 
+
+Video xotira hajmining o'sishi va OpenGL kabi grafik API-larning o'sib borayotgan murakkabligi tufayli har bir kontekstni almashtirishda grafik karta holatini qayta ishga tushirish strategiyasi unumdorlik jihatidan juda qimmatga tushdi. Bundan tashqari, zamonaviy Linux ish stollari ekrandan tashqari buferlarni kompozitsion menejer bilan almashishning optimal usuliga muhtoj edi. Ushbu talablar kernel ichidagi grafik buferlarni boshqarishning yangi usullarini ishlab chiqishga olib keldi. Ushbu usullardan biri sifatida `Graphics Execution Manager (GEM)` paydo bo'ldi. Graphics Execution Manager (GEM) DRM quyi tizimidagi xotira menejeri, u GPU xotirasini boshqarish uchun javobgardir. U GPU xotirasidan foydalanishning murakkabliklarini, including c, mapping(xaritalash) va swappingni boshqaradi. GEM GPU xotirasi bilan ishlash uchun standart interfeysni taqdim etadi, bu user-space applicationlarga GPUdan optimal foydalanish imkonini beradi.
+
+GEM aniq xotirani boshqarish primitivlari bilan API taqdim etadi. GEM orqali user-space dastur GPU video xotirasida yashovchi xotira obyektlarini yaratishi, boshqarishi va yoʻq qilishi mumkin. "GEM objects" deb nomlangan ushbu obyektlar user-space dasturi nuqtai nazaridan qat'iydir va har safar dastur GPU nazoratini tiklaganda qayta yuklanishi shart emas. Agar user-space dasturiga video xotiraning bir qismi kerak bo'lsa (framebuffer, tekstura yoki GPU tomonidan talab qilinadigan boshqa ma'lumotlarni saqlash uchun), u GEM API yordamida DRM drayveriga ajratishni so'raydi. DRM drayveri ishlatilgan video xotirani kuzatib boradi va agar bo'sh xotira mavjud bo'lsa, so'rovni bajarishga qodir va kelgusi operatsiyalarda ajratilgan xotiraga qo'shimcha murojaat qilish uchun foydalanuvchi maydoniga "handle"ni qaytaradi. GEM API shuningdek, buferni to'ldirish va kerak bo'lmaganda uni chiqarish operatsiyalarini ham ta'minlaydi. Chiqarilmagan GEM handlelari xotirasi, user-space processi DRM qurilmasi fayl identifikatorini yopib qo'yganda - ataylab yoki tugatilganligi sababli tiklanadi.
+
+GEM dastlab Intel muhandislari tomonidan `i915` drayveri uchun video xotira menejerini ta'minlash uchun ishlab chiqilgan. Intel `GMA 9xx` oilasi Uniform Memory Architecture (UMA) bilan birlashtirilgan GPU-lar bo'lib, u yerda GPU va CPU jismoniy xotirani baham ko'radi va maxsus VRAM mavjud emas. GEM xotira sinxronizatsiyasi uchun "xotira domenlarini" belgilaydi va bu xotira domenlari GPU-dan mustaqil bo'lsa-da, ular UMA xotira arxitekturasini hisobga olgan holda maxsus ishlab chiqilgan bo'lib, ularni alohida VRAMga ega bo'lganlar kabi boshqa xotira arxitekturalari uchun kamroq moslashtiradi. Shu sababli, boshqa DRM drayverlari GEM API-ni foydalanuvchi dasturlari bilan tanishtirishga qaror qilishdi, biroq ular o'zlarining hardware va xotira arxitekturasi uchun mosroq bo'lgan boshqa xotira menejerini o'rnatdilar.  GEM API, shuningdek, execution flowni boshqarish uchun `ioctls` (command buffer) bilan ta'minlaydi, biroq ular Intel `i915` va undan keyingi GPUlar bilan foydalanish uchun Intelga xosdir. Hech bir boshqa DRM drayveri GEM API ning xotira boshqaruviga xos ioctls-dan tashqari biron bir qismini amalga oshirishga urinmagan.
+
+`Kernel Mode Setting (KMS)`
+
+Kernel Mode Setting (KMS) Linux kerneli grafik stackidagi metod bo'lib, kernelga grafik rejim displeylari bilan bog'liq sozlamalarni boshqarish imkonini beradi. Bu kernelga grafik qurilmalar ustidan toʻliq nazoratni taʼminlovchi texnika boʻlib, flicker-free boot processlari(miltillashsiz yuklash), crash recovery va multi-seat computing kabi qator afzalliklarni beradi.
+![Image](/images/article/linux-de/15.jpg)
+
+KMS dan oldin User Mode Setting (UMS) ishlatilgan, bu yerda rejimni sozlash operatsiyalari X serveri tomonidan user spaceda amalga oshirilgan. Biroq, KMS-ga o'tish X serverining endi imtiyozsiz ishlashini anglatadi, bu esa umuman xavfsizroq tizimni ta'minlaydi.
+
+KMSning texnik tomonini yaxshiroq ko'rib chiqamiz
+
+`Responsibility of KMS`  Nomidan ko'rinib turibdiki, rejim sozlamalari(mode setting) monitoringizning piksellar sonini, rang chuqurligini(color depth) va yangilanish tezligini(refresh rate) sozlashdir. KMS shuningdek, matn va grafik konsollar o'rtasida almashinish, bir nechta monitorlarni sozlash va to'xtatib turish(suspend) va davom ettirish hodisalarini boshqarish uchun javobgardir.
+
+`DRM/KMS API` KMS Linux kernelidagi subsystem(quyi tizim) bo'lgan Direct Rendering Manager (DRM) orqali amalga oshiriladi. Bu user space dasturlari buyruqlar va ma'lumotlarni GPUga yuborish uchun foydalanishi mumkin bo'lgan APIni taqdim etadi. Ushbu API frame bufferlarini yaratish va boshqarish, monitor rejimini o'rnatish va framelar orasidagi smooth transition uchun sahifalarni aylantirish(page flipping) funksiyalarini o'z ichiga oladi.
+![Image](/images/article/linux-de/13.png)
+![Image](/images/article/linux-de/14.png)
+
+`Frame Buffer va Display Controllers:` Frame Buffer(Kadr bufer)i display controller tomonidan displeyga yuboriladigan bitmapni o'z ichiga olgan RAMning bir qismidir. KMS user applicationlariga frame bufferlarini yaratish va ular bilan bog'liq event(hodisa)larni boshqarish imkonini beradi. KMS GPUda mavjud bo'lgan `CRTCs` (Cathode Ray Tube Controllers) yoki display controllerlarini boshqaradi, ular frame buferidan ma'lumotlarni o'qiydi va ularni display hardwarega uzatadi.
+
+![Frame Buffer](/images/article/linux-de/9.jpg)
+![Frame Buffer](/images/article/linux-de/10.jpg)
+![Frame Buffer](/images/article/linux-de/11.jpg)
+![Frame Buffer](/images/article/linux-de/12.jpg)
+
+`Atomic Mode Setting` An'anaviy KMSga nisbatan yaxshilanish sifatida kiritilgan Atomic Mode Setting - bu displey rejimlarini atomic tarzda yoki bir vaqtning o'zida(all-at-once) sozlash imkonini beruvchi metod. Ilgari, displey rejimini o'rnatish uchun bir nechta `IOCTLs (I/O Controls)` kerak edi va har bir IOCTL mos kelmaydigan holatlarga olib keladigan muvaffaqiyatsizlik ehtimoli bor edi. Atom rejimini sozlash barcha o'zgarishlarni bir vaqtning o'zida amalga oshirishga ruxsat berish orqali bu muammoni hal qiladi, barqaror va xatosiz rejim sozlamalarini ta'minlaydi.
+
+`Boshqa komponentlar bilan o'zaro ta'sir` KMS Linux grafik stackining boshqa qismlari, masalan, Mesa (3D grafikalar uchun umumiy interfeysni ta'minlovchi user-space grafik kutubxonasi) va X server yoki Wayland (kirish va oynalarni boshqarish uchun mas'ul) bilan birgalikda ishlaydi.
+
+KMS dan foydalanish va uning davom etayotgan takomillashtirilishi displey miltillashini kamaytirish va zamonaviy grafik hardware va funksiyalarni yaxshiroq qo'llab-quvvatlash orqali Linuxda foydalanuvchi tajribasini sezilarli darajada yaxshiladi.
 
 ## Display Server
 
@@ -280,35 +306,6 @@ Mir displey serveri o'zining Mir displey server protokoli bilan birga keladi, bu
 GPLv3 ostida mavjud Mir displey serveri, libmir-server va libmir-mijoz kutubxonalarining ilovalari mavjud.
 
 ![Image](/images/article/linux-de/20.png)
-
-## Kernel Mode Setting (KMS)
-
-
-Kernel Mode Setting (KMS) Linux kerneli grafik stackidagi metod bo'lib, kernelga grafik rejim displeylari bilan bog'liq sozlamalarni boshqarish imkonini beradi. Bu kernelga grafik qurilmalar ustidan toʻliq nazoratni taʼminlovchi texnika boʻlib, flicker-free boot processlari(miltillashsiz yuklash), crash recovery va multi-seat computing kabi qator afzalliklarni beradi.
-![Image](/images/article/linux-de/15.jpg)
-
-KMS dan oldin User Mode Setting (UMS) ishlatilgan, bu yerda rejimni sozlash operatsiyalari X serveri tomonidan user spaceda amalga oshirilgan. Biroq, KMS-ga o'tish X serverining endi imtiyozsiz ishlashini anglatadi, bu esa umuman xavfsizroq tizimni ta'minlaydi.
-
-KMSning texnik tomonini yaxshiroq ko'rib chiqamiz
-
-`Responsibility of KMS`  Nomidan ko'rinib turibdiki, rejim sozlamalari(mode setting) monitoringizning piksellar sonini, rang chuqurligini(color depth) va yangilanish tezligini(refresh rate) sozlashdir. KMS shuningdek, matn va grafik konsollar o'rtasida almashinish, bir nechta monitorlarni sozlash va to'xtatib turish(suspend) va davom ettirish hodisalarini boshqarish uchun javobgardir.
-
-`DRM/KMS API` KMS Linux kernelidagi subsystem(quyi tizim) bo'lgan Direct Rendering Manager (DRM) orqali amalga oshiriladi. Bu user space dasturlari buyruqlar va ma'lumotlarni GPUga yuborish uchun foydalanishi mumkin bo'lgan APIni taqdim etadi. Ushbu API frame bufferlarini yaratish va boshqarish, monitor rejimini o'rnatish va framelar orasidagi smooth transition uchun sahifalarni aylantirish(page flipping) funksiyalarini o'z ichiga oladi.
-![Image](/images/article/linux-de/13.png)
-![Image](/images/article/linux-de/14.png)
-
-`Frame Buffer va Display Controllers:` Frame Buffer(Kadr bufer)i display controller tomonidan displeyga yuboriladigan bitmapni o'z ichiga olgan RAMning bir qismidir. KMS user applicationlariga frame bufferlarini yaratish va ular bilan bog'liq event(hodisa)larni boshqarish imkonini beradi. KMS GPUda mavjud bo'lgan `CRTCs` (Cathode Ray Tube Controllers) yoki display controllerlarini boshqaradi, ular frame buferidan ma'lumotlarni o'qiydi va ularni display hardwarega uzatadi.
-
-![Frame Buffer](/images/article/linux-de/9.jpg)
-![Frame Buffer](/images/article/linux-de/10.jpg)
-![Frame Buffer](/images/article/linux-de/11.jpg)
-![Frame Buffer](/images/article/linux-de/12.jpg)
-
-`Atomic Mode Setting` An'anaviy KMSga nisbatan yaxshilanish sifatida kiritilgan Atomic Mode Setting - bu displey rejimlarini atomic tarzda yoki bir vaqtning o'zida(all-at-once) sozlash imkonini beruvchi metod. Ilgari, displey rejimini o'rnatish uchun bir nechta `IOCTLs (I/O Controls)` kerak edi va har bir IOCTL mos kelmaydigan holatlarga olib keladigan muvaffaqiyatsizlik ehtimoli bor edi. Atom rejimini sozlash barcha o'zgarishlarni bir vaqtning o'zida amalga oshirishga ruxsat berish orqali bu muammoni hal qiladi, barqaror va xatosiz rejim sozlamalarini ta'minlaydi.
-
-`Boshqa komponentlar bilan o'zaro ta'sir` KMS Linux grafik stackining boshqa qismlari, masalan, Mesa (3D grafikalar uchun umumiy interfeysni ta'minlovchi user-space grafik kutubxonasi) va X server yoki Wayland (kirish va oynalarni boshqarish uchun mas'ul) bilan birgalikda ishlaydi.
-
-KMS dan foydalanish va uning davom etayotgan takomillashtirilishi displey miltillashini kamaytirish va zamonaviy grafik hardware va funksiyalarni yaxshiroq qo'llab-quvvatlash orqali Linuxda foydalanuvchi tajribasini sezilarli darajada yaxshiladi.
 
 ## X Window System (X11)
 
