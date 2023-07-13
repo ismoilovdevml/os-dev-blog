@@ -100,6 +100,56 @@ Linux grafik staxkining hardware layeri grafiklarni haqiqiy renderlash va ko'rsa
 
 `GPU` Graphics Processing Unit grafiklarni ko'rsatish uchun zarur bo'lgan hisob-kitoblar uchun optimallashtirilgan maxsus protsessordir. U tizimning asosiy protsessoridan mustaqil ishlaydi va boshqa vazifalar uchun resurslarni bo'shatadi. GPU piksellarni chizish, teksturalar bilan ishlash va 3D grafikalar va animatsiyalar uchun zarur bo'lgan murakkab calculationlarni bajarish uchun javobgardir.
 
+GPU bir nechta asosiy elementlardan iborat
+
+`GPU Core` Bu GPUning yuragi. GPU core instructionlarni bajarish va actual computationlarni bajarish uchun javobgardir. Muayyan GPU modeliga qarab, u yuzlab yoki hatto minglab corelarga ega bo'lishi mumkin. Har bir core bir vaqtning o'zida bir nechta thereadlarni boshqarish uchun mo'ljallangan, shuning uchun GPUlar parallel ishlov berishda juda samarali.
+
+`CUDA Corelar/Stream Processor` Bular GPU coresidagi parallel protsessorlar bo'lib, ular mos ravishda NVIDIA va AMD o'zlarining GPUlarida foydalanadilar. CUDA corelari NVIDIA GPU-lariga xos bo'lib, bir vaqtning o'zida ko'p vazifalarni bajarish uchun mo'ljallangan qayta ishlash coresining bir turidir. AMD ning ekvivalenti Stream Processor deb ataladi.
+
+`Memory` Bu GPU-ning o'ziga xos maxsus operativ xotirasi bo'lib, ko'pincha VRAM (Video Random Access Memory) deb ataladi. U teksturalarni, framebufferni va GPU ko'rsatish uchun zarur bo'lgan boshqa ma'lumotlarni saqlash uchun ishlatiladi. Yuqori darajali grafik protsessorlarda ko'pincha juda yuqori ma'lumotlarni uzatish tezligini bajara oladigan katta hajmdagi `GDDR6 `(Graphics Double Data Rate 6) xotirasi yoki HBM (High Bandwidth Memory) mavjud.
+
+`Memory Bus` Memory Bus GPU coresi VRAM bilan aloqa qiladigan yo'ldir. Kengroq mmemory busi bir vaqtning o'zida ko'proq ma'lumotlarni uzatish imkonini beradi, bu esa ishlashga sezilarli ta'sir ko'rsatishi mumkin.
+
+`Memory Clock` Bu GPU xotirasining ishlash tezligini bildiradi. Bu ma'lumotni xotiradan o'qish va xotiraga yozish tezligiga ta'sir qiladi, bu GPUning umumiy ishlashiga ta'sir qiladi.
+
+`Clock Speed` Clock Speed GPU coresining ishlash tezligidir. Yuqori clock Speed odatda tezroq ishlashni anglatadi, lekin ular ko'proq issiqlik hosil bo'lishiga ham olib kelishi mumkin.
+
+`Shader Unit` Bu effektlar va ranglarni ko'rsatish uchun ishlatiladigan GPU ichidagi maxsus ishlov berish birliklari. Ular vertex, geometriya va piksel soyasi bilan bog'liq keng ko'lamli vazifalarni bajarish uchun dasturlashtirilishi mumkin.
+
+`Texture Mapping Unit (TMU)` Bular 3D modellarga teksturalarni qo'llash uchun javobgardir. GPUdagi TMUlar soni uning murakkab teksturali yuzalarni ko'rsatish qobiliyatiga ta'sir qilishi mumkin.
+
+`Render Output Unit (ROP)` Ular tasvirlashning oxirgi bosqichlarini, masalan, anti-aliasingni boshqaradi va yakuniy piksel ma'lumotlarini xotiraga yozadi. ROPlar soni GPU ning tasvirlarni yuqori aniqlikda ko'rsatish qobiliyatiga ta'sir qilishi mumkin.
+
+`Thermal Design Power (TDP)` Bu GPU og'ir yuk ostida ishlab chiqarishi kutilayotgan issiqlikning maksimal miqdorini bildiradi. Bu GPU uchun zarur sovutish yechimlarini aniqlash uchun muhimdir.
+
+`Power Connector` Bular GPU ni ishlashi uchun zarur quvvat bilan ta'minlaydi. Yuqori darajadagi GPUlar yuqori quvvat sarfi tufayli ko'pincha bir nechta quvvat ulagichlarini talab qiladi.
+
+`PCI Express Interface` Bu GPU kompyuterning qolgan qismi bilan aloqa qiladigan ulanish. PCI Express interfeysining tezligi va kengligi GPUning umumiy ishlashiga ta'sir qilishi mumkin.
+
+`Video portlar` Bular GPU uchun chiqishlar(output) va ular displeylarni ulash uchun ishlatiladi. Umumiy turlarga HDMI, DisplayPort va DVI kiradi.
+
+Esda tutingki, ushbu elementlarning barchasi grafik tasvirlash va hisoblash vazifalari uchun optimal ishlashni ta'minlash uchun uyg'unlikda ishlashga mo'ljallangan. Ushbu elementlarning o'ziga xos soni va konfiguratsiyasi GPU modeliga va undan foydalanish maqsadiga qarab juda farq qilishi mumkin.
+
+Shuni ham aytib o'tish kerakki GPu mavzusini o'zi katta mavzu shuning uchun qisqa to'xtalib o'tdik ))
+
+![Image](/images/article/linux-de/24.jpg)
+
+![Image](/images/article/linux-de/25.jpg)
+
+<Callout type="info" emoji="">
+GPU ni yaxshiroq tushunish uchun animatsion videolar
+
+[Graphics Processing Unit (GPU)](https://youtu.be/bZdxcHEM-uc)
+
+[What's Inside Your GRAPHICS CARD?](https://youtu.be/SrAMBi_8tIk)
+
+[How does Computer Hardware Work 3D Animatsiya](https://youtu.be/d86ws7mQYIg?t=528)
+
+![Image](/images/article/linux-de/23.jpg)
+
+NVIDIA GeForce RTX 3070
+</Callout>
+
 `VRAM` Video Random Access Memory - bu GPU grafik tasvirlarni yaratish uchun zarur bo'lgan ma'lumotlarni saqlash uchun foydalanadigan xotira. Bunga teksturalar, vertex ma'lumotlari va yakuniy ko'rsatilgan tasvirni saqlaydigan frame bufferi kiradi. VRAM odatda tezroq va tizimning asosiy xotirasidan ajralib turadi, bu GPUga grafik maʼlumotlarga tez kirish va qayta ishlash imkonini beradi.
 
 `Monitorlar/Ekranlar(Monitors/Screens)` Bular aslida foydalanuvchiga ko'rsatilgan grafiklarni ko'rsatadigan chiqish qurilmalari( output device). Ular GPU dan yakuniy tasvir ma'lumotlarini oladi va uni ko'rsatilishi mumkin bo'lgan formatga aylantiradi. Monitorlar kichik mobil displeylardan tortib yuqori aniqlikdagi katta ekranlargacha bo'lgan har xil turdagi, o'lcham va resolutionlarda bo'lishi mumkin.
