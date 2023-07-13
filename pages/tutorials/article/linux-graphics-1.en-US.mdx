@@ -206,6 +206,36 @@ GPU va hardware layerining boshqa komponentlari bilan aloqa qilish uchun open-so
 
 Ushbu hardware layer Linux grafik stackining qolgan qismi uchun asos bo'lib xizmat qiladi,
 
+## Kernel layer
+
+Linux grafik stackidagi kernel layeri to'g'ridan-to'g'ri hardware layerii bilan interfeyslarni o'rnatadi va interfeyslar va abstraksiyalarni stackning yuqori darajadagi komponentlariga, masalan, window system yoki user-space applicationlarga ochib beradi. Ushbu kontekstda kernel layerining asosiy komponentlari quyidagilardan iborat:
+
+`Direct Rendering Manager (DRM)` Linux kernelining quyi tizimi(subsystem) bo'lib, zamonaviy video kartalarning GPU-lari bilan o'zaro bog'lanish uchun javobgardir va dasturlarning grafik qurilmalar bilan o'zaro ta'siri uchun umumiy API taqdim etadi. DRM user-space dasturlari buyruqlar va ma'lumotlarni GPUga yuborish va displeyning rejim sozlamalarini sozlash kabi operatsiyalarni bajarish uchun foydalanishi mumkin bo'lgan APIni ochib beradi. DRM birinchi marta X Server Direct Rendering Infratuzilmasining kernel-space komponenti sifatida ishlab chiqilgan , ammo o'shandan beri u Wayland kabi boshqa grafik stack alternativlari va `SDL2 `va `Kodi` kabi mustaqil ilovalar va kutubxonalar tomonidan qo'llanila boshlandi.
+
+User-space dasturlar DRM API-dan GPU-ga hardware-accelerator 3D renderlash va video dekodlash(video decoding), shuningdek, `GPGPU` hisoblashlarini buyurish uchun foydalanishi mumkin. DRM dastlab `XFree86` da Direct Rendering Infrastructure (DRI) qo'llab-quvvatlash uchun ishlab chiqilgan, ammo keyinchalik turli xil grafik funksiyalarni boshqarish uchun kengaytirilgan.
+
+DRM bir necha qismlardan iborat
+
+`Kernel Component` Bu DRM ning asosiy qismidir. U user-space applicationlar uchun grafik qurilmalar bilan o'zaro ishlash uchun API taqdim etadi. Kernel komponenti xotirani boshqarish(memory management), interrupt handling va DMA (Direct Memory Access) kabi narsalar uchun javobgardir. DRM ning ushbu qismi GPU bajarishi kerak bo'lgan vazifalar ro'yxati bo'lgan buyruqlar navbatini ham boshqaradi.
+
+`DRM qurilma drayverlari` Bular har bir grafik kartaga xos bo'lib, hardwarening low-leveldagi tafsilotlarini boshqarish uchun javobgardir. Ular odatda hardware ishlab chiqaruvchilari tomonidan yoziladi, garchi open-source versiyalari ham mavjud.
+
+`Graphics Execution Manager (GEM)` Bu GPU xotirasini boshqarish uchun API. U Intel tomonidan eski `TTM` (Translation Table Maps) boshqaruvchisini almashtirish uchun ishlab chiqilgan va hozirda ko'pgina yirik GPU ishlab chiqaruvchilari tomonidan foydalaniladi. GEM xotirani taqsimlash, almashtirish va GPU uchun ishlov berish bilan shug'ullanadi, shuningdek, turli jarayonlar o'rtasida xotira buferlarini almashish mexanizmini taqdim etadi.
+
+`Kernel Mode Setting (KMS)` Bu kernel modeni sozlash imkonini beruvchi DRM xususiyatidir. Rejimni sozlash(mode setting) - bu video kartaning chiqish formatini (masalan, resolution,, color depth va refresh rate) sozlash jarayoni. Kernelda handling mode settingni sozlash bir qator afzalliklarga ega, masalan, xatolarni yanada ishonchli tiklash va foydalanuvchi interfeyslari o'rtasida yumshoqroq o'tish.
+
+`DMA-BUF` Bu turli drayverlarga bir xil xotira buferini almashish imkonini beruvchi bufer almashish mexanizmi. Bu, ayniqsa, murakkab grafik sozlamalari uchun foydalidir, bu yerda ma'lumotlar bir nechta GPU o'rtasida yoki GPU va video dekoderlar yoki displey kontrollerlari kabi boshqa qurilmalar o'rtasida almashish kerak bo'lishi mumkin.
+
+`DRM Driver` GPU ning har bir turi uchun ushbu GPU bilan qanday bog'lanishni biladigan DRM drayveri mavjud. DRM drayveri user-space applicationlar tomonidan taqdim etilgan umumiy buyruqlar va ma'lumotlarni GPU tomonidan talab qilinadigan maxsus formatga tarjima qiladi. Ko'p DRM drayverlari mavjud bo'lib, ularning har biri ma'lum bir GPU yoki GPU oilasiga moslashtirilgan.
+
+`User-space Componet` Bu DRM ning applicationlar bilan oʻzaro aloqada boʻlgan qismidir. User-space komponenti applicationlar DRM kernel komponenti orqali GPUga buyruqlar va ma'lumotlarni yuborish uchun foydalanishi mumkin bo'lgan kutubxonani (libdrm) taqdim etadi. Bu ilovalarga grafik hardwaredan qurilma qanday ishlashini tafsilotlarini bilmasdan foydalanish imkonini beradi.
+
+`Direct Rendering Infrastructure (DRI)` Bu DRM tizimining bir qismi bo'lib, u user-space applicationlarga X serverini chetlab o'tish va grafik hardwarega bevosita kirish imkonini beradi. Bu 3D ilovalari ish faoliyatini sezilarli darajada yaxshilashi mumkin.
+
+DRM ekranda grafiklarni ko'rsatish bilan bog'liq vazifalarni boshqarishda asosiy rol o'ynaydi, grafik qurilmaning murakkabligini mavhumlashtiradi va Linux grafik stackidagi yuqori qatlamlarga asosiy grafik uskunasining o'ziga xos xususiyatlaridan tashvishlanmaslik imkonini beradi.
+
+Texnik darajada, DRM user-space applicationlarga `ioctl` sstem callari orqali buyruqlarni GPUga yuborishga ruxsat berish orqali erishadi. DRM drayveri ushbu buyruqlarni GPUdagi buyruqlar navbatlariga(command queue) surishdan oldin tasdiqlaydi. Zamonaviy GPU-larda bir nechta buyruqlar navbati(multiple command queue) bir vaqtning o'zida bir nechta vazifalarni bajarish uchun ishlatilishi mumkin, bu esa GPU-dan umumiy foydalanish va unumdorlikni oshiradi.
+
 ## Display Server
 
 Linuxda Displey serverlari foydalanuvchining grafik interfeysida(user interface) asosiy rol o'ynaydi, ular user applicationlari va kompyuterning hardware vositalari, asosan, grafik qurilmalari o'rtasida vositachi vazifasini bajaradi. Displey serverining vazifalari klaviatura va sichqoncha kabi kiritish qurilmalarini boshqarish, qaysi oyna yuqorida bo'lishini hal qilish, tizim resurslarini taqsimlash va oyna mazmunini(window content) ekranga ko'rsatishni o'z ichiga oladi. Displey serverlarini tushunish juda muhim, chunki u Linux grafik stackidagi asosiy komponentlardan biridir. Displey serveri o'z clienlari bilan tarmoqda shaffof yoki oddiygina tarmoqqa ulanishi mumkin bo'lgan displey server protokoli, aloqa protokoli orqali bog'lanadi. Displey serveri har qanday grafik foydalanuvchi interfeysida, xususan, windowing systemida asosiy komponent hisoblanadi. Mustaqil displey serverining server/client munosabatlari bir oz ziddir, chunki "server" odatda katta, uzoq joylashgan machine sifatida tasavvur qilinadi, ammo mustaqil "displey server" kichik, mahalliy(local) tizim bo'lib, ko'pchilik clientlar katta markaziy machinenada bajariiladi. Tushuntirish shundan iboratki, displey serveri displey va kiritish qurilmalari(input device) xizmatlarini taqdim etadi.
@@ -279,35 +309,6 @@ KMSning texnik tomonini yaxshiroq ko'rib chiqamiz
 `Boshqa komponentlar bilan o'zaro ta'sir` KMS Linux grafik stackining boshqa qismlari, masalan, Mesa (3D grafikalar uchun umumiy interfeysni ta'minlovchi user-space grafik kutubxonasi) va X server yoki Wayland (kirish va oynalarni boshqarish uchun mas'ul) bilan birgalikda ishlaydi.
 
 KMS dan foydalanish va uning davom etayotgan takomillashtirilishi displey miltillashini kamaytirish va zamonaviy grafik hardware va funksiyalarni yaxshiroq qo'llab-quvvatlash orqali Linuxda foydalanuvchi tajribasini sezilarli darajada yaxshiladi.
-
-
-## Direct Rendering Manager (DRM)
-
-Direct Rendering Manager (DRM) Linux kernelining quyi tizimi(subsystem) bo'lib, zamonaviy video kartalarning GPU-lari bilan o'zaro bog'lanish uchun javobgardir va dasturlarning grafik qurilmalar bilan o'zaro ta'siri uchun umumiy API taqdim etadi. DRM user-space dasturlari buyruqlar va ma'lumotlarni GPUga yuborish va displeyning rejim sozlamalarini sozlash kabi operatsiyalarni bajarish uchun foydalanishi mumkin bo'lgan APIni ochib beradi. DRM birinchi marta X Server Direct Rendering Infratuzilmasining kernel-space komponenti sifatida ishlab chiqilgan , ammo o'shandan beri u Wayland kabi boshqa grafik stack alternativlari va `SDL2 `va `Kodi` kabi mustaqil ilovalar va kutubxonalar tomonidan qo'llanila boshlandi.
-
-User-space dasturlar DRM API-dan GPU-ga hardware-accelerator 3D renderlash va video dekodlash(video decoding), shuningdek, `GPGPU` hisoblashlarini buyurish uchun foydalanishi mumkin. DRM dastlab `XFree86` da Direct Rendering Infrastructure (DRI) qo'llab-quvvatlash uchun ishlab chiqilgan, ammo keyinchalik turli xil grafik funksiyalarni boshqarish uchun kengaytirilgan.
-
-DRM bir necha qismlardan iborat
-
-`Kernel Component` Bu DRM ning asosiy qismidir. U user-space applicationlar uchun grafik qurilmalar bilan o'zaro ishlash uchun API taqdim etadi. Kernel komponenti xotirani boshqarish(memory management), interrupt handling va DMA (Direct Memory Access) kabi narsalar uchun javobgardir. DRM ning ushbu qismi GPU bajarishi kerak bo'lgan vazifalar ro'yxati bo'lgan buyruqlar navbatini ham boshqaradi.
-
-`DRM qurilma drayverlari` Bular har bir grafik kartaga xos bo'lib, hardwarening low-leveldagi tafsilotlarini boshqarish uchun javobgardir. Ular odatda hardware ishlab chiqaruvchilari tomonidan yoziladi, garchi open-source versiyalari ham mavjud.
-
-`Graphics Execution Manager (GEM)` Bu GPU xotirasini boshqarish uchun API. U Intel tomonidan eski `TTM` (Translation Table Maps) boshqaruvchisini almashtirish uchun ishlab chiqilgan va hozirda ko'pgina yirik GPU ishlab chiqaruvchilari tomonidan foydalaniladi. GEM xotirani taqsimlash, almashtirish va GPU uchun ishlov berish bilan shug'ullanadi, shuningdek, turli jarayonlar o'rtasida xotira buferlarini almashish mexanizmini taqdim etadi.
-
-`Kernel Mode Setting (KMS)` Bu kernel modeni sozlash imkonini beruvchi DRM xususiyatidir. Rejimni sozlash(mode setting) - bu video kartaning chiqish formatini (masalan, resolution,, color depth va refresh rate) sozlash jarayoni. Kernelda handling mode settingni sozlash bir qator afzalliklarga ega, masalan, xatolarni yanada ishonchli tiklash va foydalanuvchi interfeyslari o'rtasida yumshoqroq o'tish.
-
-`DMA-BUF` Bu turli drayverlarga bir xil xotira buferini almashish imkonini beruvchi bufer almashish mexanizmi. Bu, ayniqsa, murakkab grafik sozlamalari uchun foydalidir, bu yerda ma'lumotlar bir nechta GPU o'rtasida yoki GPU va video dekoderlar yoki displey kontrollerlari kabi boshqa qurilmalar o'rtasida almashish kerak bo'lishi mumkin.
-
-`DRM Driver` GPU ning har bir turi uchun ushbu GPU bilan qanday bog'lanishni biladigan DRM drayveri mavjud. DRM drayveri user-space applicationlar tomonidan taqdim etilgan umumiy buyruqlar va ma'lumotlarni GPU tomonidan talab qilinadigan maxsus formatga tarjima qiladi. Ko'p DRM drayverlari mavjud bo'lib, ularning har biri ma'lum bir GPU yoki GPU oilasiga moslashtirilgan.
-
-`User-space Componet` Bu DRM ning applicationlar bilan oʻzaro aloqada boʻlgan qismidir. User-space komponenti applicationlar DRM kernel komponenti orqali GPUga buyruqlar va ma'lumotlarni yuborish uchun foydalanishi mumkin bo'lgan kutubxonani (libdrm) taqdim etadi. Bu ilovalarga grafik hardwaredan qurilma qanday ishlashini tafsilotlarini bilmasdan foydalanish imkonini beradi.
-
-`Direct Rendering Infrastructure (DRI)` Bu DRM tizimining bir qismi bo'lib, u user-space applicationlarga X serverini chetlab o'tish va grafik hardwarega bevosita kirish imkonini beradi. Bu 3D ilovalari ish faoliyatini sezilarli darajada yaxshilashi mumkin.
-
-DRM ekranda grafiklarni ko'rsatish bilan bog'liq vazifalarni boshqarishda asosiy rol o'ynaydi, grafik qurilmaning murakkabligini mavhumlashtiradi va Linux grafik stackidagi yuqori qatlamlarga asosiy grafik uskunasining o'ziga xos xususiyatlaridan tashvishlanmaslik imkonini beradi.
-
-Texnik darajada, DRM user-space applicationlarga `ioctl` sstem callari orqali buyruqlarni GPUga yuborishga ruxsat berish orqali erishadi. DRM drayveri ushbu buyruqlarni GPUdagi buyruqlar navbatlariga(command queue) surishdan oldin tasdiqlaydi. Zamonaviy GPU-larda bir nechta buyruqlar navbati(multiple command queue) bir vaqtning o'zida bir nechta vazifalarni bajarish uchun ishlatilishi mumkin, bu esa GPU-dan umumiy foydalanish va unumdorlikni oshiradi.
 
 ## X Window System (X11)
 
