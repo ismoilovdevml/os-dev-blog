@@ -226,6 +226,32 @@ DRM ekranda grafiklarni ko'rsatish bilan bog'liq vazifalarni boshqarishda asosiy
 
 Texnik darajada, DRM user-space applicationlarga `ioctl` sstem callari orqali buyruqlarni GPUga yuborishga ruxsat berish orqali erishadi. DRM drayveri ushbu buyruqlarni GPUdagi buyruqlar navbatlariga(command queue) surishdan oldin tasdiqlaydi. Zamonaviy GPU-larda bir nechta buyruqlar navbati(multiple command queue) bir vaqtning o'zida bir nechta vazifalarni bajarish uchun ishlatilishi mumkin, bu esa GPU-dan umumiy foydalanish va unumdorlikni oshiradi.
 
+#### DRM/DRI
+
+Direct Rendering Infrastructure - bu X clienlariga grafik qurilma bilan to'g'ridan-to'g'ri gaplashish imkonini beruvchi yangi arxitektura. DRI-ni implement qilish grafik stackning turli qismlariga, jumladan X serveriga, kernelga va turli xil clientlar kutubxonalariga o'zgartirishlar kiritishni talab qildi.
+
+DRI atamasi odatda to'liq arxitekturani nazarda tutsa ham, u ko'pincha uning faqat X server bilan  applicationlarning o'zaro ta'sirini o'z ichiga olgan ma'lum bir qismiga ishora qilish uchun ishlatiladi, shuning uchun internetda ushbu ma'lumot haqida o'qiyotganingizda ushbu ikki tomonlama ma'noga e'tibor bering.
+DRI ning yana bir muhim qismi bu Direct Rendering Manager (DRM) dir. Bu DRI arxitekturasining kernel tomoni. Bu yerda kernel hardware blokirovkasi, kirish sinxronizatsiyasi, video xotira va boshqalar kabi nozik jihatlarni boshqaradi. DRM shuningdek, foydalanuvchilarga zamonaviy grafik protsessorlar uchun mos formatda buyruqlar va ma'lumotlarni yuborish uchun foydalanishi mumkin bo'lgan API bilan ta'minlaydi, bu esa foydalanuvchilarga grafik qurilmalar bilan samarali muloqot qilish imkonini beradi.
+
+E'tibor bering, bularning ko'pchiligi maqsadli uskuna uchun maxsus bajarilishi kerak, shuning uchun har bir GPU uchun turli xil DRM drayverlari mavjud.
+
+OpenGL ham, window systemi ham ekranda ob'ektlarni chizish bilan bog'liq qismlarni amalga oshiradi. Shuning uchun ular Linux kerneli Direct Rendering Manager (DRM) orqali boshqaradigan card-specific instructionlar to'plamini ishlab chiqaradi.
+
+Linuxda bizda `libdrm` mavjud bo'lib, bu operatsion tizimda DRMga kirishni osonlashtiradi. DRM grafik ob'ektlar uchun xotira ajratish va kerakli buyruqlar va teksturalarni to'ldirish uchun umumiy tizim `ioctls`to'plamidan foydalanadi. ioctl tizimi - bu qurilmaga xos(device-specific) kiritish(input) va chiqarish(output) operatsiyalari bilan shug'ullanadigan system callning(tizim chaqiruv) maxsus turi. Bunday holda, u video kartani kiritish va chiqarish operatsiyalari bilan shug'ullanadi.
+
+Shunday qilib, biz grafik dasturni ishga tushirganimizda, u OpenGL drayverini yuklaydi - masalan, Mesa. Driver, o'z navbatida, ioctl orqali kernel bilan to'g'ridan-to'g'ri gaplashishga imkon beruvchi libdrm-ni yuklaydi.
+
+Demak, bu jarayon grafik dastur ishlayotgan ekan davom etadi. Biroq, bizga X Server kabi window system,iga nima sodir bo'layotganini bilish imkonini beradigan usul kerak bo'lib, u o'zini sinxronlashi va yangilashi mumkin. Ushbu sinxronizatsiya jarayoni Direct Rendering Infrastructure (DRI) sifatida tanilgan.
+
+<Callout type="info" emoji="">
+![Image](/images/article/linux-de/29.jpg)
+To'g'ridan-to'g'ri(Direct Rendering) renderlash OpenGL bilan
+
+![Image](/images/article/linux-de/28.png)
+</Callout>
+
+DRI/DRM foydalanuvchi dasturlariga grafik qurilmalarga bevosita samarali va xavfsiz kirish imkonini beruvchi qurilish bloklarini taqdim etadi, ammo OpenGL-dan foydalanish uchun bizga DRI/DRM tomonidan taqdim etilgan infratuzilmadan foydalanib, OpenGL-ni amalga oshiradigan boshqa dasturiy ta'minot kerak bo'ladi. X server talablariga rioya qilgan holda API.
+
 `Graphics Execution Manager (GEM)` 
 
 Video xotira hajmining o'sishi va OpenGL kabi grafik API-larning o'sib borayotgan murakkabligi tufayli har bir kontekstni almashtirishda grafik karta holatini qayta ishga tushirish strategiyasi unumdorlik jihatidan juda qimmatga tushdi. Bundan tashqari, zamonaviy Linux ish stollari ekrandan tashqari buferlarni kompozitsion menejer bilan almashishning optimal usuliga muhtoj edi. Ushbu talablar kernel ichidagi grafik buferlarni boshqarishning yangi usullarini ishlab chiqishga olib keldi. Ushbu usullardan biri sifatida `Graphics Execution Manager (GEM)` paydo bo'ldi. Graphics Execution Manager (GEM) DRM quyi tizimidagi xotira menejeri, u GPU xotirasini boshqarish uchun javobgardir. U GPU xotirasidan foydalanishning murakkabliklarini, including c, mapping(xaritalash) va swappingni boshqaradi. GEM GPU xotirasi bilan ishlash uchun standart interfeysni taqdim etadi, bu user-space applicationlarga GPUdan optimal foydalanish imkonini beradi.
@@ -262,131 +288,7 @@ KMSning texnik tomonini yaxshiroq ko'rib chiqamiz
 
 KMS dan foydalanish va uning davom etayotgan takomillashtirilishi displey miltillashini kamaytirish va zamonaviy grafik hardware va funksiyalarni yaxshiroq qo'llab-quvvatlash orqali Linuxda foydalanuvchi tajribasini sezilarli darajada yaxshiladi.
 
-## Display Server
+## Graphics Library Layer
 
-Linuxda Displey serverlari foydalanuvchining grafik interfeysida(user interface) asosiy rol o'ynaydi, ular user applicationlari va kompyuterning hardware vositalari, asosan, grafik qurilmalari o'rtasida vositachi vazifasini bajaradi. Displey serverining vazifalari klaviatura va sichqoncha kabi kiritish qurilmalarini boshqarish, qaysi oyna yuqorida bo'lishini hal qilish, tizim resurslarini taqsimlash va oyna mazmunini(window content) ekranga ko'rsatishni o'z ichiga oladi. Displey serverlarini tushunish juda muhim, chunki u Linux grafik stackidagi asosiy komponentlardan biridir. Displey serveri o'z clienlari bilan tarmoqda shaffof yoki oddiygina tarmoqqa ulanishi mumkin bo'lgan displey server protokoli, aloqa protokoli orqali bog'lanadi. Displey serveri har qanday grafik foydalanuvchi interfeysida, xususan, windowing systemida asosiy komponent hisoblanadi. Mustaqil displey serverining server/client munosabatlari bir oz ziddir, chunki "server" odatda katta, uzoq joylashgan machine sifatida tasavvur qilinadi, ammo mustaqil "displey server" kichik, mahalliy(local) tizim bo'lib, ko'pchilik clientlar katta markaziy machinenada bajariiladi. Tushuntirish shundan iboratki, displey serveri displey va kiritish qurilmalari(input device) xizmatlarini taqdim etadi.
-
-### Display server communications protocols
-
-## X11
-
-Displey serveriga misol sifatida kernelning tepasida ishlaydigan `X.Org` serveridir (odatda Unix-ga o'xshash kernel, masalan, Linux yoki BSD). U foydalanuvchi ma'lumotlarini oladi (masalan, Linux-dagi evdev-dan) va uni clientlaridan biriga uzatadi. Displey serveri o'z clientlaridan ma'lumotlarni ham oladi; u ma'lumotlarni qayta ishlaydi, birlashtirishni amalga oshiradi va Linuxda ma'lumotlarni uchta kernel komponentlaridan biriga - DRM, gem yoki KMS drayveriga uzatadi. Komponent ma'lumotlarni framebufferga yozadi va framebufferning mazmuni ulangan ekranga uzatiladi va ko'rsatiladi. X `GLX` ga tayanadi.
-
-GLX ("OpenGL Extension to X Window System" ning boshlang'ich belgisi) X Window System kernel protokolining kengaytmasi(extension) bo'lib, OpenGL va X Window System o'rtasidagi interfeysni hamda OpenGLning o'zi uchun kengaytmalarni ta'minlaydi. Bu OpenGL-dan foydalanishni xohlovchi dasturlarga buni X Window System tomonidan taqdim etilgan windowda amalga oshirish imkonini beradi. GLX ikkita "state" ni ajratadi: indirect state(bilvosita state) va direct state(bevosita state).
-
-Displey serveri kontseptsiyasining amalga oshirilishidan biri bu X Window System, xususan uning amalda qo'llanilgan versiyasi - X.Org Server va Xlib va XCB clientlar kutubxonalari. X.Org serveri displey serveridir, lekin joriy tatbiqida u kompozitsiyani bajarish uchun ikkinchi dasturga, ya'ni compositing window managerga tayanadi. Misollar Mutter yoki KWin. X11 displey server protokolini implement qiladigan displey serverlarining diqqatga sazovor namunalari `X.Org Server`, `XFree86`, `XQuartz` va `Cygwin/X`, X11 displey server protokolini implement qiluvchi clientlar kutubxonalari esa Xlib va XCB hisoblanadi.
-
-![Image](/images/article/linux-de/19.png)
-
-<Callout type="info" emoji="">
-Rasm: X.Org Server o'z clientlari bilan muloqot qiladi, masalan. Amarok, X11 protokoli orqali
-</Callout>
-
-## Wayland
-
-Wayland displey server protokolini impplement qiladigan displey serverlari Wayland kompozitorlari deb ataladi. Har qanday displey serveri singari, Wayland kompozitori ham o'z clientlari uchun kirish va chiqishni boshqarish uchun javobgardir va X11 dan farqli o'laroq - qo'shimcha ravishda kompozitsiya uchun. Masalan, `Weston`, `Mutter`, `KWin` yoki `Enlightenment`.
-
-Wayland kompozitorlari Wayland displey serveri protokoli orqali Wayland clientlari bilan bog'lanadi. Ushbu protokol clientlar EGL rendering API yordamida to'g'ridan-to'g'ri ma'lumotlarni framebufferga yozishi mumkinligini belgilaydi. Displey serveri hali ham qaysi oynaning tepasida ekanligini va shuning uchun foydalanuvchiga ko'rinadiganligini hal qiladi, shuningdek, evdev-dan o'z clientlariga kirish qurilmalariga tegishli ma'lumotlarni uzatish uchun javobgardir.
-
-Wayland ma'lum darajada Fedora kabi ba'zi Linux ish stoli(desktop) distributivlarida qo'llaniladi. U mobil kompyuterlar uchun ham juda mos keladi va masalan, smartfon va planshetlarga yo'naltirilgan `Tizen`, `Sailfish OS` va `AsteroidS` loyihalari tomonidan qabul qilingan.
-
-Wayland dasturi MIT litsenziyasi, libwayland-client va libwayland-server kutubxonalari(libraray) ostida mavjud.
-ChromeOS-ga Wayland yordamini qo'shish bo'yicha ishlar davom etmoqda.
-
-![Image](/images/article/linux-de/20.jpg)
-
-<Callout type="info" emoji="">
-Rasm: Wayland displey server protokoli
-</Callout>
-
-## Mir
-
-Mir displey serveri o'zining Mir displey server protokoli bilan birga keladi, bu X11 va Wayland tomonidan qo'llaniladigan protokollardan farq qiladi. Mir qo'shimcha ravishda X11 protokolini qo'llab-quvvatlaydi. U`Canonical` tomonidan ishlab chiqilgan va Ubuntu uchun tanlangan displey serveri bo'lishga mo'ljallangan edi. Mir Canonical kompaniyasining X.org va Waylandni chetlab o'tib, Ubuntu uchun noldan boshlab displey serverini yaratishga urinishi edi. Maqsad, ish stolidan tortib telefonlargacha bo'lgan qurilmalarda ishlaydigan tizim yaratish edi. Biroq, turli omillar tufayli Canonical o'z e'tiborini Waylandga qaratdi. 2017 yildan boshlab u Ubuntu desktop editionlari uchun Wayland displey serveri bilan almashtirildi.
-
-GPLv3 ostida mavjud Mir displey serveri, libmir-server va libmir-mijoz kutubxonalarining ilovalari mavjud.
-
-![Image](/images/article/linux-de/20.png)
-
-## X Window System (X11)
-
-X Window System (X11 yoki oddiygina X) - bu Unix-ga o'xshash operatsion tizimlarda keng tarqalgan bitmapli displeylar uchun windowing system.
-
-X GUI environment uchun asosiy asosni taqdim etadi: displey qurilmasida oynalarni chizish va ko'chirish, sichqoncha va klaviatura bilan o'zaro ishlash. X foydalanuvchi interfeysini majburlamaydi - bu alohida dasturlar tomonidan boshqariladi. Shunday qilib, X-ga asoslangan muhitlarning vizual uslubi juda farq qiladi; turli dasturlar tubdan farqli interfeyslarni taqdim etishi mumkin.
-
-X 1984 yilda Massachusetts Institute of Technology (MIT) Athena loyihasining bir qismi sifatida paydo bo'lgan. X protokoli 1987 yil sentyabridan beri 11-versiyada (shuning uchun "X11") mavjud.
-X.Org Foundation MIT Litsenziyasi va shunga o'xshash ruxsat beruvchi litsenziyalar ostida bepul va open-source dasturiy ta'minot sifatida mavjud bo'lgan X.Org Server joriy ma'lumotnomasi bilan X loyihasini boshqaradi.
-
-X Window System (X11)ning turli tarkibiy qismlari va tushunchalari
-
-`X Server` X server X Window systemning asosiy komponentidir. U client dasturlari va tizim hardware bilan aloqa qiladi. Server graphical output (window) uchun so'rovlarni(requestlarni) qabul qiladi va foydalanuvchi ma'lumotlarini (klaviatura, sichqoncha yoki sensorli ekrandan) qaytarib yuboradi. Serverning funksionalligi displeyni boshqarish, kiritilgan ma'lumotlarni qayta ishlash va clientlar foydalanishi mumkin bo'lgan resurslarni boshqarishni o'z ichiga oladi.
-
-`X Client` X clientlari X Window Systemda ko'rsatiladigan amaliy dasturlardir. Clientlar server bilan oynalar(window) yaratish, ularni chizish, input eventlarini qabul qilish (klavishlar yoki sichqonchani bosish kabi) va boshqalar bilan bog'lanadi. E'tibor bering, X terminologiyasida client dastur, server esa displeydir; bu siz kutgan narsaning aksi.
-
-`X protokoli` X protokoli X clientlari va X server o'rtasida ishlatiladigan aloqa protokoli. Protokol mijozlardan serverga buyruqlar yuborish (oyna yaratish, grafiklarni chizish va h.k.) va serverdan input eventlarini clientlarga yuborish uchun ishlatiladi. X protokoli tarmoq uchun shaffofdir(network-transparent), ya'ni u tarmoq ulanishlari orqali ishlashi mumkin, bu esa masofaviy grafik interfeyslarga imkon beradi.
-
-`Xlib va XCB kutubxonalari` Xlib (X Library) va XCB (X protocol C-language Binding) applicationlar (clientlar) uchun X Window Systemdan foydalanish funksiyalarini taʼminlovchi kutubxonalardir. Bu kutubxonalar X protokoli tafsilotlari bilan ishlaydi, bu esa applicationlar uchun X dan foydalanishni osonlashtiradi. XCB Xlib o‘rnini bosish uchun mo‘ljallangan yangiroq kutubxona bo‘lib, yaxshilangan unumdorlikni va X protokoliga quyi darajadagi(lower-level) kirishni taklif qiladi.
-
-`Window Manager` Window Manager(Oyna menejeri) X Window Systemidagi oynalarning ko'rinishi va joylashishini boshqaruvchi X clientdir. U title bar, minimize/maximize tugmalari, oʻlchamini oʻzgartirish mumkin boʻlgan oynalar va boshqalar kabi xususiyatlarni taqdim etishi mumkin. Window Manageri oynalarni ko'chirish va o'lchamlarini o'zgartirish kabi operatsiyalarni bajarish uchun javobgardir va u boshqalar oldida qaysi oynalar ko'rsatilishi polisini belgilaydi.
-
-`Display Manager` Display Manageri grafik kirish(login) menejeri bo'lib, u X serverida xuddi shu yoki boshqa kompyuterdan seansni boshlaydi. Umumiy misollar orasida `LightDM`, `GDM` va `XDM` mavjud.
-
-`Compositing Manager` Kompozitlash menejeri ixtiyoriy komponent bo'lib, u 3D animatsiyalari, shaffoflik, soyalar va boshqalar kabi ilg'or oyna effektlarini ta'minlaydi. Kompozitlash menejeri barcha renderlashni ekrandan tashqari buferlarga yo'naltirish orqali ishlaydi, so'ngra yakuniy natijani ishlab chiqarish uchun har bir oynaning buferini ekranga birlashtiradi. E'tiborli misollar orasida `Compiz` va `xcompmgr` mavjud.
-
-`Desktop Environment` Desktop Environment tizimdan foydalanish uchun to'liq grafik foydalanuvchi interfeysini ta'minlaydi. U odatda window manager, file manager, menyu va ishlaydigan ilovalar ro'yxati, utilitalar va toollar va boshqalarga ega panellarni o'z ichiga oladi. Desktop Environmentlariga misol qilib `GNOME`, `KDE`, `XFCE` va `LXDE` va boshqalar kiradi.
-
-X Window System yuqori darajada sozlanishi va turli xil hardware va dasturiy ta'minot bilan ishlatilishi mumkin. Unix-ga o'xshash operatsion tizimlarda grafik ilovalarni ishlab chiqishning standartlashtirilgan usulini taqdim etadi. Biroq, Waylandning samaradorligi va soddaligi oshgani uchun ba'zi distribyutorlarda u asta-sekin yangi Wayland protokoli bilan almashtirilmoqda.
-
-## Mesa3D
-
-Mesa, shuningdek, `Mesa3D` va `The Mesa 3D Graphics Library` deb ataladi, `OpenGL`, `Vulkan` va boshqa grafik API spetsifikatsiyalarining open-source implementationi. Mesa ushbu spetsifikatsiyalarni vendor-specific grafik qurlma drayverlariga tarjima qiladi.  Uning eng muhim foydalanuvchilari asosan Intel va AMD tomonidan o'zlarining tegishli qurilmalari uchun ishlab chiqilgan va moliyalashtirilgan ikkita grafik drayverdir (AMD o'zlarining Mesa drayverlarini Radeon va RadeonSI-ni eskirgan AMD Catalyst orqali targ'ib qiladi va Intel faqat Mesa drayverini qo'llab-quvvatlaydi). Xususiy grafik drayverlar (masalan, Nvidia GeForce drayveri va Catalyst) barcha Mesa-ning o'rnini bosadi va grafik API-ni o'z amalga oshirishini ta'minlaydi. `Nouveau` deb nomlangan Mesa Nvidia drayverini yozish bo'yicha op-souce harakat asosan hamjamiyat tomonidan ishlab chiqilgan. O'yinlar kabi 3D ilovalardan tashqari, zamonaviy displey serverlari (X.org, `Glamour` yoki `Wayland Weston`) `OpenGL/EGL`dan foydalanadi; shuning uchun barcha grafikalar odatda Mesa orqali o'tadi. 
-
-![Image](/images/article/linux-de/15.jpg)
-
-Mesa `freedesktop.org` saytida joylashgan va `1993 yil avgust` oyida loyihada hali ham faol bo'lgan `Brayan Pol` tomonidan boshlangan. Keyinchalik Mesa keng tarqalgan bo'lib qabul qilindi va hozirda butun dunyo bo'ylab turli shaxslar va korporatsiyalarning, shu jumladan OpenGL spetsifikatsiyasini boshqaruvchi Khronos Group grafik qurilmalari ishlab chiqaruvchilarining ko'plab hissalarini o'z ichiga oladi. Linux uchun rivojlanish qisman crowdfunding(Crowdfunding - bu loyihalar va biznesni moliyalashtirish uchun pul yig'ish usuli.) tomonidan ham amalga oshirildi.
-
-![Image](/images/article/linux-de/18.jpg)
-
-Mesa bir nechta renderlash API-larini qo'llab-quvvatlaydi, jumladan:
-
-`OpenGL` Bu 2D va 3D vektor grafikalarini ko'rsatish uchun cross-language(tillararo), cross-platform(platformalararo) API. Mesa OpenGL spetsifikatsiyasining bir nechta versiyalarini to'liq amalga oshirishni ta'minlaydi.
-
-`Vulkan` Bu Khronos Groupning yangiroq, low-overhead grafik API (u ham OpenGLni boshqaradi). Vulkan OpenGL bilan solishtirganda GPU-ni to'g'ridan-to'g'ri boshqarishni va protsessorni kamroq yuklashni taklif qiladi. Mesa Vulkan 1.0 spetsifikatsiyasining to'liq amalga oshirilishini ta'minlaydi.
-
-`OpenCL` Bu turli xil platformalarda, jumladan CPU, GPU, DSP va boshqalarda bajariladigan dasturlarni yozish uchun asosdir. Mesa-ning OpenCL-ni qo'llab-quvvatlashi OpenGL va Vulkan kabi to'liq bo'lmasa-da, u hali ham turli xil hisoblash ilovalari uchun ishlatilishi mumkin.
-
-Ichkarida Mesa ikkita asosiy komponentga ega:
-
-`State Trackers` Bular Mesa komponentlari boʻlib, ular ommaga moʻljallangan grafik API-larni (masalan, OpenGL yoki Vulkan) amalga oshiradi. Ular API ning joriy holatini (masalan, joriy rang, transformatsiya matritsasi va h.k.) kuzatib boradi va API callarini qurilmadan mustaqil oraliq ko‘rinishga tarjima qiladi.
-
-`Gallium3D` Bu abstraction layer va 3D renderlash uchun yagona, drayverga bog'liq bo'lmagan APIni(driver-independent) ta'minlovchi yordamchi utilita(helper utilitie). Bu turli hardware drayverlariga umumiy kodni almashish imkonini beradi va yangi hardware yoki API uchun qo'llab-quvvatlashni osonlashtiradi. Gallium3D dan foydalanadigan drayverlar odatda an'anaviy drayverlarga qaraganda sodda va qisqaroq.
-
-Mesa shader kompilyatsiyasi uchun ba'zi drayverlarda LLVM dan foydalanadi. Shaderlar GPUda ishlaydigan kichik dasturlar bo'lib, ular tepaliklarni qayta ishlash(vertex processing), piksellarni qayta ishlash(pixel processing) va hokazolar uchun ishlatiladi. LLVM modulli va qayta foydalanish mumkin bo'lgan kompilyator(reusable compiler) va toolchain texnologiyalari to'plamidir va Mesa ushbu shader dasturlarini GPUga yuborishdan oldin optimallashtirish uchun foydalanadi.
-
-Mesa-ning asosiy vazifasi dastur tomonidan amalga oshirilgan API callarini GPU hardare tushunadigan buyruqlarga tarjima qilish, turli hardwarelar o'rtasidagi farqlarni boshqarish va dasturiy ta'minot ishlab chiqaruvchilari uchun yagona interfeysni ta'minlashdir.
-
-![Image](/images/article/linux-de/17.jpg)
-
-
-## Wayland
-
-Wayland - bu displey serveri va uning clientlari o'rtasidagi aloqani, shuningdek, ushbu protokolning C kutubxonasini implementationi belgilaydigan communication protocoli. Wayland protokolidan foydalanadigan displey serveri Wayland kompozitori deb ataladi, chunki u qo'shimcha ravishda kompozitsion window manager. vazifasini bajaradi. Wayland dastlab `[Kristian Høgsberg](https://github.com/krh)` boshchiligidagi bir guruh ko'ngillilar tomonidan `X Window` tizimini Linux va boshqa Unix-ga o'xshash  operatsion tizimlar uchun zamonaviy, xavfsiz va sodda windowing systemi bilan almashtirish maqsadida bepul va [open-source](https://github.com/krh/wayland) jamoa tomonidan ishlab chiqilgan. Loyihaning manba kodi MIT License, ruxsat beruvchi bepul dasturiy ta'minot litsenziyasi shartlariga muvofiq nashr etiladi. 
-
-Wayland Display Server loyihasi 2008 yilda Red Hat ishlab dasturchisi [Kristian Høgsberg](https://github.com/krh) tomonidan boshlangan.
-
-
-Kompozitor Kernel Mode Setting (KMS) va evdev input qurilmalari orqali to'g'ridan-to'g'ri hardware bilan ishlaydi. U an'anaviy tarzda Unix-ga o'xshash operatsion tizimlarda qo'llanilgan `X Window System (X11)` ga ancha sodda va zamonaviy muqobilni taqdim etadi.
-
-Wayland paradigmasida kompozitor X11 dan asosiy farqi bo'lgan displey serveridir. X11 da displey serveri window manageri yoki kompozitordan alohida obyekt hisoblanadi. Biroq, Wayland displey serverini, window managerini va kompozitorni birlashtiradi. Bu tizimni soddalashtiradi va samaradorlikni oshiradi.
-
-Wayland kompozitori quyidagilarni bajaradi.
-
-`Window Bufferlarini tasvirga(compozisia) birlashtiradi` Wayland har bir windowning contentini buferga jalb qilish orqali ishlaydi. Keyin kompozitor bu buferlarni oladi va ularni ekranda ko'rsatish uchun bitta tasvirga birlashtiradi.
-
-`Kirish va chiqishni boshqaradi` Wayland kompozitorlari sichqoncha, klaviatura va ekranlar kabi kirish va chiqish qurilmalari bilan bevosita bog'lanadi. Ular ushbu qurilmalardan kirish hodisalarini(event) oladi va ularni tegishli clientga yuboradi. Ular, shuningdek, displey ekranlarida chiqishni boshqaradi.
-
-`Client Isolation` Har bir client faqat o'z windowlari haqida biladi va to'g'ridan-to'g'ri ekranga chiza olmaydi. U boshqa clientlarning maʼlumotlariga yoki buferlariga kirish imkoniga ega emas, bu ularni xavfsizlik maqsadida izolyatsiya qilishga yordam beradi.
-
-Turli kompozitorlarda Wayland protokolining bir nechta turli xil ilovalari mavjud, jumladan Weston (reference implementation), GNOME ning Mutter va KDE ning KWin va boshqalar. Bular desktop environmentlari yoki qo'shimcha protokollar kabi qo'shimcha xususiyatlarni taklif qilishi mumkin.
-
-Wayland zamonaviy kodlar bazasi va xavfsizlikni oshirish kabi bir qator afzalliklarni taklif qilsa-da, u sekinroq qabul qilish tezligiga ega. Bu, asosan, eski X11 applicationlarini qo'llab-quvvatlashdagi qiyinchiliklar va X11 taqdim etgan tarmoq shaffofligi(network transparency) kabi xususiyatlar bilan bog'liq, ammo Waylandda implementaion qiyinroq.
+Linux displey stacki sifatida ham ma'lum bo'lgan Linux grafik stegi juda murakkab bo'lishi mumkin, ammo bu Linuxning grafik foydalanuvchi interfeyslarini amalga oshirishning muhim qismidir. Graphics Library Layeri ushbu stakning muhim tarkibiy qismidir. Ushbu layer grafik tarkibni yaratish funksiyalarini ta'minlaydigan bir nechta librarylardan iborat. Grafik API umumiy instructionmalar to'plamini GPU bajarishi mumkin bo'lgan aniqroq kodga uchburchak chizish kabi tarjima qilish uchun javobgardir. Shuning uchun, grafik API - bu ishlab chiquvchilarning kodlari GPU bilan qanday bog'lanishining tavsifi. OpenGL, OpenGL ES, Metal, Direct3D va Vulkan kabi bir nechta mashhur grafik API mavjud. Biroq, Linux-dagi grafik stakning aksariyati OpenGL-dan ko'p foydalanadi, chunki u bepul va cross-platformdir.
 
