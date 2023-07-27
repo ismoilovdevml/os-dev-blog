@@ -298,8 +298,41 @@ OpenGL (Open Graphics Library) 2D va 3D vektor grafikalarini renderlash uchun cr
 
 Silicon Graphics, Inc. (SGI) 1991 yilda OpenGLni ishlab chiqishni boshladi va uni 1992 yil 30 iyunda chiqardi; ilovalar uni computer-aided design (CAD), virtual reality, ilmiy vizualizatsiya(scientific visualization), axborot vizualizatsiyasi, parvozlarni simulyatsiya qilish va video o'yinlar sohalarida keng qo'llaydi. 2006 yildan beri OpenGL Khronos Group notijorat texnologiya consortium tomonidan boshqariladi.
 
+##### Tarixi
+1980-yillarda keng diapazonli grafik qurilmalar bilan ishlashi mumkin bo'lgan dasturiy ta'minotni ishlab chiqish haqiqiy muammo edi. Dasturiy ta'minot ishlab chiquvchilari har bir uskuna uchun maxsus interfeys va drayverlarni yozdilar. Bu qimmatga tushdi va natijada harakatlar ko'paydi.
+
+1990-yillarning boshlariga kelib, Silicon Graphics (SGI) ish stantsiyalari uchun 3D grafika sohasida yetakchi edi. Ularning IRIS GL API'si sanoat standartiga aylandi, u ochiq standartlarga asoslangan PHIGSga qaraganda kengroq qo'llaniladi. Buning sababi, IRIS GL-dan foydalanish osonroq deb hisoblangan va u darhol rejimni ko'rsatishni qo'llab-quvvatlagan. Aksincha, PHIGS-dan foydalanish qiyin va funksionalligi eskirgan deb hisoblangan.
+
+SGI raqobatchilari (jumladan, Sun Microsystems, Hewlett-Packard(HP) va IBM) PHIGS standartiga kiritilgan kengaytmalar bilan qo'llab-quvvatlanadigan 3D apparatlarini bozorga chiqarishga muvaffaq bo'lishdi, bu esa SGIga IRIS GL versiyasini OpenGL deb nomlangan ommaviy standart sifatida ochishga majbur qildi.
+
+1992 yilda SGI kelajakda OpenGL spetsifikatsiyasini saqlab turadigan va kengaytiradigan kompaniyalar guruhini (OpenGL ARB) yaratishga rahbarlik qildi.
+
+1994 yilda SGI "OpenGL++" deb nomlangan loyihani chiqarish g'oyasi bilan o'ynadi, unga scene-graphi API kabi elementlar kiradi (ehtimol ularning Performer texnologiyasiga asoslangan). Spetsifikatsiya bir nechta manfaatdor tomonlar orasida tarqatildi - lekin hech qachon mahsulotga aylanmadi.
+
+1996 yilda Microsoft `Direct3D`-ni chiqardi, u oxir-oqibat OpenGLning asosiy raqobatchisiga aylandi. 50 dan ortiq o'yin ishlab chiqaruvchilari Microsoft-ga 1997 yil 12 iyunda e'lon qilingan ochiq xatni imzoladilar va kompaniyani OpenGL-ni faol qo'llab-quvvatlashga chaqirdilar. 1997-yil 17-dekabrda Microsoft va SGI `OpenGL`va `Direct3D` interfeyslarini birlashtirish (va scene-graph API-ni qo'shish) maqsadida birgalikdagi sa'y-harakatlar bo'lgan `Fahrenheit` loyihasini boshladilar. 1998 yilda Hewlett-Packard(HP) loyihaga qo'shildi. Bu dastlab interaktiv 3D kompyuter grafikasi API'lari dunyosiga tartib o'rnatishga va'da berdi, ammo SGI'dagi moliyaviy cheklovlar, Microsoft'dagi strategik sabablar va sanoatni qo'llab-quvvatlashning umumiy etishmasligi tufayli, 1999 yilda tashlab ketilgan.
+
+2006 yil iyul oyida `OpenGL Architecture Review Board` OpenGL API standarti nazoratini Khronos Groupga topshirish uchun ovoz berdi.
+
 OpenGL spetsifikatsiyasi 2D va 3D grafiklarni chizish uchun abstract APIni tavsiflaydi. API to'liq dasturiy ta'minotda amalga oshirilishi mumkin bo'lsa-da, u asosan yoki butunlay hardwareda amalga oshirilishi uchun mo'ljallangan. API nomli butun son konstantalari to‘plami bilan bir qatorda client dasturi tomonidan chaqirilishi mumkin bo‘lgan funksiyalar to‘plami sifatida aniqlanadi (masalan, 3553 kasr soniga mos keladigan GL_TEXTURE_2D constantasi). Funksiya definitionlari C dasturlash tiliga yuzaki o'xshash bo'lsa-da, ular tildan mustaqildir. Shunday qilib, OpenGL ko'plab tillarni bog'laydi, ulardan ba'zilari JavaScript-ni bog'lovchi WebGL (API, OpenGL ES 2.0 asosida, veb-brauzer ichidan 3D renderlash uchun); C ulanishlari(binding) WGL, GLX va CGL; iOS tomonidan taqdim etilgan C ulanishi; va Android tomonidan taqdim etilgan Java va C ulanishlari. Tildan mustaqil bo'lishdan tashqari, OpenGL ham o'zaro faoliyat platformadir. Spetsifikatsiyada OpenGL kontekstini olish va boshqarish haqida hech narsa aytilmagan va buni asosiy windowing systemining tafsiloti sifatida qoldiradi. Xuddi shu sababga ko'ra, OpenGL faqat renderlash bilan bog'liq bo'lib, kiritish(input), audio yoki windowing(oynalash) bilan bog'liq hech qanday API taqdim etmaydi.
 
 OpenGL endi faol ishlab chiqilmaydi: 2001-2014 yillar orasida OpenGL spetsifikatsiyasi asosan har yili yangilanib turardi, ikkita reliz (3.1 va 3.2) 2009-yilda va uchtasi (3.3, 4.0 va 4.1) 2010-yilda, eng yangi OpenGL. 4.6 spetsifikatsiyasi 2017 yilda uch yillik tanaffusdan so'ng chiqarildi va o'n bitta mavjud ARB va EXT extensionlarini asosiy profilga kiritish bilan cheklandi. OpenGL-ning faol rivojlanishi 2016-yilda chiqarilgan  `Vulkan API` foydasiga to'xtatildi va dastlabki ishlab chiqish vaqtida `glNext` kod nomini oldi. 2017-yilda Khronos Group OpenGL ESning yangi versiyalari boʻlmasligini eʼlon qildi va shundan beri asosiy eʼtiborni Vulkan va boshqa texnologiyalarni ishlab chiqishga qaratdi. Natijada, zamonaviy GPUlar tomonidan taqdim etilgan muayyan imkoniyatlar, masalan. nurlarni kuzatish OpenGL tomonidan qo'llab-quvvatlanmaydi. OpenGL spetsifikatsiyalarining yangi versiyalari Khronos Group tomonidan chiqariladi, ularning har biri turli xil yangi xususiyatlarni qo'llab-quvvatlash uchun APIni kengaytiradi. Har bir versiyaning tafsilotlari Guruh aʼzolari, jumladan, grafik karta ishlab chiqaruvchilari, operatsion tizim dizaynerlari va Mozilla va Google kabi umumiy texnologiya kompaniyalari oʻrtasida kelishuv orqali hal qilinadi. 
 
 Asosiy API tomonidan talab qilinadigan xususiyatlarga qo'shimcha ravishda, graphics processing unit (GPU) ishlab chiqaruvchilari extensionlar shaklida qo'shimcha funksiyalarni taqdim etishi mumkin. Extensionlar yangi funksiyalar va yangi konstantalarni kiritishi va mavjud OpenGL funksiyalaridagi cheklovlarni yumshatishi yoki olib tashlashi mumkin. Sotuvchilar boshqa sotuvchilardan yoki umuman Khronos guruhidan yordam talab qilmasdan maxsus API-larni ochish uchun extensionlardan foydalanishlari mumkin, bu OpenGLning moslashuvchanligini sezilarli darajada oshiradi. Barcha extensionlar OpenGL registrida to'planadi va ular tomonidan belgilanadi
+
+Har bir extension uni ishlab chiqqan kompaniya nomiga asoslangan qisqa identifikator bilan bog'langan. Masalan, Nvidia identifikatori `GL_NV_half_float` extension nomi, `GL_HALF_FLOAT_NV` konstantasi va `glVertex2hNV() `funksiyasining bir qismi bo'lgan NV dir. Agar bir nechta ishlab chiqaruvchilar bir xil API yordamida bir xil funksiyani amalga oshirishga rozi bo'lsa, EXT identifikatoridan foydalangan holda umumiy extension chiqarilishi mumkin. Bunday hollarda, Khronos guruhining arxitekturani ko'rib chiqish kengashi extensionni aniq ma'qullashi mumkin, bu holda `ARB` identifikatori ishlatiladi.
+
+OpenGL ning har bir yangi versiyasi tomonidan taqdim etilgan xususiyatlar odatda bir nechta keng tarqalgan extensionlarning, ayniqsa ARB yoki EXT tipidagi extensionlarning birlashtirilgan xususiyatlaridan hosil bo'ladi.
+
+##### Sanoatni qo'llab-quvvatlash
+
+2018-yil iyun oyida `Apple` o‘zining barcha platformalarida (iOS, macOS va tvOS) OpenGL API’larini bekor qildi, bu esa ishlab chiquvchilarni 2014-yilda taqdim etilgan o‘zlarining xususiy `Metal` API’laridan foydalanishga undadi.
+
+`id Software` 1997-yilda chiqarilgan `GLQuake` (bir necha oʻzgartirishlar bilan Quake portidan OpenGL gacha) bilan boshlangan oʻyinlarida OpenGL-dan foydalanmoqda. Kompaniyaning OpenGL-ni qoʻllab-quvvatlaydigan birinchi litsenziyalangan engine Quake II engine boʻlib, u `id Tech 2` nomi bilan ham tanilgan. 2016-yilda, ular OpenGL vorisi `Vulkan`ni qo'llab-quvvatlovchi `id Tech 6` uchun yangilanishni chiqardilar. `ID Tech 7` OpenGL-ni qo'llab-quvvatlashni bekor qildi.
+
+2023-yil mart oyida Valve OpenGL-ni `Dota 2`-dan olib tashladi.
+
+Khronos bir qator zamonaviy grafik texnologiyalar uchun OpenGL-da qo'llab-quvvatlashni to'xtatdi, masalan: Ray Tracing, GPU-da video dekodlash, deep learning bilan anti-aliasing algoritmi -  AMD FidelityFX Super Resolution(FSR) va Nvidia DLSS.
+
+`Atypical Games` Samsung koʻmagida oʻz oʻyin mexanizmini Apple boʻlmagan barcha platformalarda OpenGL emas, balki `Vulkan` ishlatish uchun yangiladi.
+
+`Google Stadia` va `Fuchsia OS` Vulkan-dan native grafik API sifatida foydalanadi va Vulkan-mos GPU-larni talab qiladi. Fuchsia ANGLE translation layeri yordamida Vulkan tepasida OpenGL-ni qo'llab-quvvatlamoqchi.
