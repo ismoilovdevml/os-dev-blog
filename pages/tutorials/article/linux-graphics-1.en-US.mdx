@@ -386,3 +386,18 @@ Bu asosiy 3D grafik acceleratorga xos bo'lgan haqiqiy koddir, lekin Gallium3D Wi
 <Callout type="info" emoji="">
 Gallium3D ning asl mualliflari `Tungsten Graphics` kompaniyasida `Keith Whitwell` va `Brian Paul` edi (2008 yilda `VMware` tomonidan sotib olingan)
 </Callout>
+
+
+<Callout type="info" emoji="">
+![Image](/images/article/linux-de/32.jpg)
+Mesa /DRI va Gallium3D turli xil drayver modellariga ega. Ikkalasi ham juda ko'p bepul va open-source kodlarga ega
+
+![Image](/images/article/linux-de/33.jpg)
+Linux Graphics Stack
+</Callout>
+
+##### Mesa kelib chiqishni
+
+Loyiha tashabbuskori `Brian Paul` grafika ishqibozi edi. U OpenGL API yordamida oddiy 3D grafik kutubxonasini implement qilish qiziqarli bo'ladi, deb o'yladi, keyin u `VOGL` (very ordinary GL Like Library) o'rniga foydalanishi mumkin edi. 1993-yildan boshlab, u 1995-yil fevralida Internetda dasturiy taʼminotni chiqarishdan oldin oʻn sakkiz oylik yarim kunlik ishlanmani oʻtkazdi. Dasturiy taʼminot yaxshi qabul qilindi va odamlar uning rivojlanishiga hissa qoʻshishni boshladilar. Mesa barcha 3D kompyuter grafikalarini protsessorda ko'rsatish bilan boshlandi. Shunga qaramay, Mesa ichki arxitekturasi graphics processor-accelerated 3D renderlashga ulanish uchun ochiq bo'lishi uchun yaratilgan. Ushbu birinchi bosqichda renderlash bilvosita displey serverida amalga oshirildi, ba'zi bir ortiqcha yuk va sezilarli tezlikni nazariy maksimaldan orqada qoldirdi. Voodoo Graphics chipsetidan foydalangan holda Diamond Monster 3D Mesa tomonidan qo'llab-quvvatlanadigan birinchi 3D hardware qurilmalaridan biri edi.
+
+Birinchi haqiqiy grafik hardware yordami 1997 yilda Mesa-ga o'sha paytdagi yangi 3dfx Voodoo I/II grafik kartalari va ularning vorislari uchun Glide API asosida qo'shilgan. Glide-dan acceleration layeri sifatida foydalanishning asosiy muammosi Glide-ning faqat kompyuter o'yinlari uchun mos bo'lgan to'liq ekranni ishlatish odati edi. Bundan tashqari, Glide ekran xotirasining qulfini oldi va shu tariqa displey serveri boshqa GUI vazifalarini bajarishdan bloklandi.
