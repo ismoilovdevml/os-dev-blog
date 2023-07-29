@@ -351,4 +351,38 @@ Vulkan bir nechta zamonaviy operatsion tizimlarda mavjud.OpenGL kabi va Direct3D
 
 ##### Tarixi
 
-Khronos guruhi keyingi avlod grafik API yaratish loyihasini 2014-yil iyul oyida Valve’da bo‘lib o‘tgan uchrashuv bilan boshladi. SIGGRAPH 2014 ko'rgazmasida loyiha ishtirokchilarni chaqirish bilan ochiq e'lon qilindi. AQSh Patent va savdo belgilari idorasiga ko'ra, Vulkan uchun tovar belgisi 2015 yil 19 fevralda topshirilgan. Vulkan 2015 yilgi O'yinni ishlab chiquvchilar konferentsiyasida rasman nomlandi va e'lon qilindi, garchi yangi API atrofida gaplar va mish-mishlar ilgari mavjud bo'lgan va uni `glNext` deb atashgan.
+Khronos Group keyingi avlod grafik API yaratish loyihasini 2014-yil iyul oyida Valve’da bo‘lib o‘tgan uchrashuv bilan boshladi. SIGGRAPH 2014 ko'rgazmasida loyiha ishtirokchilarni chaqirish bilan ochiq e'lon qilindi. AQSh Patent va savdo belgilari idorasiga ko'ra, Vulkan uchun tovar belgisi 2015 yil 19 fevralda topshirilgan. Vulkan 2015 yilgi O'yinni ishlab chiquvchilar konferentsiyasida rasman nomlandi va e'lon qilindi, garchi yangi API atrofida gaplar va mish-mishlar ilgari mavjud bo'lgan va uni `glNext` deb atashgan.
+
+Khronos Group 2015-yil mart oyida Vulkan API-ni rasman eʼlon qildi va 2016-yil 16-fevralda Vulkan 1.0-ni rasman chiqardi. Vulkan OpenGL bilan moslikni buzadi va monolit holat mashinasi kontseptsiyasidan butunlay voz kechadi. Gallium3D-ni ishlab chiquvchilari Vulkanni Gallium3D 2.0-ga o'xshash narsa deb atashadi - Gallium3D OpenGL state machineni implement qiladigan kodni hardwarega xos bo'lgan koddan ajratadi.
+
+<Callout type="info" emoji="">
+![Image](/images/article/linux-de/30.jpg)
+OpenGL va Vulkan ikkalasi ham render API hisoblanadi. Ikkala holatda ham GPU shaderlarni bajaradi, protsessor esa hamma narsani bajaradi.
+</Callout>
+
+### Mesa
+
+Mesa, shuningdek, `Mesa3D` va `The Mesa 3D Graphics Library` deb ataladi, OpenGL, Vulkan va boshqa grafik API spetsifikatsiyalarining open source ilovasi. Mesa ushbu spetsifikatsiyalarni vendor-specific grafik hardware drayverlariga tarjima qiladi. Uning eng muhim foydalanuvchilari asosan Intel va AMD tomonidan o'zlarining tegishli qurilmalari uchun ishlab chiqilgan va moliyalashtirilgan ikkita grafik drayverdir (AMD o'zlarining Mesa drayverlarini Radeon va RadeonSI-ni eskirgan AMD Catalyst orqali targ'ib qiladi va Intel faqat Mesa drayverini qo'llab-quvvatlaydi). Xususiy grafik drayverlar (masalan, Nvidia GeForce drayveri va Catalyst) barcha Mesa-ning o'rnini bosadi va grafik API-ni o'z amalga oshirishini ta'minlaydi. Nouveau deb nomlangan Mesa Nvidia drayverini yozish bo'yicha ochiq manbali harakat asosan hamjamiyat tomonidan ishlab chiqilgan. O'yinlar kabi 3D ilovalardan tashqari, zamonaviy displey serverlari (X.org Glamour yoki Wayland Weston) OpenGL/EGLdan foydalanadi; shuning uchun barcha grafikalar odatda Mesa orqali o'tadi. Mesa freedesktop.org saytida joylashgan va 1993 yil avgust oyida loyihada hali ham faol bo'lgan `Brian Paul` tomonidan boshlangan. Keyinchalik Mesa keng tarqalgan bo'lib qabul qilindi va hozirda butun dunyo bo'ylab turli shaxslar va korporatsiyalarning, shu jumladan OpenGL spetsifikatsiyasini boshqaruvchi Khronos Group grafik uskunalari ishlab chiqaruvchilarining ko'plab hissalarini o'z ichiga oladi. Linux uchun rivojlanish qisman crowdfunding(bu odatda internet orqali ko'p odamlardan pul yig'ish orqali loyiha yoki korxonani moliyalashtirish amaliyotidir) tomonidan ham amalga oshirildi.
+
+Grafik chipsetlar uchun mavjud bepul va open-source drayverlari Mesa tomonidan "boshqariladi" (chunki mavjud bepul va open-source API ilovalari Mesa ichida ishlab chiqilgan). Hozirgi vaqtda grafik drayverlarni yozish uchun ikkita framework mavjud: "classic" va Gallium3D. Mesa-da mavjud bo'lgan drayverlarning ba'zilari (lekin hammasi emas) haqida umumiy ma'lumot [mesamatrix.net](https://mesamatrix.net/) saytida berilgan.
+
+##### Gallium3D
+
+Gallium3D - bu bir nechta operatsion tizimlar, renderlash yoki video acceleration API'lari uchun 3D grafik chipsetlari uchun qurilma drayverlarini dasturlashni osonlashtirish uchun mo'ljallangan interfeyslar to'plami va qo'llab-quvvatlovchi kutubxonalar to'plami. Bu bepul va ochiq manbali grafik qurilma drayverlari dasturi.
+
+Gallium3D-ni ishlab chiqish 2008 yilda `Tungsten Graphics`-da boshlangan va uni amalga oshirish `freedesktop.org` saytida joylashgan Mesa 3D-ning bir qismi sifatida bepul va ochiq manbali dasturiy ta'minot sifatida mavjud. Asosiy maqsad drayverlarni ishlab chiqishni osonlashtirish, bir vaqtning o'zida bir nechta turli drayverlarning takrorlangan kodlarini birlashtirish va zamonaviy hardware arxitekturasini qo'llab-quvvatlash. Bu yaxshi mehnat taqsimotini ta'minlash orqali amalga oshiriladi, masalan, xotira boshqaruvini kernel DRI drayveriga qoldirish. Gallium3D 2009-yildan beri Mesa-ning bir qismi bo‘lib, hozirda Nvidia (nouveau loyihasi), AMD R300–R900, Intelning 8+ iGPU-lar uchun `Iris` drayveri va boshqa bepul va ochiq manbali grafik drayverlari tomonidan qo‘llaniladi.
+
+Gallium3D grafik qurilma drayverini uch qismga bo'lish orqali qurilma drayverlarini dasturlashni osonlashtiradi. Bunga ikkita interfeysni joriy etish orqali erishiladi: Gallium3D State Tracker Interface va Gallium3D WinSys Interface. Uch komponent deyiladi:
+
+`Gallium3D State Tracker` Qurilma drayveriga murojaat qilinayotgan har bir grafik API oʻzining State Trackerga ega, masalan. OpenGL uchun Gallium3D State Tracker va Direct3D yoki GLX uchun boshqasi mavjud. Har bir State Tracker Gallium3D State Tracker Interface ilovasini o'z ichiga oladi va noyobdir, bu vosita barcha Gallium3D qurilma drayverlari tomonidan baham ko'riladi.
+
+`Gallium3D hardware qurilma drayveri`
+
+Bu asosiy 3D grafik acceleratorga xos bo'lgan haqiqiy koddir, lekin Gallium3D WinSys interfeysi imkon qadar. Har bir mavjud grafik chip uchun noyob Gallium3D hardware drayverlari mavjud va ularning har biri `Gallium3D State Tracker` interfeysi hamda `Gallium3D WinSys` interfeysini amalga oshiradi. Gallium3D hardware qurilmasi drayveri faqat TGSI (Tungsten Graphics Shader Infrastructure), shaderlarni tavsiflash uchun intermediate languageni tushunadi. Ushbu kod GLSL dan TGSI ga tarjima qilingan shaderlarni keyinchalik GPU tomonidan amalga oshirilgan instruction setga tarjima qildi.
+
+`Gallium3D WinSys` Bu operatsion tizimning asosiy kernelga xos bo'lib, har biri Gallium3D WinSys interfeysini barcha mavjud Gallium3D hardware drayverlari bilan interfeysga tatbiq etadi.
+
+
+<Callout type="info" emoji="">
+Gallium3D ning asl mualliflari `Tungsten Graphics` kompaniyasida `Keith Whitwell` va `Brian Paul` edi (2008 yilda `VMware` tomonidan sotib olingan)
+</Callout>
