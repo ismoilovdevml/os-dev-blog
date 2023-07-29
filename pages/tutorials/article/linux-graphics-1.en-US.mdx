@@ -336,3 +336,19 @@ Khronos bir qator zamonaviy grafik texnologiyalar uchun OpenGL-da qo'llab-quvvat
 `Atypical Games` Samsung koʻmagida oʻz oʻyin mexanizmini Apple boʻlmagan barcha platformalarda OpenGL emas, balki `Vulkan` ishlatish uchun yangiladi.
 
 `Google Stadia` va `Fuchsia OS` Vulkan-dan native grafik API sifatida foydalanadi va Vulkan-mos GPU-larni talab qiladi. Fuchsia ANGLE translation layeri yordamida Vulkan tepasida OpenGL-ni qo'llab-quvvatlamoqchi.
+
+### Vulkann
+
+Vulkan - bu 3D grafika va hisoblash uchun ochiq standart bo'lgan, low-overheaddagi, cross-platform API. Bu shaxsiy kompyuterlar va konsollardan tortib mobil telefonlar va embedded platformalargacha bo'lgan keng turdagi qurilmalarda qo'llaniladigan zamonaviy GPU-larga yuqori samarali, platformalararo(cross-platform) kirishni ta'minlaydigan yangi grafik va hisoblash APIsidir. Vulkan video o'yinlar va interaktiv media kabi yuqori samarali real-time rejimida 3D-grafika ilovalari va yuqori darajada parallellashtirilgan hisoblashlarni maqsad qiladi. Vulkan eski OpenGL va Direct3D 11 API-larga nisbatan yuqori mahsuldorlik va samaraliroq CPU va GPU-dan foydalanishni taklif qilish uchun mo'ljallangan. U buni zamonaviy grafik protsessorlar qanday ishlashiga yaqinroq o'xshash eski API-larga qaraganda ilova uchun ancha lower-leveldagi API taqdim etish orqali amalga oshiradi.
+
+Vulkanni Apple'ning Metal API’si va Microsoft’ning Direct3D 12’si bilan solishtirish mumkin va undan foydalanish yuqori darajadagi OpenGL va Direct3D 11 API’lariga qaraganda qiyinroq. Vulkan protsessorni kamroq ishlatishiga qo'shimcha ravishda ishlab chiquvchilarga ishni bir nechta CPU yadrolari(core) o'rtasida yaxshiroq taqsimlash imkonini berish uchun mo'ljallangan. Vulkan birinchi marta GDC 2015 ko'rgazmasida Khronos notijorat guruhi tomonidan e'lon qilingan. Vulkan API dastlab Khronos tomonidan "keyingi avlod OpenGL tashabbusi" yoki "OpenGL next" deb atalgan, ammo "Vulkan" e'lon qilinganida bu nomlardan foydalanish to'xtatilgan. Vulkan AMD tomonidan Khronosga hadya qilingan AMD Mantle API komponentlaridan olingan va ular asosida qurilgan bo'lib, u Khronosga sanoat bo'ylab standartlashtirishi mumkin bo'lgan low-leveldagi APIni ishlab chiqishni boshlash uchun poydevor berish niyatida.
+
+Vulkan boshqa API-larga, shuningdek, o'zidan oldingi OpenGL-ga nisbatan turli afzalliklarni taqdim etishga mo'ljallangan. Vulkan kamroq yuk, GPU ustidan ko'proq to'g'ridan-to'g'ri nazorat va kamroq CPU foydalanishni taklif qiladi. Vulkanning umumiy kontseptsiyasi va xususiyatlari to'plami Mantleda ko'rilgan va keyinchalik Microsoft tomonidan Direct3D 12 va Apple bilan Metall bilan qabul qilingan tushunchalarga o'xshaydi. Vulkanning oldingi avlod API-larga nisbatan afzalliklari quyidagilardan iborat:
+
+#### Cross platform
+
+Vulkan bir nechta zamonaviy operatsion tizimlarda mavjud.OpenGL kabi va Direct3D 12 dan farqli o'laroq, Vulkan API bitta operatsion tizim yoki qurilma shakli faktoriga qulflanmagan.Vulkan Android, Linux, BSD Unix, QNX, Haiku, Nintendo Switch, Raspberry Pi, Stadia, Fuchsia, Tizen va Windows 7, 8, 10 va 11-da ishlaydi.MoltenVK Apple Metal API-ni o'rash orqali macOS, iOS va tvOS uchun bepul litsenziyalangan uchinchi tomon yordamini taqdim etadi. 
+
+##### Tarixi
+
+Khronos guruhi keyingi avlod grafik API yaratish loyihasini 2014-yil iyul oyida Valve’da bo‘lib o‘tgan uchrashuv bilan boshladi. SIGGRAPH 2014 ko'rgazmasida loyiha ishtirokchilarni chaqirish bilan ochiq e'lon qilindi. AQSh Patent va savdo belgilari idorasiga ko'ra, Vulkan uchun tovar belgisi 2015 yil 19 fevralda topshirilgan. Vulkan 2015 yilgi O'yinni ishlab chiquvchilar konferentsiyasida rasman nomlandi va e'lon qilindi, garchi yangi API atrofida gaplar va mish-mishlar ilgari mavjud bo'lgan va uni `glNext` deb atashgan.
