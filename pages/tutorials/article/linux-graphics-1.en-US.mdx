@@ -3,8 +3,12 @@ import { Callout } from "nextra-theme-docs";
 # Linuxda Grafika
 
 Maqolaning maqsadi
+<Callout type="info" emoji="">
+Ushbu keng qamrovli maqolaning maqsadi Linux operatsion tizimidagi grafikalarning nozik tomonlarini yoritishdir. Linux server muhitida, embedded tizimlarda va yaqinda, hatto foydalanuvchi uchun ish-stollarida keng qo'llanilishiga qaramay, ko'plab foydalanuvchilar va ishlab chiquvchilar uning grafik quyi tizimi bilan to'liq tanish emas. Ushbu qism dasturiy ta'minot ishlab chiquvchilari, Linux ishqibozlari, system administratorlar va Linuxning grafika bilan qanday ishlashini tushunishga qiziqqan barcha texnologiyaga ega bo'lgan barcha shaxslar uchun manba bo'lib xizmat qilishiga qaratilgan.
 
-Ushbu keng qamrovli maqolaning maqsadi Linux operatsion tizimidagi grafikalarning nozik tomonlarini yoritishdir. Linux server muhitida, embedded tizimlarda va yaqinda, hatto iste'molchi uchun ish-stollarida keng qo'llanilishiga qaramay, ko'plab foydalanuvchilar va ishlab chiquvchilar uning grafik quyi tizimi bilan to'liq tanish emas. Ushbu qism dasturiy ta'minot ishlab chiquvchilari, Linux ishqibozlari, system administratorlar va Linuxning grafika bilan qanday ishlashini tushunishga qiziqqan barcha texnologiyaga ega bo'lgan barcha shaxslar uchun manba bo'lib xizmat qilishiga qaratilgan.
+Bugun biz nafaqat Linuxda grafikaga balki umuman grafikaga chuqur shong'iymiz. Sayohatga tayyor bo'lsangiz kettik ))
+
+</Callout>
 
 
 #### Linux grafikasi haqida qisqacha ma'lumot
@@ -132,9 +136,13 @@ Esda tutingki, ushbu elementlarning barchasi grafik tasvirlash va hisoblash vazi
 
 Shuni ham aytib o'tish kerakki GPU mavzusini o'zi katta mavzu shuning uchun qisqa to'xtalib o'tdik ))
 
+<Callout type="info" emoji="">
+
 ![Image](/images/article/linux-de/24.jpg)
 
 ![Image](/images/article/linux-de/25.jpg)
+</Callout>
+
 
 <Callout type="info" emoji="">
 GPU ni yaxshiroq tushunish uchun animatsion videolar
@@ -263,7 +271,9 @@ GEM dastlab Intel muhandislari tomonidan `i915` drayveri uchun video xotira mene
 `Kernel Mode Setting (KMS)`
 
 Kernel Mode Setting (KMS) Linux kerneli grafik stackidagi metod bo'lib, kernelga grafik rejim displeylari bilan bog'liq sozlamalarni boshqarish imkonini beradi. Bu kernelga grafik qurilmalar ustidan toʻliq nazoratni taʼminlovchi texnika boʻlib, flicker-free boot processlari(miltillashsiz yuklash), crash recovery va multi-seat computing kabi qator afzalliklarni beradi.
+<Callout type="info" emoji="">
 ![Image](/images/article/linux-de/15.jpg)
+</Callout>
 
 KMS dan oldin User Mode Setting (UMS) ishlatilgan, bu yerda rejimni sozlash operatsiyalari X serveri tomonidan user spaceda amalga oshirilgan. Biroq, KMS-ga o'tish X serverining endi imtiyozsiz ishlashini anglatadi, bu esa umuman xavfsizroq tizimni ta'minlaydi.
 
@@ -272,15 +282,19 @@ KMSning texnik tomonini yaxshiroq ko'rib chiqamiz
 `Responsibility of KMS`  Nomidan ko'rinib turibdiki, rejim sozlamalari(mode setting) monitoringizning piksellar sonini, rang chuqurligini(color depth) va yangilanish tezligini(refresh rate) sozlashdir. KMS shuningdek, matn va grafik konsollar o'rtasida almashinish, bir nechta monitorlarni sozlash va to'xtatib turish(suspend) va davom ettirish hodisalarini boshqarish uchun javobgardir.
 
 `DRM/KMS API` KMS Linux kernelidagi subsystem(quyi tizim) bo'lgan Direct Rendering Manager (DRM) orqali amalga oshiriladi. Bu user space dasturlari buyruqlar va ma'lumotlarni GPUga yuborish uchun foydalanishi mumkin bo'lgan APIni taqdim etadi. Ushbu API frame bufferlarini yaratish va boshqarish, monitor rejimini o'rnatish va framelar orasidagi smooth transition uchun sahifalarni aylantirish(page flipping) funksiyalarini o'z ichiga oladi.
+<Callout type="info" emoji="">
 ![Image](/images/article/linux-de/13.png)
 ![Image](/images/article/linux-de/14.png)
+</Callout>
 
 `Frame Buffer va Display Controllers:` Frame Buffer(Kadr bufer)i display controller tomonidan displeyga yuboriladigan bitmapni o'z ichiga olgan RAMning bir qismidir. KMS user applicationlariga frame bufferlarini yaratish va ular bilan bog'liq event(hodisa)larni boshqarish imkonini beradi. KMS GPUda mavjud bo'lgan `CRTCs` (Cathode Ray Tube Controllers) yoki display controllerlarini boshqaradi, ular frame buferidan ma'lumotlarni o'qiydi va ularni display hardwarega uzatadi.
 
+<Callout type="info" emoji="">
 ![Frame Buffer](/images/article/linux-de/9.jpg)
 ![Frame Buffer](/images/article/linux-de/10.jpg)
 ![Frame Buffer](/images/article/linux-de/11.jpg)
 ![Frame Buffer](/images/article/linux-de/12.jpg)
+</Callout>
 
 `Atomic Mode Setting` An'anaviy KMSga nisbatan yaxshilanish sifatida kiritilgan Atomic Mode Setting - bu displey rejimlarini atomic tarzda yoki bir vaqtning o'zida(all-at-once) sozlash imkonini beruvchi metod. Ilgari, displey rejimini o'rnatish uchun bir nechta `IOCTLs (I/O Controls)` kerak edi va har bir IOCTL mos kelmaydigan holatlarga olib keladigan muvaffaqiyatsizlik ehtimoli bor edi. Atom rejimini sozlash barcha o'zgarishlarni bir vaqtning o'zida amalga oshirishga ruxsat berish orqali bu muammoni hal qiladi, barqaror va xatosiz rejim sozlamalarini ta'minlaydi.
 
@@ -337,7 +351,7 @@ Khronos bir qator zamonaviy grafik texnologiyalar uchun OpenGL-da qo'llab-quvvat
 
 `Google Stadia` va `Fuchsia OS` Vulkan-dan native grafik API sifatida foydalanadi va Vulkan-mos GPU-larni talab qiladi. Fuchsia ANGLE translation layeri yordamida Vulkan tepasida OpenGL-ni qo'llab-quvvatlamoqchi.
 
-### Vulkann
+### Vulkan
 
 Vulkan - bu 3D grafika va hisoblash uchun ochiq standart bo'lgan, low-overheaddagi, cross-platform API. Bu shaxsiy kompyuterlar va konsollardan tortib mobil telefonlar va embedded platformalargacha bo'lgan keng turdagi qurilmalarda qo'llaniladigan zamonaviy GPU-larga yuqori samarali, platformalararo(cross-platform) kirishni ta'minlaydigan yangi grafik va hisoblash APIsidir. Vulkan video o'yinlar va interaktiv media kabi yuqori samarali real-time rejimida 3D-grafika ilovalari va yuqori darajada parallellashtirilgan hisoblashlarni maqsad qiladi. Vulkan eski OpenGL va Direct3D 11 API-larga nisbatan yuqori mahsuldorlik va samaraliroq CPU va GPU-dan foydalanishni taklif qilish uchun mo'ljallangan. U buni zamonaviy grafik protsessorlar qanday ishlashiga yaqinroq o'xshash eski API-larga qaraganda ilova uchun ancha lower-leveldagi API taqdim etish orqali amalga oshiradi.
 
@@ -401,3 +415,9 @@ Linux Graphics Stack
 Loyiha tashabbuskori `Brian Paul` grafika ishqibozi edi. U OpenGL API yordamida oddiy 3D grafik kutubxonasini implement qilish qiziqarli bo'ladi, deb o'yladi, keyin u `VOGL` (very ordinary GL Like Library) o'rniga foydalanishi mumkin edi. 1993-yildan boshlab, u 1995-yil fevralida Internetda dasturiy taʼminotni chiqarishdan oldin oʻn sakkiz oylik yarim kunlik ishlanmani oʻtkazdi. Dasturiy taʼminot yaxshi qabul qilindi va odamlar uning rivojlanishiga hissa qoʻshishni boshladilar. Mesa barcha 3D kompyuter grafikalarini protsessorda ko'rsatish bilan boshlandi. Shunga qaramay, Mesa ichki arxitekturasi graphics processor-accelerated 3D renderlashga ulanish uchun ochiq bo'lishi uchun yaratilgan. Ushbu birinchi bosqichda renderlash bilvosita displey serverida amalga oshirildi, ba'zi bir ortiqcha yuk va sezilarli tezlikni nazariy maksimaldan orqada qoldirdi. Voodoo Graphics chipsetidan foydalangan holda Diamond Monster 3D Mesa tomonidan qo'llab-quvvatlanadigan birinchi 3D hardware qurilmalaridan biri edi.
 
 Birinchi haqiqiy grafik hardware yordami 1997 yilda Mesa-ga o'sha paytdagi yangi 3dfx Voodoo I/II grafik kartalari va ularning vorislari uchun Glide API asosida qo'shilgan. Glide-dan acceleration layeri sifatida foydalanishning asosiy muammosi Glide-ning faqat kompyuter o'yinlari uchun mos bo'lgan to'liq ekranni ishlatish odati edi. Bundan tashqari, Glide ekran xotirasining qulfini oldi va shu tariqa displey serveri boshqa GUI vazifalarini bajarishdan bloklandi.
+
+
+
+<Callout type="info" emoji="">
+Biz bu maqolada Linux grafik stacking `Graphics Library Layer` gacha ko'rib chiqdik qolgani keyingi qismlarda))
+</Callout>
