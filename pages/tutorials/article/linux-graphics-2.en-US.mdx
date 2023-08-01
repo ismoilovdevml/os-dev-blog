@@ -38,3 +38,17 @@ Linuxda Displey serverlari foydalanuvchining grafik interfeysida(user interface)
 ![Image](/images/article/linux-de/5.png)
 GUI ning asosiy komponentlari: Displey serveri window systemni implement qiladi. Oddiy window manageri shunchaki window decorationlarini chizadi, ammo compositing window managerlari ko'proq narsani qiladilar.
 </Callout>
+
+### X.Org Server (X11)
+
+Displey serveriga misol sifatida kernelning tepasida ishlaydigan `X.Org` serveridir (odatda Unix-ga o'xshash kernel, masalan, Linux yoki BSD). U foydalanuvchi ma'lumotlarini oladi (masalan, Linux-dagi evdev-dan) va uni clientlaridan biriga uzatadi. Displey serveri o'z clientlaridan ma'lumotlarni ham oladi; u ma'lumotlarni qayta ishlaydi, birlashtirishni amalga oshiradi va Linuxda ma'lumotlarni uchta kernel komponentlaridan biriga - DRM, GEM yoki KMS drayveriga uzatadi. Komponent ma'lumotlarni framebufferga yozadi va framebufferning mazmuni ulangan ekranga uzatiladi va ko'rsatiladi. X `GLX` ga tayanadi.
+
+GLX ("OpenGL Extension to X Window System" ning boshlang'ich belgisi) X Window System kernel protokolining kengaytmasi(extension) bo'lib, OpenGL va X Window System o'rtasidagi interfeysni hamda OpenGLning o'zi uchun kengaytmalarni ta'minlaydi. Bu OpenGL-dan foydalanishni xohlovchi dasturlarga buni X Window System tomonidan taqdim etilgan windowda amalga oshirish imkonini beradi. GLX ikkita "state" ni ajratadi: indirect state(bilvosita state) va direct state(bevosita state).
+
+Displey serveri kontseptsiyasining amalga oshirilishidan biri bu X Window System, xususan uning amalda qo'llanilgan versiyasi - X.Org Server va Xlib va XCB clientlar kutubxonalari. X.Org serveri displey serveridir, lekin joriy tatbiqida u kompozitsiyani bajarish uchun ikkinchi dasturga, ya'ni compositing window managerga tayanadi. Misollar Mutter yoki KWin. X11 displey server protokolini implement qiladigan displey serverlarining diqqatga sazovor namunalari `X.Org Server`, `XFree86`, `XQuartz` va `Cygwin/X`, X11 displey server protokolini implement qiluvchi clientlar kutubxonalari esa `Xlib` va`XCB` hisoblanadi.
+
+<Callout type="info" emoji="">
+![Image](/images/article/linux-de/19.png)
+
+Rasm: X.Org Server o'z clientlari bilan muloqot qiladi, masalan. Amarok, X11 protokoli orqali
+</Callout>
