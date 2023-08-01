@@ -30,4 +30,11 @@ Displey server protokoli tarmoqqa qodir yoki hatto tarmoq shaffof(network transp
 
 ### Display Server
 
-Displey serveri yoki window serveri - bu dastur bo'lib, uning asosiy vazifasi o'z clientlarining operatsion tizimning qolgan qismiga, apparat vositalariga va bir-biriga kirish va chiqishlarini muvofiqlashtirishdir. Displey serveri o'z clientlari bilan tarmoqda shaffof(network-transparent) yoki oddiygina tarmoqqa(network-capable) ulanishi mumkin bo'lgan displey server protokoli, communication protocoli(aloqa protokoli) orqali bog'lanadi.
+Displey serveri yoki window serveri - bu dastur bo'lib, uning asosiy vazifasi o'z clientlarining operatsion tizimning qolgan qismiga, hardware vositalariga va bir-biriga kirish va chiqishlarini muvofiqlashtirishdir.
+
+Linuxda Displey serverlari foydalanuvchining grafik interfeysida(user interface) asosiy rol o'ynaydi, ular user applicationlari va kompyuterning hardware vositalari, asosan, grafik qurilmalari o'rtasida vositachi vazifasini bajaradi. Displey serverining vazifalari klaviatura va sichqoncha kabi kiritish qurilmalarini boshqarish, qaysi oyna yuqorida bo'lishini hal qilish, tizim resurslarini taqsimlash va oyna mazmunini(window content) ekranga ko'rsatishni o'z ichiga oladi. Displey serverlarini tushunish juda muhim, chunki u Linux grafik stackidagi asosiy komponentlardan biridir. Displey serveri o'z clientlari bilan tarmoqda shaffof(network-transparent) yoki oddiygina tarmoqqa(network-capable) ulanishi mumkin bo'lgan displey server protokoli, communication protocoli(aloqa protokoli) orqali bog'lanadi. Displey serveri har qanday grafik foydalanuvchi interfeysida, xususan, window systemda asosiy komponent hisoblanadi. Mustaqil displey serverining server/client munosabatlari bir oz ziddir, chunki "server" odatda katta, uzoq joylashgan machine sifatida tasavvur qilinadi, ammo mustaqil "displey server" kichik, mahalliy(local) tizim bo'lib, ko'pchilik clientlar katta markaziy machinenada bajariiladi. Tushuntirish shundan iboratki, displey serveri displey va kiritish qurilmalari(input device) xizmatlarini taqdim etadi.
+
+<Callout type="info" emoji="">
+![Image](/images/article/linux-de/5.png)
+GUI ning asosiy komponentlari: Displey serveri window systemni implement qiladi. Oddiy window manageri shunchaki window decorationlarini chizadi, ammo compositing window managerlari ko'proq narsani qiladilar.
+</Callout>
