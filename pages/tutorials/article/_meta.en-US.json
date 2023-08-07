@@ -250,5 +250,26 @@
       "toc": false,
       "pagination": true
     }
+  },
+  "malwares_2": {
+    "title": "So'nggi 10 yildagi eng xavfli zararli dasturlar va Xakerlar guruhlari(2-qism)",
+    "longTitle": "So'nggi 10 yildagi eng xavfli zararli dasturlar va Xakerlar guruhlari(2-qism)",
+    "description": "So'nggi 10 yildagi eng xavfli zararli dasturlar va Xakerlar guruhlari(2-qism)",
+    "level": "Hamma uchun",
+    "category": "Cyber Security",
+    "author": {
+      "name": "Otabek Ismoilov",
+      "image": "/images/tutorials/authors/ismoilovdev.jpeg"
+    },
+    "createdAt": "2023-08-02",
+    "minutesRead": 30,
+    "href": "/tutorials/article/malwares_2",
+    "theme": {
+      "breadcrumb": false,
+      "footer": true,
+      "sidebar": false,
+      "toc": false,
+      "pagination": true
+    }
   }
 }
