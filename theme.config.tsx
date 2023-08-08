@@ -3,7 +3,7 @@
  */
 import { useRouter } from 'next/router';
 
-const github = 'https://github.com/ismoilovdevml/new-website';
+const github = 'https://github.com/ismoilovdevml/os-dev-blog';
 
 const TITLE_WITH_TRANSLATIONS = {
   'UZ': 'UZ',
@@ -88,7 +88,7 @@ const config: DocsThemeConfig = {
       frontMatter?.description ||
       "Open Source Developer Blog";
     const image = frontMatter?.type
-      ? `https://os-dev-blog.vercel.app//api/og?title=${frontMatter?.ogImageText}&category=Developing`
+      ? `https://os-dev-blog.uz/api/og?title=${frontMatter?.ogImageText}&category=Developing`
       : frontMatter?.image || '/og.jpg';
     const folder = theme === 'light' ? '/light' : '/dark';
 

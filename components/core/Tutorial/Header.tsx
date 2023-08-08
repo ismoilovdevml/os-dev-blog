@@ -32,14 +32,14 @@ export default function Header() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tutorial, setTutorial] = useState<Tutorial | null>(null);
 
-  const ogImage = `https://os-dev-blog.vercel.app/api/og?title=${tutorial?.title}&category=${tutorial?.category}`;
+  const ogImage = `https://os-dev-blog.uz/api/og?title=${tutorial?.title}&category=${tutorial?.category}`;
 
   const structuredData: JsonLd = {
     '@context': 'https://schema.org/',
     '@type': 'BlogPosting',
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': `https://os-dev-blog.vercel.app/${router.asPath}`,
+      '@id': `https://os-dev-blog.uz/${router.asPath}`,
     },
     headline: `${tutorial?.longTitle}`,
     description: `${tutorial?.description}`,

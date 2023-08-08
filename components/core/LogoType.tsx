@@ -4,7 +4,7 @@ type Props = {
   title?: string;
 };
 
-export function LogoType({ title = 'livepeer logo' }: Props) {
+export function LogoType({ title = 'os-dev-blog logo' }: Props) {
   const { theme } = useTheme();
 
   return (

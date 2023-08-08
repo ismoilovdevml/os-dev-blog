@@ -27,5 +27,3 @@ dist-ssr
 *.sln
 *.sw?
 
-# Sentry
-.sentryclirc
