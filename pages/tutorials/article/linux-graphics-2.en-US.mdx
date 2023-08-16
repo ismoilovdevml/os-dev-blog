@@ -54,7 +54,12 @@ Lekin X oxirgi foydalanuvchi nuqtai nazaridan emas, balki dasturning istiqbolini
 Server va client o'rtasidagi aloqa protokoli(communication protocol) tarmoqda shaffof(network-transparent) ishlaydi: client va server bir xil mashinada yoki turli xil qurilmalarda, ehtimol turli arxitektura va operatsion tizimlarda ishlashi mumkin.
 Client va server hatto shifrlangan tarmoq seansi orqali ulanishni tunnel qilish orqali Internet orqali xavfsiz muloqot qilishlari mumkin.
 
+X clientining o'zi boshqa clientlarga displey servicelarini taqdim etish orqali X serveriga taqlid qilishi mumkin. Bu "X nesting" deb nomlanadi. Xnest va Xephyr kabi open source clientlar bunday X joylashtirishni qo'llab-quvvatlaydi.
+
 #### X.Org Server (X11)
+
+X server - displey, klaviatura va sichqoncha bilan kompyuterda ishlaydigan dastur bo'lib, u displeyda grafiklarni chizish va klaviatura va sichqonchadan kiritilgan ma'lumotlarni qayta ishlash servicelarini taqdim etadi. U displeyni boshqarish, foydalanuvchi ma'lumotlarini boshqarish va displey bilan o'zaro aloqada bo'lgan uskunani, masalan, grafik kartani boshqarish uchun javobgardir. Server shuningdek, ekrandagi oynalarni(window) boshqarish, stacking tartibini aniqlash va oynalarni boshqarish uchun user inputni boshqarish uchun javobgardir.
+X serverlari odatda operatsion tizimning windowing systemining bir qismi sifatida implement qilinadi. Ular grafik qurilmalarni boshqarish, foydalanuvchi ma'lumotlarini qayta ishlash va grafik interfeyslar uchun asosiy qurilish bloklarini, masalan, windowlar va chizilgan primitivlarni ta'minlash uchun javobgardir. X Window Systemida X server displey va input devicelarini boshqaradigan markaziy organ bo'lib, u ilovalarga grafiklarni chizish va input eventlarini qabul qilish usulini ta'minlaydi.
 
 Displey serveriga misol sifatida kernelning tepasida ishlaydigan `X.Org` serveridir (odatda Unix-ga o'xshash kernel, masalan, Linux yoki BSD). U foydalanuvchi ma'lumotlarini oladi (masalan, Linux-dagi evdev-dan) va uni clientlaridan biriga uzatadi. Displey serveri o'z clientlaridan ma'lumotlarni ham oladi; u ma'lumotlarni qayta ishlaydi, birlashtirishni amalga oshiradi va Linuxda ma'lumotlarni uchta kernel komponentlaridan biriga - DRM, GEM yoki KMS drayveriga uzatadi. Komponent ma'lumotlarni framebufferga yozadi va framebufferning mazmuni ulangan ekranga uzatiladi va ko'rsatiladi. X `GLX` ga tayanadi.
 
@@ -68,4 +73,6 @@ Displey serveri kontseptsiyasining amalga oshirilishidan biri bu X Window System
 Rasm: X.Org Server o'z clientlari bilan muloqot qiladi, masalan. Amarok, X11 protokoli orqali
 </Callout>
 
+#### X Client
 
+X clientlari o'zlarining grafik foydalanuvchi interfeyslarini ko'rsatish uchun X serveriga ulanadigan individual applicationlardir. X clienti oddiy terminal emulyatoridan tortib to to'liq ish stoli muhitigacha(full-fledged desktop environment) bo'lgan har qanday narsa bo'lishi mumkin. X clienti X serveri bilan client va server o'zaro ta'sirini belgilaydigan standart buyruqlar(command) va javoblar(response) to'plami bo'lgan X protokoli yordamida aloqa(communicate) qiladi. Ushbu protokol network-transparentdir, shuning uchun X clientlari masofaviy mashinalarda ishlashlari va local X serverida o'zlarining grafik foydalanuvchi interfeyslarini ko'rsatishlari mumkin. X Window Systemida X clienti o'zining grafik foydalanuvchi interfeysini ko'rsatish uchun X serveridan servicelarni so'raydigan dasturdir. X clienti ekranda biror narsa chizishni xohlasa, u X protokoli yordamida X serveriga so'rov( request) yuboradi. X server so'rovni qayta ishlaydi va javobni(response) yuboradi. X client va X server tarmoq ulanishi orqali muloqot qiladi, bu odatda local kompyuterda UNIX domain socketidir, lekin masofaviy ulanishlar uchun TCP/IP socketi ham bo'lishi mumkin.
