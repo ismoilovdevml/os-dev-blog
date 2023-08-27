@@ -98,3 +98,26 @@ Extensionlar: X clientlari asosiy X protokoliga turli extensionlardan foydalanis
 Closing & Cleanup: X clienti o'z operatsiyalarini tugatganida yoki foydalanuvchi tomonidan yopilganda, u X serveriga tozalash uchun requestlar yuboradi - oynalarni yopish, resurslarni chiqarish va h.k.
 
 Aslini olganda, X clienti X Window tizimidagi application-side komponenti bo‘lib, foydalanuvchi nimani ko‘rishi va u bilan o‘zaro aloqada bo‘lishini aniqlaydi, shu bilan birga haqiqiy displey va kiritish tafsilotlarini(input detail) boshqarish uchun X serveriga tayanadi.
+
+
+#### X protocol
+
+X protokoli X Window tizimining asosiy aloqa protokoli(communication protocol) bo'lib, X clientlarning X server bilan qanday aloqa qilishini belgilaydi. X Window tizimi Unix-ga o'xshash operatsion tizimlarda foydalanuvchi grafik interfeyslarini (GUI) yaratish va boshqarish uchun asos yaratadi va X protokoli ushbu tizim ichida almashiladigan xabarlarning tuzilishi va semantikasini boshqaradi.
+
+X protokoli client-server modelini osonlashtiradi, bunda X server haqiqiy displeyni, grafik uskunani va kiritish qurilmalarini manage va control qiladi, X clientlar esa o'zlarining GUI-ni ko'rsatishni va kirishni(input) olishni xohlaydigan ilovalardir.
+
+Binary Protocol: X protokoli Binary Protocol bo'lib, xabarlar odam o'qiy oladigan matn emas, balki structured binary data sifatida yuboriladi. Bu tanlov aloqani samarali qiladi, lekin client va serverdan binary datalarning aniq tuzilishi va tartibini tushunishni talab qiladi.
+
+Requestlar va Responselar: X protokoli asosan clientdan serverga yuborilgan requestlardan(so'rov) va serverdan clienta qaytariladigan responselar(javob) yoki eventlardan iborat. Requestlar serverga biror amalni bajarishni buyuradi (masalan, oyna chizish yoki kirishni olish). O'z navbatida, server responselarni qaytarib yuborishi mumkin, bu client so'ragan ma'lumotlar yoki tugmani bosish kabi clientga biror narsa haqida xabar beradigan eventlar bo'lishi mumkin.
+
+Resurs identifikatorlari: X protokoli oynalar, shriftlar yoki grafik kontekstlar kabi turli ob'ektlar yoki ob'ektlarga murojaat qilish uchun ko'pincha "resource IDs" deb ataladigan noyob identifikatorlardan foydalanadi. Ushbu identifikatorlar clientga ham, serverga ham bir xil ob'ekt haqida chalkashmasdan gapirish imkonini beradi.
+
+Versiyalash va Extensionlar: Protokolda vaqt o'tishi bilan rivojlanishiga imkon beruvchi aniqlangan versiya tizimi mavjud. Bundan tashqari, protokol extensionlarni qo'llab-quvvatlaydi, bu esa asl spetsifikatsiyadan tashqari yangi funksiyalarni qo'shish imkonini beradi. Client ulanganda, u serverdan qo'llab-quvvatlanadigan extensionlar va ularning versiyalarini so'rashi mumkin.
+
+Byte Ordering: Turli xil kompyuter arxitekturalari xotiradagi ko'p baytli qiymatlarni turlicha ifodalaydi, yoki little-endian yoki big-endian formatida. X protokoli buni clientga ulanish vaqtida byte orderini belgilashga ruxsat berish orqali tasdiqlaydi. Bu turli xil mashina arxitekturalarida ma'lumotlarning izchil talqin qilinishini ta'minlaydi.
+
+Network Transparency: X protokolining muhim xususiyatlaridan biri uning tarmoq shaffofligi(network ransparency) uchun dizaynidir. Bu shuni anglatadiki, X clienti o'z GUI-ni tarmoq bo'ylab boshqa kompyuterda X serverida ko'rsatgan holda bitta mashinada ishlashi mumkin. X protokoli xabarlari tarmoq ulanishi orqali yuboriladi, bu esa masofaviy displey va o'zaro ta'sir qilish imkonini beradi.
+
+Error Handling: Protokol request bilan bog'liq muammo bo'lsa, server clientga qaytarib yuborishi mumkin bo'lgan maxsus xato xabarlarini belgilaydi. Ushbu tizimli xatolarni boshqarish clientlarga muammolarni oqilona hal qilish imkonini beradi.
+
+Aslini olganda, X protokoli X clientlari va serverlariga muloqot qilish va hamkorlik qilish imkonini beruvchi aniq belgilangan qoidalar va structurelar to‘plamini taqdim etadi, bu grafik ilovalarni Unix-ga o‘xshash operatsion tizimlarda ko‘rsatish va ular bilan o‘zaro aloqada bo‘lish imkonini beradi.
