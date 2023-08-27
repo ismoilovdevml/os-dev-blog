@@ -76,3 +76,25 @@ Rasm: X.Org Server o'z clientlari bilan muloqot qiladi, masalan. Amarok, X11 pro
 #### X Client
 
 X clientlari o'zlarining grafik foydalanuvchi interfeyslarini ko'rsatish uchun X serveriga ulanadigan individual applicationlardir. X clienti oddiy terminal emulyatoridan tortib to to'liq ish stoli muhitigacha(full-fledged desktop environment) bo'lgan har qanday narsa bo'lishi mumkin. X clienti X serveri bilan client va server o'zaro ta'sirini belgilaydigan standart buyruqlar(command) va javoblar(response) to'plami bo'lgan X protokoli yordamida aloqa(communicate) qiladi. Ushbu protokol network-transparentdir, shuning uchun X clientlari masofaviy mashinalarda ishlashlari va local X serverida o'zlarining grafik foydalanuvchi interfeyslarini ko'rsatishlari mumkin. X Window Systemida X clienti o'zining grafik foydalanuvchi interfeysini ko'rsatish uchun X serveridan servicelarni so'raydigan dasturdir. X clienti ekranda biror narsa chizishni xohlasa, u X protokoli yordamida X serveriga so'rov( request) yuboradi. X server so'rovni qayta ishlaydi va javobni(response) yuboradi. X client va X server tarmoq ulanishi orqali muloqot qiladi, bu odatda local kompyuterda UNIX domain socketidir, lekin masofaviy ulanishlar uchun TCP/IP socketi ham bo'lishi mumkin.
+
+Keling bularni kengroq o'rganamiz.
+
+Requestlar: X clientining asosiy vazifasi X serveriga request yuborishdir. Ushbu requestlar serverga turli xil vazifalarni(task) bajarishni buyuradi, masalan, oynalarni chizish, grafik yoki matnni ko'rsatish, foydalanuvchi ma'lumotlarini yozib olish va boshqalar.
+
+Event Handling: X clientlari X server tomonidan yuborilgan eventlarni kutadilar va qayta ishlaydilar. Ushbu eventlar sichqonchaning harakati, bosish yoki tugmachalarni bosish kabi foydalanuvchi o'zaro ta'siri yoki oynani ochish kabi tizim bildirishnomalari bo'lishi mumkin.
+
+Connection: X clienti X serveriga turli mexanizmlar yordamida, ko'pincha local connectionlar uchun Unix domen soketlari yoki masofaviy ulanishlar uchun TCP/IP orqali ulanish o'rnatadi. Ulangandan so'ng, client requestlarni yuborishi va eventlarni qabul qilishi mumkin.
+
+Window Management: X clienti X serveridan oynalarni(window) yaratish, manipulyatsiya qilish yoki yo'q qilishni so'raydi. Har bir window client o'z contentini ko'rsatishi mumkin bo'lgan to'rtburchaklar maydondir(rectangular area). Windowlar turli atribut va propertilarga ega bo'lishi mumkin va client ularni kerak bo'lganda sozlash va boshqarish uchun javobgardir.
+
+Graphics Rendering: X serveri asosiy renderlash imkoniyatlarini ta'minlasa-da, X clienti nima ko'rsatish kerakligini aniqlash uchun javobgardir. Bu shakllar, ranglar, matn, tasvirlar va boshqalarni aniqlashni o'z ichiga oladi. Client ushbu instructionlarni serverga request sifatida yuboradi.
+
+Clipboard(buffer) Operations: X clientlari selectionlar bilan o'zaro aloqada bo'lishi mumkin (masalan, clipboard). Foydalanuvchi ma'lumotlardan nusxa ko'chirganda, X clienti ma'lum bir selectionning egaligini da'vo qiladi. Keyin boshqa clientlar joylashtirish operatsiyalarini amalga oshirish uchun ushbu selection contentini so'rashi mumkin.
+
+Properties & Atoms: X clientlar Windowsda propertielarni o'rnatishi(set) yoki olishi(fetch) mumkin. Propertilar noyob identifikatorlar bo'lgan "atomlar" tomonidan nomlanadi. Bu Propertilar oyna sarlavhalaridan(window title) tortib murakkabroq metamaʼlumotlargacha boʻlgan keng doiradagi maʼlumotlarni saqlashi mumkin.
+
+Extensionlar: X clientlari asosiy X protokoliga turli extensionlardan foydalanishlari mumkin, bu ularga qo'shimcha funksiyalar yoki optimallashtirilgan operatsiyalarni beradi. Masalan, RENDER extensionidan foydalanish yanada rivojlangan renderlash imkoniyatlarini beradi.
+
+Closing & Cleanup: X clienti o'z operatsiyalarini tugatganida yoki foydalanuvchi tomonidan yopilganda, u X serveriga tozalash uchun requestlar yuboradi - oynalarni yopish, resurslarni chiqarish va h.k.
+
+Aslini olganda, X clienti X Window tizimidagi application-side komponenti bo‘lib, foydalanuvchi nimani ko‘rishi va u bilan o‘zaro aloqada bo‘lishini aniqlaydi, shu bilan birga haqiqiy displey va kiritish tafsilotlarini(input detail) boshqarish uchun X serveriga tayanadi.
