@@ -37,7 +37,7 @@ const Logo = ({ height, width }: { height: number; width: number }) => {
 const config: DocsThemeConfig = {
   docsRepositoryBase: `${github}/blob/main`,
   chat: {
-    link: 'https://discord.gg/tYEHE4Su',
+    link: 'https://discord.gg/rq9rUdnKpm',
   },
   banner: {
     key: 'docs-launch',
